@@ -258,7 +258,7 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
 <td class="align-middle"><?php echo "$row[date]"; ?></td>
 <td class="align-middle"><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";}?></td>
-<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-info" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><button class="btn btn-success" data-toggle="modal" data-target="#orderUpdate"><i class="fa fa-pencil"></i></button><button class="btn btn-danger"><i class="fas fa-trash"></i></button></td>
+<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--><button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button></td>
 </tr>
 <?php
   }}
@@ -316,7 +316,7 @@ $conn->close();
                     <!--News Show Modal-->
 
                     <!--News Update Modal-->
-                    <div class="modal fade" id="updateNews" tabindex="-1" role="dialog" aria-hidden="true">
+                    <!--<div class="modal fade" id="updateNews" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -333,7 +333,7 @@ $conn->close();
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
                     <!--News Update Modal-->
                 </div>
 
@@ -442,7 +442,7 @@ alertify.error('Des');
 alertify.error('Title');
 }
 }
-function showmore(id){
+function showmore(id) {
 $('#showNews').modal('show');
   $.ajax({
         url: "getnews.php",
@@ -468,7 +468,6 @@ function printnews(id) {
       var blob = new Blob([xhr.response], { type: 'application/pdf' });
       var url = URL.createObjectURL(blob);
       var newWindow = window.open(url, '_blank');
-      
       // Print the PDF
       newWindow.onload = function() {
         newWindow.print();
@@ -476,6 +475,19 @@ function printnews(id) {
     }
   };
   xhr.send('id=' + id);
+}
+function delnews(id) {
+    $.ajax({
+        url: "delnews.php",
+        type: "POST",
+        data: {
+          id: id
+        },
+        cache: false,
+        success: function(dataResult){
+            location.reload();
+        }
+  });
 }
 </script>
   </body>

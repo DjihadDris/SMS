@@ -1,5 +1,4 @@
 <?php
-$date = date('Y');
 if(isset($_COOKIE['lang']) && $_COOKIE['lang'] == "fr"){
 $lang = $_COOKIE['lang'];
 $title = "Tableau de bord - Système de gestion scolaire";
@@ -14,7 +13,6 @@ $dateofnews = "La date";
 $detailofnews = "Les détails";
 $userofnews = "Utilisateur";
 $save = "Enregistrer";
-$allrights = "Tous droits réservés $date conçu par";
 $numadmins = "Nombre d'utilisateurs";
 $numteachers = "Nombre des enseignants";
 $numstudents = "Nombre des élèves";
@@ -35,7 +33,6 @@ $dateofnews = "التاريخ";
 $detailofnews = "التفاصيل";
 $userofnews = "المستخدم";
 $save = "حفظ";
-$allrights = "جميع الحقوق محفوظة $date صمم بواسطة";
 $numadmins = "عدد المستخدمين";
 $numteachers = "عدد الأساتذة";
 $numstudents = "عدد التلاميذ";
