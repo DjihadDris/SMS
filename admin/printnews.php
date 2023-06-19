@@ -25,7 +25,7 @@ $pdf->Cell(0, 10, $row['name'], 0, 1, 'C');  // Center-aligned heading
 $pdf->Cell(0, 10, 'Name: ' . $row['des'], 0, 1, 'R');  // Right-aligned content
 
 // Output the PDF
-$pdf->Output('Download - SMS.pdf', 'I');
+$pdf->Output('SMS.pdf', 'I');
   }}
 $conn->close();
 ?>
