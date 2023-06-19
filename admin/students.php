@@ -114,168 +114,149 @@ include('students_lang.php');
 
             <!--Content right-->
             <div class="col-sm-9 col-xs-12 content pt-3 pl-0">
-                
-                <!--Dashboard widget-->
-                <div class="mt-1 mb-3 button-container">
-                    <div class="row pl-0">
-
-<?php
-if($_COOKIE['user_type'] == "superadmins"){
-?>
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-white border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-theme" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-users"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="text-muted bc-description"><?php echo $numadmins; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-<?php
-}
-?>
-                        
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-white border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-danger" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-chalkboard-teacher"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="text-muted bc-description"><?php echo $numteachers; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-white border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-success" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-user-graduate"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="text-muted bc-description"><?php echo $numstudents; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-theme border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-school text-theme"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM years WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="bc-description text-white"><?php echo $numyears; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-danger border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-layer-group text-danger"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM divs WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="bc-description text-white"><?php echo $numdivs; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-success border shadow">
-                                <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-chalkboard text-success"></i>
-                                    </div>
-                                    <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM classes WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="bc-description text-white"><?php echo $numclasses; ?></small></p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        
-                    </div>
-                </div>
-                <!--/Dashboard widget-->
-
-
-                <!--Chart Section-->
-                <!--<div class="mt-1 mb-3 p-3 button-container bg-white shadow-sm border">
-                    <h6>Analytics overview</h6><hr>
-                    <canvas id="orderRevenue" class="orderRevenue pt-1" height="100px"></canvas>
-                </div>-->
-                <!--Chart Section-->
 
                 <div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
                     <!--Order Listing-->
                     <div class="product-list">
                         
                         <div class="row border-bottom mb-4">
-                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><?php echo $newstitle; ?></h6></div>
+                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-user-graduate"></i> <?php echo $students; ?></h6></div>
                             <div class="col-sm-4 text-right pb-3">
-                                <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addNews">
-                                    <i class="fas fa-plus"></i> <?php echo $newsadd; ?>
+                                <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addStudent">
+                                    <i class="fas fa-plus"></i> <?php echo $addstudent; ?>
                                 </button>
                             </div>
                         </div>
-                        
+
+<div class="form-group row">
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+<div class="col-sm-3">
+<select class="form-control" id="sschool_id" onchange="getyears()">
+    <option value=""><?php echo $school; ?></option>
+<?php
+include('../db.php');
+$sql = "SELECT * FROM schools";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
+echo "<option value='$row[id]' data-value='$row[name]'>$row[name]</option>";
+}}
+$conn->close();
+?>
+</select>
+</div>
+<div class="col-sm-3">
+<select class="form-control" id="syear_id" onchange="getdivs()">
+    <option value=""><?php echo $year; ?></option>
+</select>
+</div>
+<div class="col-sm-3">
+<select class="form-control" id="sdiv_id" onchange="getclasses()">
+    <option value=""><?php echo $div; ?></option>
+</select>
+</div>
+<div class="col-sm-3">
+<select class="form-control" id="sclass_id">
+    <option value=""><?php echo $class; ?></option>
+</select>
+</div>
+<?php }else{
+include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){ ?>
+<div class="col-sm-4">
+<select class="form-control" id="syear_id" onchange="getdivs()">
+    <option value=""><?php echo $year; ?></option>
+<?php
+$school_id = $_COOKIE['school_id'];
+$sqls = "SELECT * FROM years WHERE school_id='$school_id'";
+$results = $conn->query($sqls);
+if ($results->num_rows > 0) {
+while($rows = $results->fetch_assoc()) {
+echo "<option value='$rows[id]' data-value='$rows[name]'>$rows[name]</option>";
+}}
+$conn->close();
+?>
+</select>
+</div>
+<div class="col-sm-4">
+<select class="form-control" id="sdiv_id" onchange="getclasses()">
+    <option value=""><?php echo $div; ?></option>
+</select>
+</div>
+<div class="col-sm-4">
+<select class="form-control" id="sclass_id">
+    <option value=""><?php echo $class; ?></option>
+</select>
+</div>
+<?php }}}} ?>
+</div>
+
                         <div class="table-responsive product-list">
                             
-                            <table class="table table-bordered table-striped mt-0" width="100%" id="news">
+                        <table class="table table-bordered table-striped mt-0" width="100%" id="students">
                                 <thead>
                                     <tr>
-                                        <th><?php echo $titleofnews; ?></th>
-                                        <th><?php echo $dateofnews; ?></th>
-                                        <th><?php echo $userofnews; ?></th>
+                                        <th>#</th>
+                                        <th><?php echo $fn; ?></th>
+                                        <th><?php echo $name; ?></th>
+                                        <th><?php echo $dob; ?></th>
+                                        <th><?php echo $gender; ?></th>
+                                        <th><?php echo $email; ?></th>
+                                        <th><?php echo $pn; ?></th>
+                                        <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+                                        <th><?php echo $school; ?></th>
+                                        <?php } ?>
+                                        <th><?php echo $year; ?></th>
+                                        <th><?php echo $div; ?></th>
+                                        <th><?php echo $class; ?></th>
                                         <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
 <?php
 include('../db.php');
-$sql = "SELECT * FROM news";
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "SELECT * FROM students";
+}else{
+$sql = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]'";
+}
+$i = 1;
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
 ?>
 <tr>
+<td class="align-middle"><?php echo $i;$i++; ?></td>
+<td class="align-middle"><?php echo "$row[fn]"; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
-<td class="align-middle"><?php echo "$row[date]"; ?></td>
-<td class="align-middle"><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";}?></td>
-<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--><button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button></td>
+<td class="align-middle"><?php echo "$row[dob]"; ?></td>
+<td class="align-middle"><?php if("$row[gender]" == 0){echo $gender0;}else{echo $gender1;}; ?></td>
+<td class="align-middle"><?php echo "$row[email]"; ?></td>
+<td class="align-middle"><?php echo "$row[pn]"; ?></td>
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close();?></td>
+<?php } ?>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM years WHERE id='$row[year_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No year found..";} $conn->close();?></td>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM divs WHERE id='$row[div_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No div found..";} $conn->close();?></td>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM classes WHERE id='$row[class_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}} ?></td>
+<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--></td>
 </tr>
 <?php
   }}
 $conn->close();
 ?>
-                                    </tbody>
-                            </table>
+                                </tbody>
+                    </table>
                         </div>
                     </div>
                     <!--/Order Listing-->
 
-                    <!--News Add Modal-->
-                    <div class="modal fade" id="addNews" tabindex="-1" role="dialog" aria-hidden="true">
+                    <!--Student Add Modal-->
+                    <div class="modal fade" id="addStudent" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $newsadd; ?></h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $addstudent; ?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
@@ -294,10 +275,10 @@ $conn->close();
                             </div>
                         </div>
                     </div>
-                    <!--News Add Modal-->
+                    <!--Student Add Modal-->
 
-                    <!--News Show Modal-->
-                    <div class="modal fade" id="showNews" tabindex="-1" role="dialog" aria-hidden="true">
+                    <!--Student Show Modal-->
+                    <div class="modal fade" id="showStudent" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -313,10 +294,10 @@ $conn->close();
                             </div>
                         </div>
                     </div>
-                    <!--News Show Modal-->
+                    <!--Student Show Modal-->
 
-                    <!--News Update Modal-->
-                    <!--<div class="modal fade" id="updateNews" tabindex="-1" role="dialog" aria-hidden="true">
+                    <!--Student Update Modal-->
+                    <!--<div class="modal fade" id="updateStudent" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -334,7 +315,7 @@ $conn->close();
                             </div>
                         </div>
                     </div>-->
-                    <!--News Update Modal-->
+                    <!--Student Update Modal-->
                 </div>
 
                 <!--Footer-->
@@ -393,7 +374,7 @@ $conn->close();
     <!--Custom Js Script-->
 <script>
 $(document).ready(function() {
-$('#news').DataTable({
+let table = $('#students').DataTable({
     ordering: true,
     searching: true,
     paging: true,
@@ -406,6 +387,51 @@ $('#news').DataTable({
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/<?php if($lang == "ar"){echo 'Arabic';}else{echo 'French';} ?>.json"
         }
 });
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+var select = $('#sschool_id');
+select.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(7).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select2 = $('#syear_id');
+select2.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select3 = $('#sdiv_id');
+select3.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(9).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select4 = $('#sclass_id');
+select4.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(10).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+<?php }else{ ?>
+var select = $('#syear_id');
+select.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(7).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select2 = $('#sdiv_id');
+select2.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select3 = $('#sclass_id');
+select3.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(9).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+<?php } ?>
 });
 var myEditor;
 ClassicEditor.create( document.querySelector( '#and' ), {
@@ -442,19 +468,62 @@ alertify.error('Des');
 alertify.error('Title');
 }
 }
-function showmore(id) {
-$('#showNews').modal('show');
-  $.ajax({
-        url: "getnews.php",
-        type: "POST",
+function getyears() {
+var school_id = document.getElementById('sschool_id').value;
+$.ajax({
+        url: 'getyears.php',
+        type: 'POST',
         data: {
-          id: id
+            school_id: school_id
         },
         cache: false,
         success: function(dataResult){
-$('#newsdes').html(dataResult);
+            document.getElementById('syear_id').innerHTML = dataResult;
         }
-  });
+    });
+}
+function getdivs() {
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+var school_id = document.getElementById('sschool_id').value;
+<?php }else{ ?>
+var school_id = <?php echo $_COOKIE['school_id'] ?>;
+<?php } ?>
+var year_id = document.getElementById('syear_id').value;
+$.ajax({
+        url: 'getdivs.php',
+        type: 'POST',
+        data: {
+            school_id: school_id,
+            year_id: year_id
+        },
+        cache: false,
+        success: function(dataResult){
+            document.getElementById('sdiv_id').innerHTML = dataResult;
+            getclasses.call();
+        }
+    });
+}
+function getclasses() {
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+var school_id = document.getElementById('sschool_id').value;
+<?php }else{ ?>
+var school_id = <?php echo $_COOKIE['school_id'] ?>;
+<?php } ?>
+var year_id = document.getElementById('syear_id').value;
+var div_id = document.getElementById('sdiv_id').value;
+$.ajax({
+        url: 'getclasses.php',
+        type: 'POST',
+        data: {
+            school_id: school_id,
+            year_id: year_id,
+            div_id: div_id
+        },
+        cache: false,
+        success: function(dataResult){
+            document.getElementById('sclass_id').innerHTML = dataResult;
+        }
+    });
 }
 function printnews(id) {
    // Send the ID to the print.php page

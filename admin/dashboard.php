@@ -129,7 +129,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-users"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM admins WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numadmins; ?></small></p>
                                     </div>
                                 </div>
@@ -146,7 +146,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-chalkboard-teacher"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM teachers WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numteachers; ?></small></p>
                                     </div>
                                 </div>
@@ -160,7 +160,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM students WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numstudents; ?></small></p>
                                     </div>
                                 </div>
@@ -174,7 +174,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-school text-theme"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM years WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM years WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numyears; ?></small></p>
                                     </div>
                                 </div>
@@ -188,7 +188,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-layer-group text-danger"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM divs WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT DISTINCT name FROM divs WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numdivs; ?></small></p>
                                     </div>
                                 </div>
@@ -202,7 +202,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-chalkboard text-success"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT * FROM classes WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM classes WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numclasses; ?></small></p>
                                     </div>
                                 </div>
@@ -226,7 +226,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                     <div class="product-list">
                         
                         <div class="row border-bottom mb-4">
-                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><?php echo $newstitle; ?></h6></div>
+                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-newspaper"></i> <?php echo $newstitle; ?></h6></div>
                             <div class="col-sm-4 text-right pb-3">
                                 <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addNews">
                                     <i class="fas fa-plus"></i> <?php echo $newsadd; ?>
@@ -239,6 +239,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                             <table class="table table-bordered table-striped mt-0" width="100%" id="news">
                                 <thead>
                                     <tr>
+                                        <th>#</th>
                                         <th><?php echo $titleofnews; ?></th>
                                         <th><?php echo $dateofnews; ?></th>
                                         <th><?php echo $userofnews; ?></th>
@@ -249,16 +250,18 @@ if($_COOKIE['user_type'] == "superadmins"){
 <?php
 include('../db.php');
 $sql = "SELECT * FROM news";
+$i = 1;
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
 ?>
 <tr>
+<td class="align-middle"><?php echo $i;$i++; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
 <td class="align-middle"><?php echo "$row[date]"; ?></td>
 <td class="align-middle"><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";}?></td>
-<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--><button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button></td>
+<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--><?php if($_COOKIE['user_type'] == "superadmins" OR "$row[type]" <> "superadmins" AND "$row[user_id]" == $_COOKIE['id']){ ?><button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button><?php } ?></td>
 </tr>
 <?php
   }}
