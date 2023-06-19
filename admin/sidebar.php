@@ -29,12 +29,17 @@ include('sidebar_lang.php');
 <span class="none"><?php echo $teachers; ?></span>
 </a>
 </li>
+<?php
+if($_COOKIE['user_type'] == "superadmins"){
+?>
 <li class="parent">
 <a href="users"><i class="fas fa-users mr-3"></i>
 <span class="none"><?php echo $users; ?></span>
 </a>
 </li>
-
+<?php
+}
+?>
 <li class="parent">
 <a href="years"><i class="fas fa-school mr-3"></i>
 <span class="none"><?php echo $years; ?></span>
