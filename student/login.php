@@ -179,7 +179,7 @@ body {
 <div class="d-flex justify-content-center btns-group">
   <button type="submit" class="button" onclick="login()" id="btnSubmit"><?php echo $login; ?></button>
   <button type="button" class="button" onclick="register()"><?php echo $register; ?></button>
-  <button type="button" class="button" onclick="reset()"><?php echo $reset; ?></button>
+  <button type="button" class="button" onclick="resetpass()"><?php echo $reset; ?></button>
   <button type="button" class="button" onclick="help()"><?php echo $help; ?></button>
 </div>
 </form>
@@ -340,7 +340,7 @@ function help() {
 alertify.alert("<?php echo $help_1; ?> <br> <?php echo $help_2; ?> <br> <?php echo $help_3; ?> <br> <u><?php echo $help_4; ?></u> <?php echo $help_5; ?>");
 }
 
-function reset() {
+function resetpass() {
   alertify.prompt("<?php echo $id5alemail; ?>", "",
   function(evt, value ){
     if(value != "") {

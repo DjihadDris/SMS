@@ -165,6 +165,7 @@ body {
 <p>School name</p>
 </div>
 
+<form id="loginForm">
 <div class="input-group mb-3">
   <span class="input-group-text"><i class="fas fa-user"></i></span>
   <input type="text" class="form-control" placeholder="<?php echo $email; ?>" id="email">
@@ -176,16 +177,12 @@ body {
 </div>
 
 <div class="d-flex justify-content-center btns-group">
-  <button type="button" class="button" onclick="login()" id="btnSubmit"><?php echo $login; ?></button>
+  <button type="submit" class="button" id="btnSubmit"><?php echo $login; ?></button>
   <button type="button" class="button" onclick="register()"><?php echo $register; ?></button>
-  <button type="button" class="button" onclick="reset()"><?php echo $reset; ?></button>
+  <button type="button" class="button" onclick="resetpass()"><?php echo $reset; ?></button>
   <button type="button" class="button" onclick="help()"><?php echo $help; ?></button>
 </div>
-
-<!--<div class="form-floating">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">كلمة المرور</label>
-</div>-->
+</form>
 
 </div>
 </div>
@@ -302,7 +299,7 @@ function help() {
 alertify.alert("<?php echo $help_1; ?> <br> <?php echo $help_2; ?> <br> <?php echo $help_3; ?> <br> <u><?php echo $help_4; ?></u> <?php echo $help_5; ?>");
 }
 
-function reset() {
+function resetpass() {
   alertify.prompt("<?php echo $id5alemail; ?>", "",
   function(evt, value ){
     if(value != "") {
@@ -332,7 +329,8 @@ alertify.error(dataResult.message);
   ;
 }
 
-function login() {
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+event.preventDefault();
 var email = document.getElementById('email').value;
 var password = document.getElementById('password').value;
 if(email != "") {
@@ -367,7 +365,7 @@ alertify.error(dataResult.message);
 } else {
   alertify.error('<?php echo $id5alemail; ?>');
 }
-}
+});
 </script>
 
 </body>
