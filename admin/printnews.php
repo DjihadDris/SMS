@@ -1,4 +1,9 @@
 <?php
+if(isset($_COOKIE['lang']) && $_COOKIE['lang'] == "fr"){
+$dir = "L";
+}else{
+$dir = "R";
+}
 include('../db.php');
 
 $id = $_POST['id'];
@@ -22,7 +27,7 @@ $pdf->SetFont('AlArabiya', '', 12, '', true, 'UTF-8');
 
 // Custom content using text
 $pdf->Cell(0, 10, $row['name'], 0, 1, 'C');  // Center-aligned heading
-$pdf->Cell(0, 10, 'Name: ' . $row['des'], 0, 1, 'R');  // Right-aligned content
+$pdf->Cell(0, 10, $row['des'], 0, 1, $dir);  // Right-aligned content
 
 // Output the PDF
 $pdf->Output('SMS.pdf', 'I');

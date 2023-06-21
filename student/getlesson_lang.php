@@ -1,7 +1,7 @@
 <?php
 if(isset($_COOKIE['lang']) && $_COOKIE['lang'] == "fr"){
 $lessonname = "Nom de la leçon";
-$lessondes = "La description de la leçon";
+$lessondes = "Les détails de la leçon";
 $lessonimgs = "Les images de la leçon";
 $lessonfiles = "Les fichiers de la leçon";
 $lessondate = "La date d'ajout";
@@ -12,7 +12,7 @@ $trim2 = "Deuxième trimestre";
 $trim3 = "Troisième trimestre";
 }else{
 $lessonname = "إسم الدرس";
-$lessondes = "وصف الدرس";
+$lessondes = "تفاصيل الدرس";
 $lessonimgs = "صور الدرس";
 $lessonfiles = "ملفات الدرس";
 $lessondate = "تاريخ الإضافة";

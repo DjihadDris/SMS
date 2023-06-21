@@ -15,17 +15,17 @@ include('sidebar_lang.php');
 <div class="sidebar-menu-container">
 <ul class="sidebar-menu mt-4 mb-4">
 <li class="parent">
-<a href="dashboard"><i class="fas fa-home mr-3"></i>
+<a href="dashboard"><i class="fas fa-home mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $dashboard; ?></span>
 </a>
 </li>
 <li class="parent">
-<a href="students"><i class="fas fa-user-graduate mr-3"></i>
+<a href="students"><i class="fas fa-user-graduate mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $students; ?></span>
 </a>
 </li>
 <li class="parent">
-<a href="teachers"><i class="fas fa-chalkboard-teacher mr-3"></i>
+<a href="teachers"><i class="fas fa-chalkboard-teacher mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $teachers; ?></span>
 </a>
 </li>
@@ -33,7 +33,7 @@ include('sidebar_lang.php');
 if($_COOKIE['user_type'] == "superadmins"){
 ?>
 <li class="parent">
-<a href="users"><i class="fas fa-users mr-3"></i>
+<a href="users"><i class="fas fa-users mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $users; ?></span>
 </a>
 </li>
@@ -41,27 +41,32 @@ if($_COOKIE['user_type'] == "superadmins"){
 }
 ?>
 <li class="parent">
-<a href="years"><i class="fas fa-school mr-3"></i>
+<a href="years"><i class="fas fa-layer-group mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $years; ?></span>
 </a>
 </li>
 <?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){ ?>
 <li class="parent">
-<a href="divs"><i class="fas fa-layer-group mr-3"></i>
+<a href="divs"><i class="fas fa-network-wired mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $divs; ?></span>
 </a>
 </li>
 <?php }}} $conn->close(); ?>
 <li class="parent">
-<a href="classes"><i class="fas fa-chalkboard mr-3"></i>
+<a href="classes"><i class="fas fa-chalkboard mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
 <span class="none"><?php echo $classes; ?></span>
 </a>
 </li>
-<!--<li class="parent">
-<a href="#"><i class="fa fa-calendar-o mr-3"></i>
-<span class="none">Full Calendar </span>
+<li class="parent">
+<a href="services"><i class="fas fa-list mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
+<span class="none"><?php echo $services; ?></span>
 </a>
-</li>-->
+</li>
+<li class="parent">
+<a href="declined_words"><i class="fas fa-comment-slash mr-3" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>"></i>
+<span class="none"><?php echo $declined_words; ?></span>
+</a>
+</li>
 </ul>
 </div>
 <!--Sidebar Naigation Menu-->

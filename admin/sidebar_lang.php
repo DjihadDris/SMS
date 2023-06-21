@@ -8,6 +8,8 @@ $students = "Gestion des élèves";
 $years = "Gestion des niveaux scolaires";
 $divs = "Gestion des divisions";
 $classes = "Gestion des classes";
+$services = "Gestion des services";
+$declined_words = "Les mots interdits";
 }else{
 $lang = "ar";
 $dashboard = "لوحة التحكم";
@@ -17,5 +19,7 @@ $students = "تسيير التلاميذ";
 $years = "تسيير المستويات التعليمية";
 $divs = "تسيير الشعب";
 $classes = "تسيير الأقسام";
+$services = "تسيير الخدمات";
+$declined_words = "الكلمات المحظورة";
 }
 ?>

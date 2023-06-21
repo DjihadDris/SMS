@@ -120,6 +120,26 @@ include('dashboard_lang.php');
                     <div class="row pl-0">
 
 <?php
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+?>
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+                            <div class="bg-info border shadow">
+                                <div class="media p-4">
+                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
+                                    <i class="fas fa-school text-info"></i>
+                                    </div>
+                                    <div class="media-body pl-2">
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <p><small class="bc-description text-white"><?php echo $numschools; ?></small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+<?php
+}
+?>
+
+<?php
 if($_COOKIE['user_type'] == "superadmins"){
 ?>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
@@ -129,7 +149,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-users"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM admins WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM admins";}else{$query = "SELECT name FROM admins WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numadmins; ?></small></p>
                                     </div>
                                 </div>
@@ -146,7 +166,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-chalkboard-teacher"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM teachers WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM teachers";}else{$query = "SELECT name FROM teachers WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numteachers; ?></small></p>
                                     </div>
                                 </div>
@@ -160,7 +180,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-user-graduate"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM students WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM students";}else{$query = "SELECT name FROM students WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numstudents; ?></small></p>
                                     </div>
                                 </div>
@@ -171,38 +191,38 @@ if($_COOKIE['user_type'] == "superadmins"){
                             <div class="bg-theme border shadow">
                                 <div class="media p-4">
                                     <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-school text-theme"></i>
+                                    <i class="fas fa-layer-group text-theme"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM years WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM years";}else{$query = "SELECT name FROM years WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numyears; ?></small></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sqls = "SELECT * FROM schools WHERE id='$school_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) { if("$rows[tawr]" == 3){ ?>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
                             <div class="bg-danger border shadow">
                                 <div class="media p-4">
                                     <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-layer-group text-danger"></i>
+                                    <i class="fas fa-network-wired text-danger"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT DISTINCT name FROM divs WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT DISTINCT name FROM divs";}else{$query = "SELECT DISTINCT name FROM divs WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numdivs; ?></small></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
+<?php }}} ?>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-success border shadow">
+                            <div class="bg-<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){echo "success";}else{echo "danger";}}} $conn->close(); ?> border shadow">
                                 <div class="media p-4">
                                     <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-chalkboard text-success"></i>
+                                    <i class="fas fa-chalkboard text-<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){echo "success";}else{echo "danger";}}} $conn->close(); ?>"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM classes WHERE school_id='$_COOKIE[school_id]'"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM classes";}else{$query = "SELECT name FROM classes WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numclasses; ?></small></p>
                                     </div>
                                 </div>
@@ -233,8 +253,6 @@ if($_COOKIE['user_type'] == "superadmins"){
                                 </button>
                             </div>
                         </div>
-                        
-                        <div class="table-responsive product-list">
                             
                             <table class="table table-bordered table-striped mt-0" width="100%" id="news">
                                 <thead>
@@ -242,6 +260,9 @@ if($_COOKIE['user_type'] == "superadmins"){
                                         <th>#</th>
                                         <th><?php echo $titleofnews; ?></th>
                                         <th><?php echo $dateofnews; ?></th>
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+                                        <th><?php echo $schoolofnews; ?></th>
+<?php } ?>
                                         <th><?php echo $userofnews; ?></th>
                                         <th></th>
                                     </tr>
@@ -249,7 +270,11 @@ if($_COOKIE['user_type'] == "superadmins"){
                                 <tbody>
 <?php
 include('../db.php');
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 $sql = "SELECT * FROM news";
+}else{
+$sql = "SELECT * FROM news WHERE school_id='$_COOKIE[school_id]'"; 
+}
 $i = 1;
 $result = $conn->query($sql);
 
@@ -260,8 +285,18 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php echo $i;$i++; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
 <td class="align-middle"><?php echo "$row[date]"; ?></td>
-<td class="align-middle"><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";}?></td>
-<td class="align-middle text-center"><button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="fa fa-eye"></i></button><button class="btn btn-success" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fa fa-print"></i></button><!--<button class="btn btn-info" data-toggle="modal" data-target="#updateNews"><i class="fa fa-pencil"></i></button>--><?php if($_COOKIE['user_type'] == "superadmins" OR "$row[type]" <> "superadmins" AND "$row[user_id]" == $_COOKIE['id']){ ?><button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button><?php } ?></td>
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+<td class="align-middle"><?php $school_id="$row[school_id]"; $sqls = "SELECT * FROM schools WHERE id='$school_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close(); ?></td>
+<?php } ?>
+<td class="align-middle"><?php include('../db.php'); $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";} ?></td>
+<td class="align-middle text-center">
+    <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-eye"></i></button>
+    <button class="btn btn-success" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-info" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
+    <?php if($_COOKIE['user_type'] == "superadmins" OR "$row[type]" <> "superadmins" AND "$row[user_id]" == $_COOKIE['id']){ ?>
+    <button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
+    <?php } ?>
+</td>
 </tr>
 <?php
   }}
@@ -269,7 +304,6 @@ $conn->close();
 ?>
                                     </tbody>
                             </table>
-                        </div>
                     </div>
                     <!--/Order Listing-->
 
@@ -284,12 +318,13 @@ $conn->close();
                                     </button>
                                 </div>
                                 <div class="modal-body">
+                                    <input id="uni" hidden>
                                     <label for="ant"><?php echo $titleofnews; ?> <span style="color: red;">*</span></label>
                                     <input type="text" class="form-control" id="ant">
                                     <label for="and"><?php echo $detailofnews; ?> <span style="color: red;">*</span></label>
                                     <textarea id="and"></textarea>
                                     <br>
-                                    <button class="btn btn-outline-success" style="width: 100% !important;" onclick="addnews()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
+                                    <button class="btn btn-outline-success" style="width: 100% !important;" id="addNewsbtn" onclick="addnews()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
@@ -316,28 +351,6 @@ $conn->close();
                             </div>
                         </div>
                     </div>
-                    <!--News Show Modal-->
-
-                    <!--News Update Modal-->
-                    <!--<div class="modal fade" id="updateNews" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Ord#13 details update</h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body">
-
-                                </div>
-                                <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>-->
-                    <!--News Update Modal-->
                 </div>
 
                 <!--Footer-->
@@ -422,6 +435,7 @@ ClassicEditor.create( document.querySelector( '#and' ), {
     console.error( error );
 });
 function addnews() {
+var id = document.getElementById('uni').value;
 var title = document.getElementById('ant').value;
 var des = myEditor.getData();
 if(title != ""){
@@ -430,23 +444,27 @@ if(des != ""){
         url: 'addnews.php',
         type: 'POST',
         data: {
+            id: id,
             title: title,
             des: des
         },
         cache: false,
+        beforeSend: function(){
+            document.getElementById("addNewsbtn").disabled = true;
+            document.getElementById("addNewsbtn").innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+        },
         success: function(dataResult){
             location.reload();
         }
     });
 }else{
-alertify.error('Des');
+alertify.error("<?php echo $enternewsdes; ?>");
 }
 }else{
-alertify.error('Title');
+alertify.error("<?php echo $enternewsname; ?>");
 }
 }
-function showmore(id) {
-$('#showNews').modal('show');
+function showmore(id, type) {
   $.ajax({
         url: "getnews.php",
         type: "POST",
@@ -455,10 +473,20 @@ $('#showNews').modal('show');
         },
         cache: false,
         success: function(dataResult){
-$('#newsdes').html(dataResult);
+            var dataResult = JSON.parse(dataResult);
+            if(type == "show"){
+                $('#showNews').modal('show');
+                $('#newsdes').html(dataResult.des);
+            }else{
+                $('#addNews').modal('show');
+                document.getElementById('uni').value = dataResult.id;
+                document.getElementById('ant').value = dataResult.name;
+                myEditor.setData(dataResult.des);
+            }
         }
   });
 }
+
 function printnews(id) {
    // Send the ID to the print.php page
   var xhr = new XMLHttpRequest();

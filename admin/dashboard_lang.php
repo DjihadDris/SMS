@@ -12,13 +12,17 @@ $titleofnews = "Le titre";
 $dateofnews = "La date";
 $detailofnews = "Les détails";
 $userofnews = "Utilisateur";
+$schoolofnews = "École";
 $save = "Enregistrer";
+$numschools = "Nombre des écoles";
 $numadmins = "Nombre d'utilisateurs";
 $numteachers = "Nombre des enseignants";
 $numstudents = "Nombre des élèves";
 $numyears = "Nombre de niveaux scolaires";
 $numdivs = "Nombre de divisions";
 $numclasses = "Nombre de classes";
+$enternewsname = "Veuillez entrer le titre de l'actualité";
+$enternewsdes = "Veuillez entrer les details de l'actualité";
 }else{
 $lang = "ar";
 $title = "لوحة التحكم - نظام إدارة المدارس";
@@ -32,12 +36,16 @@ $titleofnews = "العنوان";
 $dateofnews = "التاريخ";
 $detailofnews = "التفاصيل";
 $userofnews = "المستخدم";
+$schoolofnews = "المدرسة";
 $save = "حفظ";
+$numschools = "عدد المدارس";
 $numadmins = "عدد المستخدمين";
 $numteachers = "عدد الأساتذة";
 $numstudents = "عدد التلاميذ";
 $numyears = "عدد المستويات التعليمية";
 $numdivs = "عدد الشعب";
 $numclasses = "عدد الأقسام";
+$enternewsname = "الرجاء إدخال عنوان الخبر";
+$enternewsdes = "الرجاء إدخال تفاصيل الخبر";
 }
 ?>

@@ -104,7 +104,7 @@ textarea {
 <?php
 
 include('../db.php');
-$sql = "SELECT * FROM news";
+$sql = "SELECT * FROM news WHERE school_id='$_COOKIE[school_id]'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -147,7 +147,6 @@ let table = new DataTable('#news', {
 });
 
 function showmore(id){
-$('.tiny.modal').modal('show');
   $.ajax({
         url: "getnews.php",
         type: "POST",
@@ -156,7 +155,8 @@ $('.tiny.modal').modal('show');
         },
         cache: false,
         success: function(dataResult){
-$('#newsdes').html(dataResult);
+          $('.tiny.modal').modal('show');
+          $('#newsdes').html(dataResult);
         }
   });
 }

@@ -278,7 +278,7 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
         var dataResult = JSON.parse(dataResult);
         if(dataResult.statusCode==200) {
         alertify.success(dataResult.message);
-        setInterval(function(){location.reload();},2500);
+        setTimeout(function(){location.reload();},2500);
         } else {
         alertify.error(dataResult.message);
         }
@@ -353,7 +353,7 @@ if(password != "") {
 var dataResult = JSON.parse(dataResult);
 if(dataResult.statusCode==200) {
 alertify.success(dataResult.message);
-setInterval(function(){location.href = "dashboard";},500);
+setTimeout(function(){location.href = "dashboard";},500);
 } else {
 document.getElementById("btnSubmit").disabled = false;
 document.getElementById("btnSubmit").innerHTML = "<?php echo $login; ?>";

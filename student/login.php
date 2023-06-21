@@ -165,6 +165,7 @@ body {
 <p>School name</p>
 </div>
 
+<form id="loginForm">
 <div class="input-group mb-3">
   <span class="input-group-text"><i class="fas fa-user"></i></span>
   <input type="text" class="form-control" placeholder="<?php echo $email; ?>" id="email">
@@ -176,16 +177,12 @@ body {
 </div>
 
 <div class="d-flex justify-content-center btns-group">
-  <button type="button" class="button" onclick="login()" id="btnSubmit"><?php echo $login; ?></button>
+  <button type="submit" class="button" onclick="login()" id="btnSubmit"><?php echo $login; ?></button>
   <button type="button" class="button" onclick="register()"><?php echo $register; ?></button>
   <button type="button" class="button" onclick="reset()"><?php echo $reset; ?></button>
   <button type="button" class="button" onclick="help()"><?php echo $help; ?></button>
 </div>
-
-<!--<div class="form-floating">
-  <input type="password" class="form-control" id="floatingPassword" placeholder="Password">
-  <label for="floatingPassword">كلمة المرور</label>
-</div>-->
+</form>
 
 </div>
 </div>
@@ -319,7 +316,7 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
         var dataResult = JSON.parse(dataResult);
         if(dataResult.statusCode==200) {
         alertify.success(dataResult.message);
-        setInterval(function(){location.reload();},2500);
+        setTimeout(function(){location.reload();},2500);
         } else {
         alertify.error(dataResult.message);
         }
@@ -373,7 +370,8 @@ alertify.error(dataResult.message);
   ;
 }
 
-function login() {
+document.getElementById("loginForm").addEventListener("submit", function (event) {
+event.preventDefault();
 var email = document.getElementById('email').value;
 var password = document.getElementById('password').value;
 if(email != "") {
@@ -394,7 +392,7 @@ if(password != "") {
 var dataResult = JSON.parse(dataResult);
 if(dataResult.statusCode==200) {
 alertify.success(dataResult.message);
-setInterval(function(){location.href = "dashboard";},500);
+setTimeout(function(){location.href = "dashboard";},500);
 } else {
 document.getElementById("btnSubmit").disabled = false;
 document.getElementById("btnSubmit").innerHTML = "<?php echo $login; ?>";
@@ -408,7 +406,7 @@ alertify.error(dataResult.message);
 } else {
   alertify.error('<?php echo $id5alemail; ?>');
 }
-}
+});
 </script>
 
 </body>

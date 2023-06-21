@@ -208,7 +208,6 @@ var select2 = $('#trimFilter');
 });
 
 function showmore(id){
-$('.tiny.modal').modal('show');
   $.ajax({
         url: "getlesson.php",
         type: "POST",
@@ -217,7 +216,8 @@ $('.tiny.modal').modal('show');
         },
         cache: false,
         success: function(dataResult){
-$('#lessondes').html(dataResult);
+          $('.tiny.modal').modal('show');
+          $('#lessondes').html(dataResult);
         }
   });
 }
