@@ -127,8 +127,11 @@ if ($result->num_rows > 0) {
       </div>
       <div class="field">
       <label><?php echo $gender; ?></label>
+<select readonly="" class="ui search dropdown" name="gender">
+
+</select>
 <input type="text" placeholder="<?php echo $gender; ?>" required="" value="<?php if("$row[gender]" == 0){echo $gender0;}else if("$row[gender]" == 1){echo $gender1;} ?>" readonly="">
-<input type="hidden" name="gender" value="<?php echo "$row[gender]"; ?>">      
+<!--<input type="hidden" name="gender" value="<?php echo "$row[gender]"; ?>">-->
 </div>
     </div>
 </div>
@@ -161,7 +164,18 @@ if ($result->num_rows > 0) {
 
       <div class="field">
       <label><?php echo $class; ?></label>
-<input type="text" placeholder="<?php echo $class; ?>" required="" value="<?php include('../db.php'); $class_id=$_COOKIE['class_id']; $sqls = "SELECT * FROM classes WHERE school_id='$_COOKIE[school_id]' AND id IN ($class_id)"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {
+<select readonly="" class="ui search dropdown" multiple>
+<?php include('../db.php'); $class_id=$_COOKIE['class_id']; $sqls = "SELECT * FROM classes WHERE school_id='$_COOKIE[school_id]' AND id IN ($class_id)"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {
+  $sqlt = "SELECT * FROM years WHERE id='$rows[year_id]'"; $resultt = $conn->query($sqlt); if ($resultt->num_rows > 0) {while($rowt = $resultt->fetch_assoc()) {
+  echo "<option selected>$rowt[name] ";
+  if("$rows[div_id]" != ""){
+    $sqlf = "SELECT * FROM divs WHERE id='$rows[div_id]'"; $resultf = $conn->query($sqlf); if ($resultf->num_rows > 0) {while($rowf = $resultf->fetch_assoc()) {
+echo "$rowf[name] ";
+    }}
+  }
+  echo "$rows[name]</option>";}}}}else{echo "No class found..";} $conn->close(); ?>
+</select>
+<!--<input type="text" placeholder="<?php echo $class; ?>" required="" value="<?php include('../db.php'); $class_id=$_COOKIE['class_id']; $sqls = "SELECT * FROM classes WHERE school_id='$_COOKIE[school_id]' AND id IN ($class_id)"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {
   $sqlt = "SELECT * FROM years WHERE id='$rows[year_id]'"; $resultt = $conn->query($sqlt); if ($resultt->num_rows > 0) {while($rowt = $resultt->fetch_assoc()) {
   echo " - $rowt[name] ";
   if("$rows[div_id]" != ""){
@@ -169,7 +183,7 @@ if ($result->num_rows > 0) {
 echo "$rowf[name] ";
     }}
   }
-  echo "$rows[name]";}}}}else{echo "No class found..";} $conn->close(); ?>" readonly="">
+  echo "$rows[name]";}}}}else{echo "No class found..";} $conn->close(); ?>" readonly="">-->
 <input type="hidden" name="class" value="<?php echo "$row[class_id]" ?>">         
 </div>
     </div>
@@ -217,6 +231,11 @@ echo "$rowf[name] ";
           </div>
         </div>
 
+<script>
+$('.ui.dropdown')
+  .dropdown({clearable: false})
+;
+</script>
 
 </body>
 
