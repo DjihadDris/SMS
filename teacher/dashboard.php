@@ -42,7 +42,7 @@ alertify.defaults.glossary.cancel = "<?php echo $cancel_button; ?>";
 
 <style>
 body {
-  font-family: 'Readex Pro', sans-serif;
+  font-family: 'Readex Pro', sans-serif !important;
   padding: 10px;
 }
 a {
@@ -70,7 +70,7 @@ textarea {
 
 <?php include('sidebar.php'); ?>
 
-<div class="ui tiny modal">
+<div class="ui small modal">
   <i class="close icon"></i>
   <div class="header">
   <?php echo $newsdetail; ?>
@@ -155,7 +155,7 @@ function showmore(id){
         },
         cache: false,
         success: function(dataResult){
-          $('.tiny.modal').modal('show');
+          $('.small.modal').modal('show');
           $('#newsdes').html(dataResult);
         }
   });

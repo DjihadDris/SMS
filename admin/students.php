@@ -87,6 +87,12 @@ include('students_lang.php');
             padding: 13px 5px !important;
         }
         <?php } ?>
+        .barcode {
+            position: relative !important;
+            width: 30mm !important;
+            height: 12.25mm !important;
+            top: -28mm !important;
+        }
     </style>
   </head>
   <body>
@@ -239,6 +245,7 @@ $conn->close();
                                         <th><?php echo $class; ?></th>
                                         <th><?php echo $val; ?></th>
                                         <th></th>
+                                        <th></th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -270,9 +277,10 @@ if ($result->num_rows > 0) {
 <?php include('../db.php'); $sqls = "SELECT * FROM divs WHERE id='$row[div_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "<td class='align-middle'>$rows[name]</td>";}}else if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "<td></td>";} $conn->close();?>
 <td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM classes WHERE id='$row[class_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}} ?></td>
 <td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}else{echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
+<td class="align-middle"><?php echo "$row[code]"; ?></td>
 <td class="align-middle text-center">
     <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-id-card"></i></button>
-    <button class="btn btn-success" onclick="printcard(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
+    <button class="btn btn-success" onclick="printcertif(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
     <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
     <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php echo "$row[val]"; ?>)"><i class="fas fa-<?php if("$row[val]" == 0){echo "close";}else{echo "check";} ?>"></i></button>
     <button class="btn btn-danger" onclick="delstudent(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
@@ -353,12 +361,11 @@ $conn->close();
                                     <select class="form-control" id="asclass">
                                         <option value=""><?php echo $class; ?></option>
                                     </select>
-                                    <label><?php echo $pw; ?> <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="aspassword">
-                                    <br>
-                                    <button class="btn btn-outline-success" style="width: 100% !important;" id="addstudentbtn" onclick="addstudent()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
+                                    <label><?php echo $pw; ?> <span style="color: red;">*</span> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
+                                    <input type="text" class="form-control" id="aspassword" placeholder="<?php echo $chars8; ?>">
                                 </div>
                                 <div class="modal-footer">
+                                <button class="btn btn-outline-success" id="addstudentbtn" onclick="addstudent()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
                                 </div>
                             </div>
@@ -371,13 +378,37 @@ $conn->close();
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $newsdetail; ?></h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $printcard; ?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
-                                <div class="modal-body" id="newsdes"></div>
+                                <div class="modal-body" id="printable" style="text-align: center;">
+    <center>
+    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: dashed;">
+      <img src="../wizara.png" width="100%" style="position: relative; padding: 5px 25px 15px 25px;">
+      <h6 style="margin-top: -5px !important;"><?php echo $schoolcard; ?></h6>
+      <div id="margindetails" style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>; margin-<?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 10px; margin-top: 7.5px; font-size: 10px;">
+        <span><?php echo $fn." ".$and." ".$name ?>:</span> <span id="printnamefn"></span>
+        <br>
+        <span><?php echo $dob; ?>:</span> <span id="printdob"></span>
+        <br>
+        <span><?php echo $gender; ?>:</span> <span id="printgender"></span>
+        <br>
+        <span><?php echo $class; ?>:</span> <span id="printclass"></span>
+        <br>
+        <span><?php echo $school; ?>:</span> <span id="printschool"></span>
+        </div>
+        <div id="marginphoto" style="border: none; text-align: center; width: 80px; height: 80px; position: relative; top: -21mm; <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 25mm;">
+          <img id="printimg" width="100%" height="100%">
+        </div>
+        <br>
+        <svg class="barcode" id="printcode"></svg>
+    </div>
+  </center>
+</div>
                                 <div class="modal-footer">
+                                <button class="btn btn-outline-success" onclick="printcard()"><i class="fas fa-print"></i> <?php echo $print; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
                                 </div>
                             </div>
@@ -433,19 +464,34 @@ $conn->close();
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/dataTables.buttons.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.html5.min.js"></script>
     <script src="https://cdn.datatables.net/buttons/1.7.1/js/buttons.print.min.js"></script>
-
     <!--Ckeditor-->
     <script src="https://cdn.ckeditor.com/4.16.2/full/ckeditor.js"></script>
     <script src="assets/js/ckeditor5/build-classic/ckeditor.js"></script>
     <script src="assets/js/ckeditor5/build-classic/translations/<?php if($lang == "ar"){echo 'ar';}else{echo 'fr';} ?>.js"></script>
     <!--Axios-->
     <!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
+    <!--JsBarcode-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
     <!--Custom Js Script-->
     <script src="assets/js/custom.js"></script>
     <!--Custom Js Script-->
 <script>
 $(document).ready(function() {
 let table = $('#students').DataTable({
+    columnDefs: [
+        {
+            <?php
+            if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+            ?>
+            targets: 12,
+            <?php
+            }else{ 
+            include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){echo "targets: 11,";}else{echo "targets: 10,";}}} $conn->close();
+            }
+            ?>
+            visible: false
+        }
+    ],
     ordering: true,
     searching: true,
     paging: true,
@@ -462,27 +508,62 @@ let table = $('#students').DataTable({
       {
         extend: 'copy',
         text: '<i class="fas fa-copy"></i> <?php echo $copy; ?>',
-        className: 'btn btn-danger'
+        className: 'btn btn-danger'/*,
+        customize: function(win) {
+            var lastColumnIndex = $(win.document.body).find('table thead th').length - 1;
+            $(win.document.body).find('table thead th:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+            $(win.document.body).find('table tbody tr').each(function() {
+            $(this).find('td:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+        });
+        }*/
       },
       {
         extend: 'csv',
         text: '<i class="fas fa-file-csv"></i> <?php echo $exportcsv; ?>',
-        className: 'btn btn-success'
+        className: 'btn btn-success'/*,
+        customize: function(win) {
+            var lastColumnIndex = $(win.document.body).find('table thead th').length - 1;
+            $(win.document.body).find('table thead th:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+            $(win.document.body).find('table tbody tr').each(function() {
+            $(this).find('td:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+        });
+        }*/
       },
       {
         extend: 'excel',
         text: '<i class="fas fa-file-excel"></i> <?php echo $exportexcel; ?>',
-        className: 'btn btn-theme'
+        className: 'btn btn-theme'/*,
+        customize: function(win) {
+            var lastColumnIndex = $(win.document.body).find('table thead th').length - 1;
+            $(win.document.body).find('table thead th:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+            $(win.document.body).find('table tbody tr').each(function() {
+            $(this).find('td:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+        });
+        }*/
       },
       {
         extend: 'pdf',
         text: '<i class="fas fa-file-pdf"></i> <?php echo $exportpdf; ?>',
-        className: 'btn btn-warning'
+        className: 'btn btn-warning'/*,
+        customize: function(win) {
+            var lastColumnIndex = $(win.document.body).find('table thead th').length - 1;
+            $(win.document.body).find('table thead th:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+            $(win.document.body).find('table tbody tr').each(function() {
+            $(this).find('td:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+        });
+        }*/
       },
       {
         extend: 'print',
         text: '<i class="fas fa-print"></i> <?php echo $print; ?>',
-        className: 'btn btn-info'
+        className: 'btn btn-info',
+        customize: function(win) {
+            var lastColumnIndex = $(win.document.body).find('table thead th').length - 1;
+            $(win.document.body).find('table thead th:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+            $(win.document.body).find('table tbody tr').each(function() {
+            $(this).find('td:nth-child(' + (lastColumnIndex + 1) + ')').hide();
+        });
+        }
       }
     ],
     initComplete: function(settings, json) {
@@ -564,6 +645,13 @@ ClassicEditor.create( document.querySelector( '#and' ), {
 }).catch( error => {
     console.error( error );
 });
+function printcard() {
+var printContents = document.getElementById('printable').innerHTML;
+var originalContents = document.body.innerHTML;
+document.body.innerHTML = printContents;
+window.print();
+document.body.innerHTML = originalContents;
+}
 function addstudent() {
 var id = document.getElementById('asid').value;
 var name = document.getElementById('asname').value;
@@ -691,25 +779,23 @@ function val(id, val){
         }
   });
 }
-function printcard(id) {
-   // Send the ID to the print.php page
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'printnews.php', true);
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhr.responseType = 'blob'; // Set the response type to blob
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // Create a new window and display the PDF
-      var blob = new Blob([xhr.response], { type: 'application/pdf' });
-      var url = URL.createObjectURL(blob);
-      var newWindow = window.open(url, '_blank');
-      // Print the PDF
-      newWindow.onload = function() {
-        newWindow.print();
-      };
-    }
-  };
-  xhr.send('id=' + id);
+function printcertif(id) {
+$.ajax({
+    url: 'printcertif.php',
+    type: 'POST',
+    data: {
+        id: id,
+        type: 'students'
+    },
+    cache: false,
+    success: function(response) {
+        var printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write('<html dir="<?php if($lang == "ar"){echo "rtl";}else{echo "ltr";} ?>"><head><title><?php echo $print; ?></title><link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet"><style>body {font-family: Noto Kufi Arabic;}</style></head><body>' + response + '</body></html>');
+        printWindow.document.close();
+        setTimeout(function(){printWindow.print();}, 500);
+}
+});
 }
 function showmore(id, type) {
   $.ajax({
@@ -723,8 +809,21 @@ function showmore(id, type) {
             var dataResult = JSON.parse(dataResult);
             if(type == "show"){
                 $('#showStudent').modal('show');
+                if(dataResult.gender == 0){
+                    $('#printimg').attr('src', '../man.png');
+                }else{
+                    $('#printimg').attr('src', '../woman.png');
+                }
+                $('#printnamefn').html(dataResult.fn+" "+dataResult.name);
+                $('#printdob').html(dataResult.dob);
+                $('#printgender').html(dataResult.printgender);
+                $('#printclass').html(dataResult.printclass);
+                $('#printschool').html(dataResult.printschool);
+                var printcode =  dataResult.code;
+                JsBarcode("#printcode", printcode);
             }else{
                 $('#addStudent').modal('show');
+                document.getElementById('leavepass').style.display = "";
                 $('#asid').val(dataResult.id);
                 $('#asname').val(dataResult.name);
                 $('#asfn').val(dataResult.fn);

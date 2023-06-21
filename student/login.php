@@ -177,7 +177,7 @@ body {
 </div>
 
 <div class="d-flex justify-content-center btns-group">
-  <button type="submit" class="button" onclick="login()" id="btnSubmit"><?php echo $login; ?></button>
+  <button type="submit" class="button" id="btnSubmit"><?php echo $login; ?></button>
   <button type="button" class="button" onclick="register()"><?php echo $register; ?></button>
   <button type="button" class="button" onclick="resetpass()"><?php echo $reset; ?></button>
   <button type="button" class="button" onclick="help()"><?php echo $help; ?></button>

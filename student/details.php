@@ -127,8 +127,12 @@ if ($result->num_rows > 0) {
       </div>
       <div class="field">
       <label><?php echo $gender; ?></label>
-<input type="text" placeholder="<?php echo $gender; ?>" required="" value="<?php if("$row[gender]" == 0){echo $gender0;}else if("$row[gender]" == 1){echo $gender1;} ?>" readonly="">
-<input type="hidden" name="gender" value="<?php echo "$row[gender]"; ?>">      
+<select readonly="" class="ui search dropdown" name="gender">
+<option value="0" <?php if("$row[gender]" == 0){echo "selected";}else{echo "disabled";} ?>><?php echo $gender0; ?></option>
+<option value="1" <?php if("$row[gender]" == 1){echo "selected";}else{echo "disabled";} ?>><?php echo $gender1; ?></option>
+</select>
+<!--<input type="text" placeholder="<?php echo $gender; ?>" required="" value="<?php if("$row[gender]" == 0){echo $gender0;}else if("$row[gender]" == 1){echo $gender1;} ?>" readonly="">
+<input type="hidden" name="gender" value="<?php echo "$row[gender]"; ?>">-->
 </div>
     </div>
 </div>
@@ -219,6 +223,11 @@ if ($result->num_rows > 0) {
           </div>
         </div>
 
+<script>
+$('.ui.search.dropdown')
+.dropdown({clearable: false})
+;
+</script>
 
 </body>
 

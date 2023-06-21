@@ -30,6 +30,11 @@ $copy = "Copier";
 $val = "Statut du compte";
 $val0 = "Activé";
 $val1 = "Désactivé";
+$chars8 = "Il doit s'agir de 8 lettres / symboles / nombres ou plus";
+$leavepass = "Laissez-le vide si vous ne voulez pas modifier le mot de passe";
+$printcard = "Imprimer la carte scolaire";
+$schoolcard = "Carte scolaire";
+$and = "et";
 }else{
 $lang = "ar";
 $title = "تسيير التلاميذ - نظام إدارة المدارس";
@@ -61,5 +66,10 @@ $copy = "نسخ";
 $val = "حالة الحساب";
 $val0 = "مفعل";
 $val1 = "غير مفعل";
+$chars8 = "يجب أن يكون 8 حروف / رموز / أرقام أو أكثر";
+$leavepass = "اتركها فارغة إذا كنت لا تريد تغيير كلمة المرور";
+$printcard = "طباعة البطاقة المدرسية";
+$schoolcard = "البطاقة المدرسية";
+$and = "و";
 }
 ?>

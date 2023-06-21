@@ -309,7 +309,7 @@ $conn->close();
 
                     <!--News Add Modal-->
                     <div class="modal fade" id="addNews" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $newsadd; ?></h5>
@@ -336,7 +336,7 @@ $conn->close();
 
                     <!--News Show Modal-->
                     <div class="modal fade" id="showNews" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
                                     <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $newsdetail; ?></h5>
@@ -488,24 +488,21 @@ function showmore(id, type) {
 }
 
 function printnews(id) {
-   // Send the ID to the print.php page
-  var xhr = new XMLHttpRequest();
-  xhr.open('POST', 'printnews.php', true);
-  xhr.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
-  xhr.responseType = 'blob'; // Set the response type to blob
-  xhr.onreadystatechange = function() {
-    if (xhr.readyState === 4 && xhr.status === 200) {
-      // Create a new window and display the PDF
-      var blob = new Blob([xhr.response], { type: 'application/pdf' });
-      var url = URL.createObjectURL(blob);
-      var newWindow = window.open(url, '_blank');
-      // Print the PDF
-      newWindow.onload = function() {
-        newWindow.print();
-      };
+$.ajax({
+    url: 'printnews.php',
+    type: 'POST',
+    data: {
+        id: id
+    },
+    cache: false,
+    success: function(response) {
+        var printWindow = window.open('', '_blank');
+        printWindow.document.open();
+        printWindow.document.write('<html dir="<?php if($lang == "ar"){echo "rtl";}else{echo "ltr";} ?>"><head><title><?php echo $print; ?></title><link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet"><style>body {font-family: Noto Kufi Arabic;}</style></head><body>' + response + '</body></html>');
+        printWindow.document.close();
+        setTimeout(function(){printWindow.print();}, 500);
     }
-  };
-  xhr.send('id=' + id);
+});
 }
 function delnews(id) {
     $.ajax({
