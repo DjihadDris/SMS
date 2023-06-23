@@ -129,7 +129,7 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
                                     <i class="fas fa-map-marked-alt"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT DISTINCT wilaya FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-muted"><?php echo $numwilayas; ?></small></p>
                                     </div>
                                 </div>
@@ -150,7 +150,7 @@ if($_COOKIE['user_type'] == "superadmins"){
                                     <i class="fas fa-users"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM admins";}else{$query = "SELECT name FROM admins WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){$query = "SELECT name FROM admins UNION SELECT name from superadmins WHERE id<>'$_COOKIE[id]'";}else{$query = "SELECT name FROM admins WHERE school_id='$_COOKIE[school_id]'";} $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="text-muted bc-description"><?php echo $numadmins; ?></small></p>
                                     </div>
                                 </div>
@@ -198,7 +198,7 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
                                     <i class="fas fa-school text-info"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT DISTINCT wilaya FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
                                         <p><small class="bc-description text-white"><?php echo $numschools; ?></small></p>
                                     </div>
                                 </div>
