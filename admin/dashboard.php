@@ -123,18 +123,19 @@ include('dashboard_lang.php');
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 ?>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
-                            <div class="bg-info border shadow">
+                            <div class="bg-white border shadow">
                                 <div class="media p-4">
-                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
-                                    <i class="fas fa-school text-info"></i>
+                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-info" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
+                                    <i class="fas fa-map-marked-alt"></i>
                                     </div>
                                     <div class="media-body pl-2">
-                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT name FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
-                                        <p><small class="bc-description text-white"><?php echo $numschools; ?></small></p>
+                                        <h3 class="mt-0 mb-0"><strong><?php include('../db.php'); $query = "SELECT name FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <p><small class="bc-description text-muted"><?php echo $numwilayas; ?></small></p>
                                     </div>
                                 </div>
                             </div>
                         </div>
+
 <?php
 }
 ?>
@@ -186,7 +187,27 @@ if($_COOKIE['user_type'] == "superadmins"){
                                 </div>
                             </div>
                         </div>
+<?php
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+?>
 
+                        <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
+                            <div class="bg-info border shadow">
+                                <div class="media p-4">
+                                    <div class="align-self-center mr-3 rounded-circle notify-icon bg-white" style="<?php if($lang == "ar"){echo "margin-left: 10px;";} ?>">
+                                    <i class="fas fa-school text-info"></i>
+                                    </div>
+                                    <div class="media-body pl-2">
+                                        <h3 class="mt-0 mb-0 text-white"><strong><?php include('../db.php'); $query = "SELECT DISTINCT wilaya FROM schools"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></strong></h3>
+                                        <p><small class="bc-description text-white"><?php echo $numschools; ?></small></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+<?php
+}
+?>
                         <div class="col-lg-4 col-md-4 col-sm-6 col-12 mb-3">
                             <div class="bg-theme border shadow">
                                 <div class="media p-4">
@@ -500,7 +521,7 @@ $.ajax({
         printWindow.document.open();
         printWindow.document.write('<html dir="<?php if($lang == "ar"){echo "rtl";}else{echo "ltr";} ?>"><head><title><?php echo $print; ?></title><link href="https://fonts.googleapis.com/css2?family=Noto+Kufi+Arabic&display=swap" rel="stylesheet"><style>body {font-family: Noto Kufi Arabic;}</style></head><body>' + response + '</body></html>');
         printWindow.document.close();
-        setTimeout(function(){printWindow.print();}, 500);
+        setTimeout(function(){printWindow.print(); printWindow.close();}, 500);
     }
 });
 }

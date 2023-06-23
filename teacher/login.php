@@ -189,16 +189,17 @@ body {
 
 <script>
 function getmaterials() {
+  document.getElementById('drmaterial_id').style.display = "none";
+  document.getElementById('rmaterial_id').value = "";
+  document.getElementById('drclass_id').style.display = "none";
+  document.getElementById('rclass_id').value = "";
   var school_id = document.getElementById('rschool_id').value;
-  var selectElement = document.querySelector('#rclass_id');
-  var selectedOptions = Array.from(selectElement.selectedOptions).map(option => option.value);
-  if(school_id != "" && selectedOptions != "") {
+  if(school_id != "") {
   $.ajax({
         url: "getmaterials.php",
         type: "POST",
         data: {
-            school_id: school_id,
-            class_id: selectedOptions
+            school_id: school_id
         },
         cache: false,
         success: function(dataResult){
@@ -207,6 +208,8 @@ function getmaterials() {
         }
   });
   } else {
+    document.getElementById('drmaterial_id').style.display = "none";
+    document.getElementById('rmaterial_id').value = "";
     document.getElementById('drclass_id').style.display = "none";
     document.getElementById('rclass_id').value = "";
   }
@@ -215,15 +218,17 @@ function getmaterials() {
 function getclasses() {
   document.getElementById('drclass_id').style.display = "none";
   document.getElementById('rclass_id').value = "";
-  document.getElementById('drmaterial_id').style.display = "none";
-  document.getElementById('rmaterial_id').value = "";
   var school_id = document.getElementById('rschool_id').value;
-  if(school_id != "") {
+  var selectElement = document.querySelector('#rmaterial_id');
+  var selectedOption = selectElement.options[selectElement.selectedIndex];
+  var material_id = selectedOption.dataset.value;
+  if(school_id != "" && material_id != "") {
   $.ajax({
         url: "getclasses.php",
         type: "POST",
         data: {
-            school_id: school_id
+            school_id: school_id,
+            material_id: material_id
         },
         cache: false,
         success: function(dataResult){
@@ -234,8 +239,6 @@ function getclasses() {
   } else {
     document.getElementById('drclass_id').style.display = "none";
     document.getElementById('rclass_id').value = "";
-    document.getElementById('drmaterial_id').style.display = "none";
-    document.getElementById('rmaterial_id').value = "";
   }
 }
 

@@ -77,4 +77,4 @@ $conn->close();
   <input type="password" class="form-control" placeholder="<?php echo $passwordtext; ?>" id="rpassword" minlength="8" maxlength="16">
 </div>
 
-<center><button type="button" class="button" onclick="createaccount()"><?php echo $btn; ?></button></center>
+<center><button type="button" class="button" onclick="createaccount()" style="width: 100%;"><?php echo $btn; ?></button></center>

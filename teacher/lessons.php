@@ -108,16 +108,6 @@ textarea {
 <div class="field" id="previewImgs" style="display: none;"><div class="ui two cards" id="cardsImgs"></div></div>
 
 <div class="field">
-<label><?php echo $lessontrim; ?> <span style="color: red;">*</span></label>
-<select class="ui search dropdown" id="trimlesson">
-<option value="">--<?php echo $choose; ?>--</option>
-<option value="1"><?php echo $trim1; ?></option>
-<option value="2"><?php echo $trim2; ?></option>
-<option value="3"><?php echo $trim3; ?></option>
-</select>
-</div>
-
-<div class="field">
 <label><?php echo $lessonclass; ?> <span style="color: red;">*</span></label>
 <select class="ui search dropdown" id="classlesson">
 <option value="">--<?php echo $choose; ?>--</option>
@@ -148,6 +138,16 @@ if ($result->num_rows > 0) {
   }}
 $conn->close();
 ?>
+</select>
+</div>
+
+<div class="field">
+<label><?php echo $lessontrim; ?> <span style="color: red;">*</span></label>
+<select class="ui search dropdown" id="trimlesson">
+<option value="">--<?php echo $choose; ?>--</option>
+<option value="1"><?php echo $trim1; ?></option>
+<option value="2"><?php echo $trim2; ?></option>
+<option value="3"><?php echo $trim3; ?></option>
 </select>
 </div>
 

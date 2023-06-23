@@ -22,6 +22,7 @@ $numstudents = "Nombre des élèves";
 $numyears = "Nombre de niveaux scolaires";
 $numdivs = "Nombre de divisions";
 $numclasses = "Nombre de classes";
+$numwilayas = "Nombre de Wilayas";
 $enternewsname = "Veuillez entrer le titre de l'actualité";
 $enternewsdes = "Veuillez entrer les details de l'actualité";
 }else{
@@ -47,6 +48,7 @@ $numstudents = "عدد التلاميذ";
 $numyears = "عدد المستويات التعليمية";
 $numdivs = "عدد الشعب";
 $numclasses = "عدد الأقسام";
+$numwilayas = "عدد الولايات";
 $enternewsname = "الرجاء إدخال عنوان الخبر";
 $enternewsdes = "الرجاء إدخال تفاصيل الخبر";
 }
