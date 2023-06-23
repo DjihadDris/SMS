@@ -47,7 +47,7 @@ if ($resultt->num_rows > 0) {
     $dob = $row['dob'];
     $code = $row['code'];
     $school_name = $rows['name'];
-    $address = $rows['address'];
+    $school_address = $rows['address'];
     if($lang == "ar"){
     $wilayaf = $rowt['arname'];
     }else{
@@ -80,8 +80,8 @@ if ($resultt->num_rows > 0) {
 <h5><?php echo $wilaya; ?></h5>
 <h5><?php echo $schoolyeartxt; ?>: <?php echo $schoolyear; ?></h5>
 </div>
-<h5 style="margin-top: -20px;"><?php echo $school_name; ?></h5>
-<h5 style="margin-top: -20px;"><?php echo $certifnum; ?>: <span contenteditable="true">..........</span> / <?php echo date('Y'); ?></h5>
+<h5 style="margin-top: -20px;"><?php echo $school_name; ?> -<?php echo $school_address ?>-</h5>
+<h5 style="margin-top: -20px;"><?php echo $certifnum; ?>: <span contenteditable="true">...............</span> / <?php echo date('Y'); ?></h5>
 <center>
 <h2 style="background: linear-gradient(#000, #fff); width: 175px;"><?php echo $certif; ?></h2>
 </center>
@@ -102,14 +102,14 @@ if ($resultt->num_rows > 0) {
 </h5>
 <center><h3 contenteditable="true"><?php echo $today; ?></h3></center>
 <h5 style="float: <?php if($lang == "ar"){echo "left";}else{echo "right";} ?>; margin-top: -15px;">
-<span><?php echo $horira; ?><?php echo $address; ?> <?php echo $in; ?>: <?php echo date('Y-m-d'); ?><span>
+<span><?php echo $horira; ?><?php echo $school_address; ?> <?php echo $in; ?>: <?php echo date('Y-m-d'); ?><span>
 <br>
 <span style="margin-<?php if($lang == "ar"){echo "left";}else{echo "right";} ?>: 25px;"><?php echo $sign; ?></span>
 </h5>
 <?php
   }}}}}}
 }else{
-  
+
 }
 $conn->close();
 ?>
