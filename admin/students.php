@@ -88,14 +88,24 @@ include('students_lang.php');
         }
         <?php } ?>
         .barcode {
-            position: relative !important;
+            /*position: relative !important;*/
             width: 30mm !important;
             height: 12.25mm !important;
-            top: -28mm !important;
+            /*top: -21.5mm !important;*/
+            margin-top: -35.5mm !important;
         }
     </style>
   </head>
   <body>
+<?php
+if(isset($_GET['false'])){
+    if($_GET['false']=="format"){
+        echo "<script>alertify.alert('Only xlsx and xls are supported')</script>";
+    }elseif($_GET['false']=="error"){
+        echo "<script>alertify.alert('Error..')</script>";
+    }
+}
+?>
     <!--Page loader-->
     <div class="loader-wrapper">
         <div class="loader-circle">
@@ -131,6 +141,9 @@ include('students_lang.php');
                             <div class="col-sm-4 text-right pb-3">
                                 <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addStudent" onclick="getyears('asschool', 'asyear')">
                                     <i class="fas fa-plus"></i> <?php echo $addstudent; ?>
+                                </button>
+                                <button class="btn btn-outline-success shadow" data-toggle="modal" data-target="#addExcel">
+                                    <i class="fas fa-file-excel"></i> <?php echo $importexcel; ?>
                                 </button>
                             </div>
                         </div>
@@ -239,7 +252,7 @@ $conn->close();
                                         <th><?php echo $school; ?></th>
                                         <?php } ?>
                                         <th><?php echo $year; ?></th>
-<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" == 3){ ?>
+<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sqlo = "SELECT * FROM schools WHERE id='$school_id'"; $resulto = $conn->query($sqlo); if ($resulto->num_rows > 0) {while($rowo = $resulto->fetch_assoc()) { if("$rowo[tawr]" == 3){ ?>
                                         <th><?php echo $div; ?></th>
 <?php }}} $conn->close(); ?>
                                         <th><?php echo $class; ?></th>
@@ -267,22 +280,24 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php echo "$row[fn]"; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
 <td class="align-middle"><?php echo "$row[dob]"; ?></td>
-<td class="align-middle"><?php if("$row[gender]" == 0){echo $gender0;}else{echo $gender1;}; ?></td>
+<td class="align-middle"><?php if("$row[gender]" == 0){echo $gender0;}elseif("$row[gender]" == 1){echo $gender1;}; ?></td>
 <td class="align-middle"><?php echo "$row[email]"; ?></td>
 <td class="align-middle"><?php echo "$row[pn]"; ?></td>
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close();?></td>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close(); ?></td>
 <?php } ?>
-<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM years WHERE id='$row[year_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No year found..";} $conn->close();?></td>
-<?php include('../db.php'); $sqls = "SELECT * FROM divs WHERE id='$row[div_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "<td class='align-middle'>$rows[name]</td>";}}else if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "<td></td>";} $conn->close();?>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM years WHERE id='$row[year_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No year found..";} $conn->close(); ?></td>
+<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sqlo = "SELECT * FROM schools WHERE id='$school_id'"; $resulto = $conn->query($sqlo); if ($resulto->num_rows > 0) {while($rowo = $resulto->fetch_assoc()) { if("$rowo[tawr]" == 3){ ?>
+<td class="align-middle"><?php $sqls = "SELECT * FROM divs WHERE id='$row[div_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}} ?></td>
+<?php }}} $conn->close(); ?>
 <td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM classes WHERE id='$row[class_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}} ?></td>
-<td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}else{echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
+<td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}elseif("$row[val]" == 1){echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
 <td class="align-middle"><?php echo "$row[code]"; ?></td>
 <td class="align-middle text-center">
     <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-id-card"></i></button>
     <button class="btn btn-success" onclick="printcertif(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
     <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
-    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php echo "$row[val]"; ?>)"><i class="fas fa-<?php if("$row[val]" == 0){echo "close";}else{echo "check";} ?>"></i></button>
+    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php if("$row[val]" == 0){echo 0;}elseif("$row[val]" == 1){echo 1;} ?>)"><i class="fas fa-<?php if("$row[val]" == 1){echo "check";}else{echo "close";} ?>"></i></button>
     <button class="btn btn-danger" onclick="delstudent(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
 </td>
 </tr>
@@ -385,7 +400,7 @@ $conn->close();
                                 </div>
                                 <div class="modal-body" id="printable" style="text-align: center;">
     <center>
-    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid;">
+    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid; margin-bottom: 20px;/* bottom: 68px; margin-top: 68px; position: relative;*/">
       <img src="../wizara.png" width="100%" style="position: relative; padding: 5px 25px 15px 25px;">
       <h6 style="margin-top: -5px !important;"><?php echo $schoolcard; ?></h6>
       <div id="margindetails" style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>; margin-<?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 10px; margin-top: 7.5px; font-size: 10px;">
@@ -402,11 +417,10 @@ $conn->close();
         <div id="marginphoto" style="border: none; text-align: center; width: 80px; height: 80px; position: relative; top: -21mm; <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 25mm;">
           <img id="printimg" width="100%" height="100%">
         </div>
-        <br>
         <svg class="barcode" id="printcode"></svg>
     </div>
   </center>
-</div>
+                                </div>
                                 <div class="modal-footer">
                                 <button class="btn btn-outline-success" onclick="printcard()"><i class="fas fa-print"></i> <?php echo $print; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
@@ -415,6 +429,37 @@ $conn->close();
                         </div>
                     </div>
                     <!--Student Show Modal-->
+
+                    <!--Excel Add Modal-->
+                    <div class="modal fade" id="addExcel" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $importexcel; ?></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="text-align: center;">
+                                <form action="uploadstudents.php" method="post" enctype="multipart/form-data">
+                                    <!--<input type="file" name="excel_file" />
+                                    <input type="submit" value="Upload" />-->
+                                  <div class="input-group mb-3">
+                                    <input type="file" class="form-control" name="excel_file">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
+                                    </div>
+                                  </div>
+                                </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Excel Add Modal-->
+
                 </div>
 
                 <!--Footer-->
@@ -617,6 +662,7 @@ var originalContents = document.body.innerHTML;
 document.body.innerHTML = printContents;
 window.print();
 document.body.innerHTML = originalContents;
+location.reload();
 }
 function addstudent() {
 var id = document.getElementById('asid').value;

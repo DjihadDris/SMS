@@ -6,6 +6,8 @@ $val = $_POST['val'];
 $type = $_POST['type'];
 if($val == 0){
 $to = 1;
+}elseif($val == 1){
+$to = 0;
 }else{
 $to = 0;
 }

@@ -16,7 +16,7 @@ if ($result->num_rows > 0) {
 <?php
   while($row = $result->fetch_assoc()) {
 ?>
-<option value="<?php echo "$row[id]"; ?>" data-value="<?php echo "$row[class_id]"; ?>"><?php echo "$row[name] "; ?></option>
+<option value="<?php echo "$row[id]"; ?>" data-value="<?php echo "$row[class_id]"; ?>"><?php echo "$row[name]"; ?></option>
 <?php
   }}
 $conn->close();

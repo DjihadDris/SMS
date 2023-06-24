@@ -88,14 +88,24 @@ include('teachers_lang.php');
         }
         <?php } ?>
         .barcode {
-            position: relative !important;
+            /*position: relative !important;*/
             width: 30mm !important;
             height: 12.25mm !important;
-            top: -28mm !important;
+            /*top: -21.5mm !important;*/
+            margin-top: -35.5mm !important;
         }
     </style>
   </head>
   <body>
+<?php
+if(isset($_GET['false'])){
+    if($_GET['false']=="format"){
+        echo "<script>alertify.alert('Only xlsx and xls are supported')</script>";
+    }elseif($_GET['false']=="error"){
+        echo "<script>alertify.alert('Error..')</script>";
+    }
+}
+?>
     <!--Page loader-->
     <div class="loader-wrapper">
         <div class="loader-circle">
@@ -132,12 +142,15 @@ include('teachers_lang.php');
                                 <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addTeacher" onclick="getmaterials('atschool', 'atmaterial')">
                                     <i class="fas fa-plus"></i> <?php echo $addteacher; ?>
                                 </button>
+                                <button class="btn btn-outline-success shadow" data-toggle="modal" data-target="#addExcel">
+                                    <i class="fas fa-file-excel"></i> <?php echo $importexcel; ?>
+                                </button>
                             </div>
                         </div>
 
 <div class="form-group row">
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-<div class="col-sm-6">
+<div class="col-sm-4">
 <select class="form-control" id="sschool_id" onchange="getmaterials('sschool_id', 'smaterial_id')">
     <option value=""><?php echo $school; ?></option>
 <?php
@@ -152,15 +165,20 @@ $conn->close();
 ?>
 </select>
 </div>
-<div class="col-sm-6">
-<select class="form-control" id="smaterial_id">
+<div class="col-sm-4">
+<select class="form-control" id="smaterial_id" onchange="getclasses('sschool_id', 'smaterial_id', 'sclass_id')">
     <option value=""><?php echo $material; ?></option>
+</select>
+</div>
+<div class="col-sm-4">
+<select class="form-control" id="sclass_id">
+    <option value=""><?php echo $class; ?></option>
 </select>
 </div>
 <?php }else{
 ?>
-<div class="col-sm-12">
-<select class="form-control" id="smaterial_id">
+<div class="col-sm-6">
+<select class="form-control" id="smaterial_id" onchange="getclasses('sschool_id', 'smaterial_id', 'sclass_id')">
     <option value=""><?php echo $material; ?></option>
 <?php
 include('../db.php');
@@ -173,6 +191,11 @@ echo "<option value='$row[id]' data-value='$row[name]'>$row[name]</option>";
 }}
 $conn->close();
 ?>
+</select>
+</div>
+<div class="col-sm-6">
+<select class="form-control" id="sclass_id">
+    <option value=""><?php echo $class; ?></option>
 </select>
 </div>
 <?php
@@ -218,7 +241,7 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php echo "$row[fn]"; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
 <td class="align-middle"><?php echo "$row[dob]"; ?></td>
-<td class="align-middle"><?php if("$row[gender]" == 0){echo $gender0;}else{echo $gender1;}; ?></td>
+<td class="align-middle"><?php if("$row[gender]" == 0){echo $gender0;}elseif("$row[gender]" == 1){echo $gender1;}; ?></td>
 <td class="align-middle"><?php echo "$row[email]"; ?></td>
 <td class="align-middle"><?php echo "$row[pn]"; ?></td>
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
@@ -238,16 +261,16 @@ if ($result->num_rows > 0) {
         $resultso = $conn->query($sqlso);
         if ($resultso->num_rows > 0) {
           while($rowso = $resultso->fetch_assoc()) {
-           echo " $rowso[name] ";}} } ?><?php echo "$rowo[name]<br>";
+           echo "$rowso[name] ";}} } ?><?php echo "$rowo[name]<br>";
               }}
-      }} ?></td>
-<td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}else{echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
+      }}else{echo "No classes found..";} ?></td>
+<td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}elseif("$row[val]" == 1){echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
 <td class="align-middle"><?php echo "$row[code]"; ?></td>
 <td class="align-middle text-center">
     <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-id-card"></i></button>
     <button class="btn btn-success" onclick="printcertif(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
     <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
-    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php echo "$row[val]"; ?>)"><i class="fas fa-<?php if("$row[val]" == 0){echo "close";}else{echo "check";} ?>"></i></button>
+    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php if("$row[val]" == 0){echo 0;}elseif("$row[val]" == 1){echo 1;} ?>)"><i class="fas fa-<?php if("$row[val]" == 1){echo "check";}else{echo "close";} ?>"></i></button>
     <button class="btn btn-danger" onclick="delteacher(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
 </td>
 </tr>
@@ -344,7 +367,7 @@ $conn->close();
                                 </div>
                                 <div class="modal-body" id="printable" style="text-align: center;">
     <center>
-    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid;">
+    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid; margin-bottom: 20px;/* bottom: 68px; margin-top: 68px; position: relative;*/">
       <img src="../wizara.png" width="100%" style="position: relative; padding: 5px 25px 15px 25px;">
       <h6 style="margin-top: -5px !important;"><?php echo $schoolcard; ?></h6>
       <div id="margindetails" style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>; margin-<?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 10px; margin-top: 7.5px; font-size: 10px;">
@@ -361,11 +384,10 @@ $conn->close();
         <div id="marginphoto" style="border: none; text-align: center; width: 80px; height: 80px; position: relative; top: -21mm; <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 25mm;">
           <img id="printimg" width="100%" height="100%">
         </div>
-        <br>
         <svg class="barcode" id="printcode"></svg>
     </div>
   </center>
-</div>
+                                </div>
                                 <div class="modal-footer">
                                 <button class="btn btn-outline-success" onclick="printcard()"><i class="fas fa-print"></i> <?php echo $print; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
@@ -374,6 +396,37 @@ $conn->close();
                         </div>
                     </div>
                     <!--Teacher Show Modal-->
+
+                    <!--Excel Add Modal-->
+                    <div class="modal fade" id="addExcel" tabindex="-1" role="dialog" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $importexcel; ?></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body" style="text-align: center;">
+                                <form action="uploadteachers.php" method="post" enctype="multipart/form-data">
+                                    <!--<input type="file" name="excel_file" />
+                                    <input type="submit" value="Upload" />-->
+                                  <div class="input-group mb-3">
+                                    <input type="file" class="form-control" name="excel_file">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
+                                    </div>
+                                  </div>
+                                </form>
+                                </div>
+                                <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--Excel Add Modal-->
+
                 </div>
 
                 <!--Footer-->
@@ -525,12 +578,23 @@ select2.on('change', function() {
   var optionText = $(this).find('option:selected').data('value');
   table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
 });
+var select3 = $('#sclass_id');
+select3.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).find('option:selected').data('value'));
+  table.column(9).search(val ? val : '', true, false).draw();
+});
 <?php }else{ ?>
 var select = $('#smaterial_id');
 select.on('change', function() {
   var val = $.fn.dataTable.util.escapeRegex($(this).val());
   var optionText = $(this).find('option:selected').data('value');
   table.column(7).search(val ? '^' + optionText + '$' : '', true, false).draw();
+});
+var select2 = $('#sclass_id');
+select2.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
 });
 <?php } ?>
 });
@@ -540,6 +604,7 @@ var originalContents = document.body.innerHTML;
 document.body.innerHTML = printContents;
 window.print();
 document.body.innerHTML = originalContents;
+location.reload();
 }
 function addteacher() {
 var id = document.getElementById('atid').value;
@@ -631,7 +696,11 @@ $.ajax({
         },
         cache: false,
         success: function(dataResult){
-            document.getElementById(classes).innerHTML = dataResult;
+            if(classes == "sclass_id"){
+                document.getElementById(classes).innerHTML = "<option value='' data-value=''><?php echo $class; ?></option>"+dataResult;
+            }else{
+                document.getElementById(classes).innerHTML = dataResult;
+            }
         }
     });
 }
