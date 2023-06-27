@@ -97,15 +97,6 @@ include('students_lang.php');
     </style>
   </head>
   <body>
-<?php
-if(isset($_GET['false'])){
-    if($_GET['false']=="format"){
-        echo "<script>alertify.alert('Only xlsx and xls are supported')</script>";
-    }elseif($_GET['false']=="error"){
-        echo "<script>alertify.alert('Error..')</script>";
-    }
-}
-?>
     <!--Page loader-->
     <div class="loader-wrapper">
         <div class="loader-circle">
@@ -237,7 +228,15 @@ $conn->close();
 <?php
 }}}} ?>
 </div>
-                            
+<?php
+if(isset($_GET['false'])){
+    if($_GET['false']=="format"){
+        echo "<div class='alert alert-danger'>Only xlsx and xls are supported.</div>";
+    }elseif($_GET['false']=="error"){
+        echo "<div class='alert alert-danger'>Error..</div>";
+    }
+}
+?>
                         <table class="table table-bordered table-striped mt-0" width="100%" id="students">
                                 <thead>
                                     <tr>
@@ -376,7 +375,7 @@ $conn->close();
                                     <select class="form-control" id="asclass">
                                         <option value=""><?php echo $class; ?></option>
                                     </select>
-                                    <label><?php echo $pw; ?> <span style="color: red;">*</span> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
+                                    <label><?php echo $pw; ?> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
                                     <input type="text" class="form-control" id="aspassword" placeholder="<?php echo $chars8; ?>">
                                 </div>
                                 <div class="modal-footer">
@@ -442,15 +441,25 @@ $conn->close();
                                 </div>
                                 <div class="modal-body" style="text-align: center;">
                                 <form action="uploadstudents.php" method="post" enctype="multipart/form-data">
-                                    <!--<input type="file" name="excel_file" />
-                                    <input type="submit" value="Upload" />-->
                                   <div class="input-group mb-3">
                                     <input type="file" class="form-control" name="excel_file">
-                                    <div class="input-group-append">
                                         <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
-                                    </div>
                                   </div>
                                 </form>
+                                <div style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>;">
+                                <ol>
+                                <li><?php echo $excelli1; ?></li>
+                                <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+                                <li><?php echo $excelli2; ?></li>
+                                <?php } ?>
+                                <li><?php echo $excelli3; ?></li>
+                                <?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sqlo = "SELECT * FROM schools WHERE id='$school_id'"; $resulto = $conn->query($sqlo); if ($resulto->num_rows > 0) {while($rowo = $resulto->fetch_assoc()) { if("$rowo[tawr]" == 3){ ?>
+                                <li><?php echo $excelli4; ?></li>
+                                <?php }}} $conn->close(); ?>
+                                <li><?php echo $excelli5; ?></li>
+                                <li><?php echo $excelli6; ?></li>
+                                </ol>
+                                </div>
                                 </div>
                                 <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>

@@ -36,6 +36,11 @@ $schoolcard = "Carte professionnelle";
 $and = "et";
 $material = "Matière";
 $passwordshort = "Mot de passe trop court";
+$excelli1 = "Dans la colonne 'Sexe': 0 = Mâle, 1 = Femelle.";
+$excelli2 = "Dans la colonne 'École': le code de l'école.";
+$excelli3 = "Dans la colonne 'Niveau scolaire': le code du niveau scolaire.";
+$excelli4 = "Dans la colonne 'Classes': Codes du classes séparés par des virgules ','.";
+$excelli5 = "Dans la colonne 'Statut du compte': 0 = Activé, 1 = Désactivé.";
 }else{
 $lang = "ar";
 $title = "تسيير الأساتذة - نظام إدارة المدارس";
@@ -73,5 +78,10 @@ $schoolcard = "البطاقة المهنية";
 $and = "و";
 $material = "المادة";
 $passwordshort = "كلمة المرور قصيرة جدا";
+$excelli1 = "في العمود 'الجنس': 0 = ذكر، 1 = أنثى.";
+$excelli2 = "في العمود 'المدرسة': رمز المدرسة.";
+$excelli3 = "في العمود 'المادة': رمز المادة.";
+$excelli4 = "في العمود 'الأقسام': رموز الأقسام مفصولة بفواصل ','.";
+$excelli5 = "في العمود 'حالة الحساب': 0 = مفعل، 1 = غير مفعل.";
 }
 ?>

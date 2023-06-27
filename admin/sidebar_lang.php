@@ -17,6 +17,7 @@ $schools = "Gestion d'école";
 }
 $wilayas = "Wilayas";
 $materials = "Matières scolaires";
+$portal = "La porte d'entrée";
 }else{
 $lang = "ar";
 $dashboard = "لوحة التحكم";
@@ -35,5 +36,6 @@ $schools = "تسيير المدرسة";
 }
 $wilayas = "الولايات";
 $materials = "المواد الدراسية";
+$portal = "بوابة الدخول";
 }
 ?>

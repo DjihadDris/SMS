@@ -28,7 +28,11 @@ function getName($n) {
 } 
 $code = getName($n);
 
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 $sqls = "SELECT * FROM teachers WHERE id='$id'";
+}else{
+$sqls = "SELECT * FROM teachers WHERE id='$id' AND school_id='$_COOKIE[school_id]'";
+}
 $results = $conn->query($sqls);
 
 if ($results->num_rows > 0) {
@@ -43,6 +47,11 @@ if ($conn->query($sql) === TRUE) {
   echo json_encode(array("statusCode"=>201, "message"=>$error2));
 }
   }else{
+    if($pw != ""){
+      $password = md5($pw);
+    }else{
+      $password = md5($code);
+    }
 $sql = "INSERT INTO teachers (name, fn, dob, gender, email, pn, password, code, school_id, class_id, material_id, val)
     VALUES ('$name', '$fn', '$dob', '$gender', '$email', '$pn', '$password', '$code', '$school_id', '$class_id', '$material_id', '0')";
 if ($conn->query($sql) === TRUE) {

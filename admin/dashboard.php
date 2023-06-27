@@ -268,11 +268,28 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
                         
                         <div class="row border-bottom mb-4">
                             <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-newspaper"></i> <?php echo $newstitle; ?></h6></div>
+<?php
+if($_COOKIE['user_type'] == "superadmins"){
+?>
                             <div class="col-sm-4 text-right pb-3">
                                 <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addNews">
                                     <i class="fas fa-plus"></i> <?php echo $newsadd; ?>
                                 </button>
                             </div>
+<?php
+}elseif($_COOKIE['user_type'] == "admins"){
+include('../db.php'); $sqlm = "SELECT * FROM admins_permissions WHERE user_id='$_COOKIE[id]'"; $resultm = $conn->query($sqlm); if ($resultm->num_rows > 0) {while($rowm = $resultm->fetch_assoc()) { if("$rowm[mservices]" == 0){
+?>
+                            <div class="col-sm-4 text-right pb-3">
+                                <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addNews">
+                                    <i class="fas fa-plus"></i> <?php echo $newsadd; ?>
+                                </button>
+                            </div>
+<?php
+}}}
+$conn->close();
+}
+?>
                         </div>
                             
                             <table class="table table-bordered table-striped mt-0" width="100%" id="news">
@@ -312,9 +329,11 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php include('../db.php'); $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";} ?></td>
 <td class="align-middle text-center">
     <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-eye"></i></button>
+    <?php if($_COOKIE['user_type'] == "superadmins" || "$row[type]" <> "superadmins" && "$row[user_id]" == $_COOKIE['id']){ ?>
     <button class="btn btn-success" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
+    <?php } ?>
     <button class="btn btn-info" onclick="printnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
-    <?php if($_COOKIE['user_type'] == "superadmins" OR "$row[type]" <> "superadmins" AND "$row[user_id]" == $_COOKIE['id']){ ?>
+    <?php if($_COOKIE['user_type'] == "superadmins" || "$row[type]" <> "superadmins" && "$row[user_id]" == $_COOKIE['id']){ ?>
     <button class="btn btn-danger" onclick="delnews(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
     <?php } ?>
 </td>

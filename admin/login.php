@@ -96,16 +96,12 @@ button {
                 <h3 class="mb-4" style="<?php if($lang == "ar"){echo "text-align: right;";} ?>"><?php echo $login; ?></h3>
                     <form class="mt-2" id="loginForm">
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-user"></i></span>
-                            </div>
                             <input type="text" class="form-control mt-0" id="email" placeholder="<?php echo $email; ?>">
                         </div>
 
                         <div class="input-group mb-3">
-                            <div class="input-group-prepend">
                                 <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                            </div>
                             <input type="password" class="form-control mt-0" id="password" placeholder="<?php echo $password; ?>" minlength="8">
                         </div>
 

@@ -1,8 +1,28 @@
 <?php
 include('navbar_lang.php');
 ?>
+
+<!--Code Search Modal-->
+<div class="modal fade" id="codesearchModal" tabindex="-1" role="dialog" aria-hidden="true">
+<div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="exampleModalLongTitle"></h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body" style="text-align: center;" id="codesearchResult"></div>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
+</div>
+</div>
+</div>
+</div>
+<!--Code Search Modal-->
+
 <div class="row header shadow-sm">
-            
+
 <!--Logo-->
 <div class="col-sm-3 pl-0 text-center header-logo">
 <div class="bg-theme mr-3 pt-3 pb-2 mb-0">
@@ -25,18 +45,133 @@ include('navbar_lang.php');
 <!--Inbox icon-->
 <span class="menu-icon inbox">
 <a href="#" role="button" id="dropdownMenuLink3" onclick="openmsgslist()" aria-haspopup="true" aria-expanded="false">
-<i class="fa fa-envelope"></i>
+<i class="fas fa-envelope"></i>
 <?php include('../db.php'); $query = "SELECT * FROM messages WHERE to_user_id='$_COOKIE[id]' AND to_type='$_COOKIE[user_type]' AND vu=''"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); if($rowCount != 0){echo "<span class='badge badge-danger'>".$rowCount."</span>";} $conn->close(); ?>
 </a>
 </span>
 <!--Inbox icon-->
+
+<?php
+include('../db.php');
+
+// Query to count occurrences of 'val' in both tables
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "
+    SELECT 'services' AS table_name, COUNT(status) AS count_val FROM services WHERE status=1
+    UNION ALL
+    SELECT 'students' AS table_name, COUNT(val) AS count_val FROM students WHERE val=1
+    UNION ALL
+    SELECT 'teachers' AS table_name, COUNT(val) AS count_val FROM teachers WHERE val=1
+    UNION ALL
+    SELECT 'superadmins' AS table_name, COUNT(val) AS count_val FROM superadmins WHERE val=1
+    UNION ALL
+    SELECT 'admins' AS table_name, COUNT(val) AS count_val FROM admins WHERE val=1
+";
+}else{
+  if($_COOKIE['user_type'] == "superadmins"){
+  $sql = "
+  SELECT 'services' AS table_name, COUNT(status) AS count_val FROM services WHERE status=1
+  UNION ALL
+  SELECT 'students' AS table_name, COUNT(val) AS count_val FROM students WHERE val=1 AND school_id='$_COOKIE[school_id]'
+  UNION ALL
+  SELECT 'teachers' AS table_name, COUNT(val) AS count_val FROM teachers WHERE val=1 AND school_id='$_COOKIE[school_id]'
+  UNION ALL
+  SELECT 'admins' AS table_name, COUNT(val) AS count_val FROM admins WHERE val=1
+";
+  }else{
+  $sql = "
+  SELECT 'services' AS table_name, COUNT(status) AS count_val FROM services WHERE status=1
+  UNION ALL
+  SELECT 'students' AS table_name, COUNT(val) AS count_val FROM students WHERE val=1 AND school_id='$_COOKIE[school_id]'
+  UNION ALL
+  SELECT 'teachers' AS table_name, COUNT(val) AS count_val FROM teachers WHERE val=1 AND school_id='$_COOKIE[school_id]'
+";
+  }
+}
+
+$result = $conn->query($sql);
+
+// Check if the query was successful
+if ($result) {
+    // Fetch and display the data
+    while ($row = $result->fetch_assoc()) {
+        $table_name = $row["table_name"];
+        $count_val = $row["count_val"];
+if($table_name == "services" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="services" role="button">
+<i class="fas fa-bell"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+}elseif($table_name == "teachers" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="teachers" role="button">
+<i class="fas fa-chalkboard-teacher"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+}elseif($table_name == "students" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="students" role="button">
+<i class="fas fa-user-graduate"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+}
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+  if($table_name == "admins" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="users" role="button">
+<i class="fas fa-users"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+  }elseif($table_name == "superadmins" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="users" role="button">
+<i class="fas fa-users"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+  }
+}elseif($_COOKIE['user_type'] == "superadmins" && $table_name == "admins" && $count_val > 0){
+?>
+<span class="menu-icon inbox">
+<a href="users" role="button">
+<i class="fas fa-users"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<?php
+}
+    }
+} else {
+    echo "Error: " . $sql . "<br>" . $conn->error;
+}
+
+// Close the database connection
+$conn->close();
+?>
+
+
 </div>
 <!--Menu Icons-->
 
 <!--Search box and avatar-->
 <div class="col-sm-8 col-4 text-right flex-header-menu justify-content-end">
 <div class="search-rounded mr-3">
-<input type="text" class="form-control search-box" placeholder="<?php echo $search; ?>">
+<input type="text" class="form-control search-box" placeholder="<?php echo $search; ?>" maxlength="10" minlength="10" id="codesearch" onkeyup="codesearch()">
 </div>
 <div class="mr-4">
 <a class="" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -134,5 +269,25 @@ function vumessage(id){
           openmsgslist.call();
         }
       });
+}
+
+function codesearch(){
+  var code = document.getElementById('codesearch').value;
+  if(code != "" && code.length == 10){
+    $.ajax({
+        url: "codesearch.php",
+        type: "POST",
+        data: {
+          code: code
+        },
+        cache: false,
+        success: function(dataResult){
+          if(dataResult != ""){
+          $('#codesearchModal').modal('show');
+          $('#codesearchResult').html(dataResult);
+          }
+        }
+      });
+  }
 }
 </script>

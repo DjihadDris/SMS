@@ -29,7 +29,11 @@ echo "<option value='$row[id]' data-value='$row[name]'>$row[name]</option>";
 }
 }else{
 $material_id = $_POST['material_id'];
-    $sql = "SELECT * FROM classes WHERE school_id='$school_id' AND id IN ($material_id)";
+if($material_id != ""){
+  $sql = "SELECT * FROM classes WHERE school_id='$school_id' AND id IN ($material_id)";
+}else{
+  $sql = "SELECT * FROM classes WHERE school_id='$school_id'";
+}
     $result = $conn->query($sql);
     if ($result->num_rows > 0) {
       while($row = $result->fetch_assoc()) {

@@ -7,7 +7,11 @@ include('sendnewmessage_lang.php');
 <option value="">--<?php echo $select; ?>--</option>
 <?php
 include('../db.php');
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "SELECT * FROM students";
+}else{
 $sql = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]'";
+}
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
@@ -15,7 +19,11 @@ echo "<option value='students_$row[id]'>$row[name] $row[fn] / $student</option>"
   }}
 $conn->close();
 include('../db.php');
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "SELECT * FROM teachers";
+}else{
 $sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'";
+}
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
@@ -25,18 +33,26 @@ $conn->close();
 include('../db.php');
 $id=$_COOKIE['id'];
 $type=$_COOKIE['user_type'];
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "SELECT 'superadmins' AS type, id, name, fn FROM superadmins WHERE id<>'$_COOKIE[id]' UNION SELECT 'admins' AS type, id, name, fn FROM admins";
+}else{
 if($type == 'superadmins'){
 $sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'";
 }else{
 $sql = "SELECT * FROM superadmins WHERE school_id='$_COOKIE[school_id]'";
 }
+}
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+echo "<option value='$row[type]_$row[id]'>$row[name] $row[fn]</option>";
+}else{
 if($type == 'superadmins'){
 echo "<option value='admins_$row[id]'>$row[name] $row[fn]</option>";
 }else{
 echo "<option value='superadmins_$row[id]'>$row[name] $row[fn]</option>";
+}
 }
   }}
 $conn->close();
@@ -48,9 +64,7 @@ $conn->close();
 <textarea class="from-control" id="message_text" placeholder="<?php echo $message_text_placeholder; ?>"></textarea>
 </div>-->
 <div class="input-group mb-3">
-<div class="input-group-prepend">
 <span class="input-group-text"><?php echo $message_text; ?></span>
-</div>
 <textarea class="form-control" id="message_text" placeholder="<?php echo $message_text_placeholder; ?>"></textarea>
 </div>
 <div class="form-group">

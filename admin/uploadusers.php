@@ -45,56 +45,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
                 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
                 $rowSchool = $rowData[0][6]; // Assuming 'school_id' is in index 6
-                $rowYear = $rowData[0][7]; // Assuming 'year_id' is in index 7
-                if($rowData[0][8] != ""){
-                $rowDiv = $rowData[0][8]; // Assuming 'div_id' is in index 8
-                }else{
-                $rowDiv = "";
-                }
-                $rowClass = $rowData[0][9]; // Assuming 'class_id' is in index 9
-                $rowVal = $rowData[0][10]; // Assuming 'val' is in index 10
+                $rowType = $rowData[0][7]; // Assuming 'type' is in index 7
+                $rowVal = $rowData[0][8]; // Assuming 'val' is in index 8
                 }else{
                 $rowSchool = $_COOKIE['school_id'];
-                $rowYear  = $rowData[0][6]; // Assuming 'year_id' is in index 6
-                $sql = "SELECT * FROM schools WHERE id='$_COOKIE[school_id]'";
-                $resulto = $conn->query($sqlo);
-                if ($resulto->num_rows > 0) {
-                    while($rowo = $resulto->fetch_assoc()) {
-                    if("$rowo[tawr]" == 3){
-                        $rowDiv = $rowData[0][7]; // Assuming 'div_id' is in index 7
-                        $rowClass= $rowData[0][8]; // Assuming 'class_id' is in index 8
-                        $rowVal= $rowData[0][9]; // Assuming 'val' is in index 9
-                    }else{
-                        $rowDiv = "";
-                        $rowClass = $rowData[0][7]; // Assuming 'class_id' is in index 7
-                        $rowVal = $rowData[0][8]; // Assuming 'val' is in index 8
-                    }
-                }}
+                $rowType = "admins"; // Assuming 'type' is in index 6
+                $rowVal = $rowData[0][6]; // Assuming 'val' is in index 7
                 }
 
                 // Generate random code
                 $code = generateCode(10);
 
                 // Prepare the insert query
-                $insertQuery = "INSERT INTO students (name, fn, dob, gender, email, pn, password, code, school_id, year_id, div_id, class_id, val) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                $insertQuery = "INSERT INTO $rowType (name, fn, dob, gender, email, pn, password, school_id, val) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
                 $statement = $conn->prepare($insertQuery);
 
                 // Bind parameters and execute the query
                 $statement->bind_param(
-                    'sssssssssssss',
+                    'sssssssss',
                     $rowData[0][1], // Assuming 'name' is in index 1
                     $rowData[0][0], // Assuming 'fn' is in index 0
                     $rowData[0][2], // Assuming 'dob' is in index 2
                     $rowData[0][3], // Assuming 'gender' is in index 3
                     $rowData[0][4], // Assuming 'email' is in index 4
                     $rowData[0][5], // Assuming 'pn' is in the index 5
-                    md5($code), // Set the generated code
                     $code, // Set the generated code
                     $rowSchool,
-                    $rowYear,
-                    $rowDiv,
-                    $rowClass,
                     $rowVal
                 );
                 $statement->execute();
@@ -102,16 +79,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 $statement->close();
             }
 
-            header('Location: students?true');
+            header('Location: users?true');
 
             $conn->close();
         } else {
-            header('Location: students?false=format');
+            header('Location: users?false=format');
         }
     } else {
-        header('Location: students?false=error');
+        header('Location: users?false=error');
     }
 }else{
-    header('Location: students');
+    header('Location: teachers');
 }
 ?>

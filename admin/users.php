@@ -2,7 +2,7 @@
 if(!isset($_COOKIE['id'])){
     header('Location: login');
 }
-include('teachers_lang.php');
+include('users_lang.php');
 ?>
 <!DOCTYPE html>
 <html dir="<?php if($lang == "ar"){echo 'rtl';}else{echo 'ltr';} ?>">
@@ -87,13 +87,6 @@ include('teachers_lang.php');
             padding: 13px 5px !important;
         }
         <?php } ?>
-        .barcode {
-            /*position: relative !important;*/
-            width: 30mm !important;
-            height: 12.25mm !important;
-            /*top: -21.5mm !important;*/
-            margin-top: -35.5mm !important;
-        }
     </style>
   </head>
   <body>
@@ -128,10 +121,10 @@ include('teachers_lang.php');
                     <div class="product-list">
                         
                         <div class="row border-bottom mb-4">
-                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-chalkboard-teacher"></i> <?php echo $teachers; ?></h6></div>
+                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-users"></i> <?php echo $users; ?></h6></div>
                             <div class="col-sm-4 text-right pb-3">
-                                <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addTeacher" onclick="getmaterials('atschool', 'atmaterial')">
-                                    <i class="fas fa-plus"></i> <?php echo $addteacher; ?>
+                                <button class="btn btn-outline-theme shadow" data-toggle="modal" data-target="#addUser">
+                                    <i class="fas fa-plus"></i> <?php echo $adduser; ?>
                                 </button>
                                 <button class="btn btn-outline-success shadow" data-toggle="modal" data-target="#addExcel">
                                     <i class="fas fa-file-excel"></i> <?php echo $importexcel; ?>
@@ -139,10 +132,10 @@ include('teachers_lang.php');
                             </div>
                         </div>
 
-<div class="form-group row">
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-<div class="col-sm-4">
-<select class="form-control" id="sschool_id" onchange="getmaterials('sschool_id', 'smaterial_id')">
+<div class="form-group row">
+<div class="col-sm-12">
+<select class="form-control" id="sschool_id">
     <option value=""><?php echo $school; ?></option>
 <?php
 include('../db.php');
@@ -156,42 +149,9 @@ $conn->close();
 ?>
 </select>
 </div>
-<div class="col-sm-4">
-<select class="form-control" id="smaterial_id" onchange="getclasses('sschool_id', 'smaterial_id', 'sclass_id')">
-    <option value=""><?php echo $material; ?></option>
-</select>
 </div>
-<div class="col-sm-4">
-<select class="form-control" id="sclass_id">
-    <option value=""><?php echo $class; ?></option>
-</select>
-</div>
-<?php }else{
+<?php }
 ?>
-<div class="col-sm-6">
-<select class="form-control" id="smaterial_id" onchange="getclasses('sschool_id', 'smaterial_id', 'sclass_id')">
-    <option value=""><?php echo $material; ?></option>
-<?php
-include('../db.php');
-$school_id = $_COOKIE['school_id'];
-$sql = "SELECT * FROM materials WHERE school_id='$school_id'";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-while($row = $result->fetch_assoc()) {
-echo "<option value='$row[id]' data-value='$row[name]'>$row[name]</option>";
-}}
-$conn->close();
-?>
-</select>
-</div>
-<div class="col-sm-6">
-<select class="form-control" id="sclass_id">
-    <option value=""><?php echo $class; ?></option>
-</select>
-</div>
-<?php
-} ?>
-</div>
 <?php
 if(isset($_GET['false'])){
     if($_GET['false']=="format"){
@@ -201,7 +161,7 @@ if(isset($_GET['false'])){
     }
 }
 ?>
-                        <table class="table table-bordered table-striped mt-0" width="100%" id="teachers">
+                        <table class="table table-bordered table-striped mt-0" width="100%" id="users">
                                 <thead>
                                     <tr>
                                         <th>#</th>
@@ -213,11 +173,9 @@ if(isset($_GET['false'])){
                                         <th><?php echo $pn; ?></th>
                                         <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
                                         <th><?php echo $school; ?></th>
+                                        <th><?php echo $type; ?></th>
                                         <?php } ?>
-                                        <th><?php echo $material; ?></th>
-                                        <th><?php echo $class; ?></th>
                                         <th><?php echo $val; ?></th>
-                                        <th></th>
                                         <th></th>
                                     </tr>
                                 </thead>
@@ -225,9 +183,9 @@ if(isset($_GET['false'])){
 <?php
 include('../db.php');
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$sql = "SELECT * FROM teachers";
+$sql = "SELECT 'superadmins' AS type, id, name, fn, dob, gender, email, pn, school_id, val FROM superadmins WHERE id<>'$_COOKIE[id]' UNION SELECT 'admins' AS type, id, name, fn, dob, gender, email, pn, school_id, val FROM admins";
 }else{
-$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'";
 }
 $i = 1;
 $result = $conn->query($sql);
@@ -244,33 +202,14 @@ if ($result->num_rows > 0) {
 <td class="align-middle"><?php echo "$row[email]"; ?></td>
 <td class="align-middle"><?php echo "$row[pn]"; ?></td>
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close(); ?></td>
+<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} ?></td>
+<td class="align-middle"><?php if("$row[type]" == "superadmins"){echo $type0;}elseif("$row[type]" == "admins"){echo $type1;} ?></td>
 <?php } ?>
-<td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM materials WHERE id='$row[material_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No material found..";} $conn->close(); ?></td>
-<td class="align-middle"><?php include('../db.php'); $sqlo = "SELECT * FROM classes WHERE school_id='$row[school_id]' AND id IN ($row[class_id])";
-    $resulto = $conn->query($sqlo);
-    if ($resulto->num_rows > 0) {
-      while($rowo = $resulto->fetch_assoc()) {
-            $sqlto = "SELECT * FROM years WHERE id='$rowo[year_id]'";
-            $resultto = $conn->query($sqlto);
-            if ($resultto->num_rows > 0) {
-              while($rowto = $resultto->fetch_assoc()) {
- echo "$rowto[name] "; ?><?php if("$rowo[div_id]" != ""){
-        $sqlso = "SELECT * FROM divs WHERE id='$rowo[div_id]'";
-        $resultso = $conn->query($sqlso);
-        if ($resultso->num_rows > 0) {
-          while($rowso = $resultso->fetch_assoc()) {
-           echo "$rowso[name] ";}} } ?><?php echo "$rowo[name]<br>";
-              }}
-      }}else{echo "No classes found..";} ?></td>
 <td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}elseif("$row[val]" == 1){echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
-<td class="align-middle"><?php echo "$row[code]"; ?></td>
 <td class="align-middle text-center">
-    <button class="btn btn-theme" onclick="showmore(<?php echo "$row[id]"; ?> , 'show')"><i class="fas fa-id-card"></i></button>
-    <button class="btn btn-success" onclick="printcertif(<?php echo "$row[id]"; ?>)"><i class="fas fa-print"></i></button>
-    <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , 'edit')"><i class="fas fa-edit"></i></button>
-    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php if("$row[val]" == 0){echo 0;}elseif("$row[val]" == 1){echo 1;} ?>)"><i class="fas fa-<?php if("$row[val]" == 1){echo "check";}else{echo "close";} ?>"></i></button>
-    <button class="btn btn-danger" onclick="delteacher(<?php echo "$row[id]"; ?>)"><i class="fas fa-trash"></i></button>
+    <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , '<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "$row[type]";}else{echo "admins";} ?>')"><i class="fas fa-edit"></i></button>
+    <button class="btn btn-warning" onclick="val(<?php echo "$row[id]"; ?> , <?php if("$row[val]" == 0){echo 0;}elseif("$row[val]" == 1){echo 1;} ?>, '<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "$row[type]";}else{echo "admins";} ?>')"><i class="fas fa-<?php if("$row[val]" == 1){echo "check";}else{echo "close";} ?>"></i></button>
+    <button class="btn btn-danger" onclick="deluser(<?php echo "$row[id]"; ?>, '<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "$row[type]";}else{echo "admins";} ?>')"><i class="fas fa-trash"></i></button>
 </td>
 </tr>
 <?php
@@ -282,37 +221,37 @@ $conn->close();
                     </div>
                     <!--/Order Listing-->
 
-                    <!--Teacher Add Modal-->
-                    <div class="modal fade" id="addTeacher" tabindex="-1" role="dialog" aria-hidden="true">
+                    <!--User Add Modal-->
+                    <div class="modal fade" id="addUser" tabindex="-1" role="dialog" aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered" role="document">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $addteacher; ?></h5>
+                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $adduser; ?></h5>
                                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                                         <span aria-hidden="true">&times;</span>
                                     </button>
                                 </div>
                                 <div class="modal-body">
-                                    <input id="atid" hidden>
+                                    <input id="auid" hidden>
                                     <label><?php echo $fn; ?> <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="atfn">
+                                    <input type="text" class="form-control" id="aufn">
                                     <label><?php echo $name; ?> <span style="color: red;">*</span></label>
-                                    <input type="text" class="form-control" id="atname">
+                                    <input type="text" class="form-control" id="auname">
                                     <label><?php echo $dob; ?> <span style="color: red;">*</span></label>
-                                    <input type="date" class="form-control" id="atdob">
+                                    <input type="date" class="form-control" id="audob">
                                     <label><?php echo $gender; ?> <span style="color: red;">*</span></label>
-                                    <select class="form-control" id="atgender">
+                                    <select class="form-control" id="augender">
                                         <option value=""><?php echo $choose; ?></option>
                                         <option value="0"><?php echo $gender0; ?></option>
                                         <option value="1"><?php echo $gender1; ?></option>
                                     </select>
                                     <label><?php echo $email; ?> <span style="color: red;">*</span></label>
-                                    <input type="email" class="form-control" id="atemail">
+                                    <input type="email" class="form-control" id="auemail">
                                     <label><?php echo $pn; ?> <span style="color: red;">*</span></label>
-                                    <input type="tel" class="form-control" id="atpn">
+                                    <input type="tel" class="form-control" id="aupn">
                                     <span style="<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){}else{echo "display: none;";} ?>">
                                     <label><?php echo $school; ?> <span style="color: red;">*</span></label>
-                                    <select class="form-control" id="atschool" onchange="getmaterials('atschool', 'atmaterial')">
+                                    <select class="form-control" id="auschool">
                                         <option value=""><?php echo $school; ?></option>
 <?php
 include('../db.php');
@@ -334,67 +273,91 @@ $conn->close();
 ?>
                                     </select>
                                     </span>
-                                    <label><?php echo $material; ?> <span style="color: red;">*</span></label>
-                                    <select class="form-control" id="atmaterial" onchange="getclasses('atschool', 'atmaterial', 'atclass')">
-                                        <option value=""><?php echo $material; ?></option>
+                                    <span style="<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){}else{echo "display: none;";} ?>">
+                                    <label><?php echo $type; ?> <span style="color: red;">*</span></label>
+                                    <select class="form-control" id="autype" onchange="showpermissions()">
+                                        <option value=""><?php echo $type; ?></option>
+                                        <option value="superadmins"><?php echo $type0; ?></option>
+                                        <option value="admins"><?php echo $type1; ?></option>
                                     </select>
-                                    <label><?php echo $class; ?> <span style="color: red;">*</span></label>
-                                    <select class="form-control" id="atclass" multiple>
-                                        <option value=""><?php echo $class; ?></option>
-                                    </select>
+                                    </span>
+                                    <span id="permissions" style="<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "display: none;";} ?>">
+                                    <label><?php echo $permissions; ?> <span style="color: red;">*</span></label>
+                                    <div class="form-check-box cta">
+                                        <span class="color1">
+                                            <input type="checkbox" id="mportal" value="1">
+                                            <label for="mportal"></label>
+                                        </span>
+                                        <label for="mportal"><?php echo $portal; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mstudents" value="1">
+                                            <label for="mstudents"></label>
+                                        </span>
+                                        <label for="mstudents"><?php echo $students; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mteachers" value="1">
+                                            <label for="mteachers"></label>
+                                        </span>
+                                        <label for="mteachers"><?php echo $teachers; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mclasses" value="1">
+                                            <label for="mclasses"></label>
+                                        </span>
+                                        <label for="mclasses"><?php echo $classes; ?></label>
+                                        <br>
+                                        <span style="<?php include('../db.php'); $school_id=$_COOKIE['school_id']; $sql = "SELECT * FROM schools WHERE id='$school_id'"; $result = $conn->query($sql); if ($result->num_rows > 0) {while($row = $result->fetch_assoc()) { if("$row[tawr]" <> 3){echo "display: none;";}}} $conn->close(); ?>">
+                                        <span class="color1">
+                                            <input type="checkbox" id="mdivs" value="1">
+                                            <label for="mdivs"></label>
+                                        </span>
+                                        <label for="mdivs"><?php echo $divs; ?></label>
+                                        <br>
+                                        </span>
+                                        <span class="color1">
+                                            <input type="checkbox" id="myears" value="1">
+                                            <label for="myears"></label>
+                                        </span>
+                                        <label for="myears"><?php echo $years; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mmaterials" value="1">
+                                            <label for="mmaterials"></label>
+                                        </span>
+                                        <label for="mmaterials"><?php echo $materials; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mservices" value="1">
+                                            <label for="mservices"></label>
+                                        </span>
+                                        <label for="mservices"><?php echo $services; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mdeclined_words" value="1">
+                                            <label for="mdeclined_words"></label>
+                                        </span>
+                                        <label for="mdeclined_words"><?php echo $declined_words; ?></label>
+                                        <br>
+                                        <span class="color1">
+                                            <input type="checkbox" id="mschools" value="1">
+                                            <label for="mschools"></label>
+                                        </span>
+                                        <label for="mschools"><?php echo $schools; ?></label>
+                                    </div>
+                                    </span>
                                     <label><?php echo $pw; ?> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
-                                    <input type="text" class="form-control" id="atpassword" placeholder="<?php echo $chars8; ?>">
+                                    <input type="text" class="form-control" id="aupassword" placeholder="<?php echo $chars8; ?>">
                                 </div>
                                 <div class="modal-footer">
-                                <button class="btn btn-outline-success" id="addteacherbtn" onclick="addteacher()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
+                                <button class="btn btn-outline-success" id="adduserbtn" onclick="adduser()"><i class="fas fa-save"></i> <?php echo $save; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!--Teacher Add Modal-->
-
-                    <!--Teacher Show Modal-->
-                    <div class="modal fade" id="showTeacher" tabindex="-1" role="dialog" aria-hidden="true">
-                        <div class="modal-dialog modal-dialog-centered" role="document">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="exampleModalLongTitle"><?php echo $printcard; ?></h5>
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                        <span aria-hidden="true">&times;</span>
-                                    </button>
-                                </div>
-                                <div class="modal-body" id="printable" style="text-align: center;">
-    <center>
-    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid; margin-bottom: 20px;/* bottom: 68px; margin-top: 68px; position: relative;*/">
-      <img src="../wizara.png" width="100%" style="position: relative; padding: 5px 25px 15px 25px;">
-      <h6 style="margin-top: -5px !important;"><?php echo $schoolcard; ?></h6>
-      <div id="margindetails" style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>; margin-<?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 10px; margin-top: 7.5px; font-size: 10px;">
-        <span><?php echo $fn." ".$and." ".$name ?>:</span> <span id="printnamefn"></span>
-        <br>
-        <span><?php echo $dob; ?>:</span> <span id="printdob"></span>
-        <br>
-        <span><?php echo $gender; ?>:</span> <span id="printgender"></span>
-        <br>
-        <span><?php echo $material; ?>:</span> <span id="printmaterial"></span>
-        <br>
-        <span><?php echo $school; ?>:</span> <span id="printschool"></span>
-        </div>
-        <div id="marginphoto" style="border: none; text-align: center; width: 80px; height: 80px; position: relative; top: -21mm; <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 25mm;">
-          <img id="printimg" width="100%" height="100%">
-        </div>
-        <svg class="barcode" id="printcode"></svg>
-    </div>
-  </center>
-                                </div>
-                                <div class="modal-footer">
-                                <button class="btn btn-outline-success" onclick="printcard()"><i class="fas fa-print"></i> <?php echo $print; ?></button>
-                                <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!--Teacher Show Modal-->
+                    <!--User Add Modal-->
 
                     <!--Excel Add Modal-->
                     <div class="modal fade" id="addExcel" tabindex="-1" role="dialog" aria-hidden="true">
@@ -407,7 +370,7 @@ $conn->close();
                                     </button>
                                 </div>
                                 <div class="modal-body" style="text-align: center;">
-                                <form action="uploadteachers.php" method="post" enctype="multipart/form-data">
+                                <form action="uploadusers.php" method="post" enctype="multipart/form-data">
                                   <div class="input-group mb-3">
                                     <input type="file" class="form-control" name="excel_file">
                                     <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
@@ -418,10 +381,9 @@ $conn->close();
                                 <li><?php echo $excelli1; ?></li>
                                 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
                                 <li><?php echo $excelli2; ?></li>
-                                <?php } ?>
                                 <li><?php echo $excelli3; ?></li>
+                                <?php } ?>
                                 <li><?php echo $excelli4; ?></li>
-                                <li><?php echo $excelli5; ?></li>
                                 </ol>
                                 </div>
                                 </div>
@@ -500,23 +462,13 @@ $conn->close();
     <!--Custom Js Script-->
 <script>
 $(document).ready(function() {
-let table = $('#teachers').DataTable({
-    columnDefs: [
+let table = $('#users').DataTable({
+    /*columnDefs: [
         {
-            <?php
-            if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-            ?>
-            targets: 11,
-            <?php
-            }else{ 
-            ?>
             targets: 10,
-            <?php
-            }
-            ?>
             visible: false
         }
-    ],
+    ],*/
     ordering: true,
     searching: true,
     paging: true,
@@ -578,62 +530,132 @@ select.on('change', function() {
   var optionText = $(this).find('option:selected').data('value');
   table.column(7).search(val ? '^' + optionText + '$' : '', true, false).draw();
 });
-var select2 = $('#smaterial_id');
-select2.on('change', function() {
-  var val = $.fn.dataTable.util.escapeRegex($(this).val());
-  var optionText = $(this).find('option:selected').data('value');
-  table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
-});
-var select3 = $('#sclass_id');
-select3.on('change', function() {
-  var val = $.fn.dataTable.util.escapeRegex($(this).find('option:selected').data('value'));
-  table.column(9).search(val ? val : '', true, false).draw();
-});
-<?php }else{ ?>
-var select = $('#smaterial_id');
-select.on('change', function() {
-  var val = $.fn.dataTable.util.escapeRegex($(this).val());
-  var optionText = $(this).find('option:selected').data('value');
-  table.column(7).search(val ? '^' + optionText + '$' : '', true, false).draw();
-});
-var select2 = $('#sclass_id');
-select2.on('change', function() {
-  var val = $.fn.dataTable.util.escapeRegex($(this).val());
-  var optionText = $(this).find('option:selected').data('value');
-  table.column(8).search(val ? '^' + optionText + '$' : '', true, false).draw();
-});
 <?php } ?>
-});
-function printcard() {
-var printContents = document.getElementById('printable').innerHTML;
-var originalContents = document.body.innerHTML;
-document.body.innerHTML = printContents;
-window.print();
-document.body.innerHTML = originalContents;
-location.reload();
-}
-function addteacher() {
-var id = document.getElementById('atid').value;
-var name = document.getElementById('atname').value;
-var fn = document.getElementById('atfn').value;
-var dob = document.getElementById('atdob').value;
-var gender = document.getElementById('atgender').value;
-var email = document.getElementById('atemail').value;
-var pn = document.getElementById('atpn').value;
-var school_id = document.getElementById('atschool').value;
-var selectElement = document.querySelector('#atclass');
-var selectedOptions = Array.from(selectElement.selectedOptions).map(option => option.value);
-var material_id = document.getElementById('atmaterial').value;
-var password = document.getElementById('atpassword').value;
 
-if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_id == '' || selectedOptions == '' || material_id == '') {
+  var mportal = document.getElementById('mportal');
+mportal.addEventListener('change', function() {
+  if (mportal.checked) {
+    mportal.value = '0';
+  } else {
+    mportal.value = '1';
+  }
+});
+  var mstudents = document.getElementById('mstudents');
+  mstudents.addEventListener('change', function() {
+  if (mstudents.checked) {
+    mstudents.value = '0';
+  } else {
+    mstudents.value = '1';
+  }
+});
+  var mteachers = document.getElementById('mteachers');
+  mteachers.addEventListener('change', function() {
+  if (mteachers.checked) {
+    mteachers.value = '0';
+  } else {
+    mteachers.value = '1';
+  }
+});
+  var mclasses = document.getElementById('mclasses');
+  mclasses.addEventListener('change', function() {
+  if (mclasses.checked) {
+    mclasses.value = '0';
+  } else {
+    mclasses.value = '1';
+  }
+});
+  var mdivs = document.getElementById('mdivs');
+  mdivs.addEventListener('change', function() {
+  if (mdivs.checked) {
+    mdivs.value = '0';
+  } else {
+    mdivs.value = '1';
+  }
+});
+  var myears = document.getElementById('myears');
+  myears.addEventListener('change', function() {
+  if (myears.checked) {
+    myears.value = '0';
+  } else {
+    myears.value = '1';
+  }
+});
+  var mmaterials = document.getElementById('mmaterials');
+  mmaterials.addEventListener('change', function() {
+  if (mmaterials.checked) {
+    mmaterials.value = '0';
+  } else {
+    mmaterials.value = '1';
+  }
+});
+  var mservices = document.getElementById('mservices');
+  mservices.addEventListener('change', function() {
+  if (mservices.checked) {
+    mservices.value = '0';
+  } else {
+    mservices.value = '1';
+  }
+});
+  var mdeclined_words = document.getElementById('mdeclined_words');
+  mdeclined_words.addEventListener('change', function() {
+  if (mdeclined_words.checked) {
+    mdeclined_words.value = '0';
+  } else {
+    mdeclined_words.value = '1';
+  }
+});
+  var mschools = document.getElementById('mschools');
+  mschools.addEventListener('change', function() {
+  if (mschools.checked) {
+    mschools.value = '0';
+  } else {
+    mschools.value = '1';
+  }
+});
+
+});
+function showpermissions() {
+var type = document.getElementById('autype').value;
+if(type == "admins"){
+    document.getElementById('permissions').style.display = "";
+}else{
+    document.getElementById('permissions').style.display = "none";
+}
+}
+function adduser() {
+var id = document.getElementById('auid').value;
+var name = document.getElementById('auname').value;
+var fn = document.getElementById('aufn').value;
+var dob = document.getElementById('audob').value;
+var gender = document.getElementById('augender').value;
+var email = document.getElementById('auemail').value;
+var pn = document.getElementById('aupn').value;
+var school_id = document.getElementById('auschool').value;
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+var type = document.getElementById('autype').value;
+<?php }else{ ?>
+var type = "admins";
+<?php } ?>
+var mportal = document.getElementById('mportal').value;
+var mstudents = document.getElementById('mstudents').value;
+var mteachers = document.getElementById('mteachers').value;
+var mclasses = document.getElementById('mclasses').value;
+var mdivs = document.getElementById('mdivs').value;
+var myears = document.getElementById('myears').value;
+var mmaterials = document.getElementById('mmaterials').value;
+var mservices = document.getElementById('mservices').value;
+var mdeclined_words = document.getElementById('mdeclined_words').value;
+var mschools = document.getElementById('mschools').value;
+var password = document.getElementById('aupassword').value;
+
+if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_id == '' || type == '') {
     alertify.error('<?php echo $allfields; ?>');
 } else if(password != "" && password.length < 8) {
     alertify.error('<?php echo $passwordshort; ?>');
     return false;
 } else {
     $.ajax({
-        url: "addteacher.php",
+        url: "adduser.php",
         type: "POST",
         data: {
             id: id,
@@ -644,14 +666,23 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
             email: email,
             pn: pn,
             school_id: school_id,
-            class_id: selectedOptions,
-            material_id: material_id,
+            type: type,
+            mportal: mportal,
+            mstudents: mstudents,
+            mteachers: mteachers,
+            mclasses: mclasses,
+            mdivs: mdivs,
+            myears: myears,
+            mmaterials: mmaterials,
+            mservices: mservices,
+            mdeclined_words: mdeclined_words,
+            mschools: mschools,
             password: password
         },
         cache: false,
         beforeSend: function(){
-            document.getElementById('addteacherbtn').disabled = true;
-            document.getElementById('addteacherbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+            document.getElementById('adduserbtn').disabled = true;
+            document.getElementById('adduserbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
         },
         success: function(dataResult){
         var dataResult = JSON.parse(dataResult);
@@ -665,59 +696,14 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
     });
 }
 }
-function getmaterials(schools, materials) {
-<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-var school_id = document.getElementById(schools).value;
-<?php }else{ ?>
-var school_id = <?php echo $_COOKIE['school_id'] ?>;
-<?php } ?>
-$.ajax({
-        url: 'getmaterials.php',
-        type: 'POST',
-        data: {
-            school_id: school_id
-        },
-        cache: false,
-        success: function(dataResult){
-            document.getElementById(materials).innerHTML = dataResult;
-        }
-    });
-}
-function getclasses(schools, materials, classes) {
-<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-var school_id = document.getElementById(schools).value;
-<?php }else{ ?>
-var school_id = <?php echo $_COOKIE['school_id'] ?>;
-<?php } ?>
-var selectElement = document.querySelector('#'+materials);
-var selectedOption = selectElement.options[selectElement.selectedIndex];
-var material_id = selectedOption.dataset.value2;
-$.ajax({
-        url: 'getclasses.php',
-        type: 'POST',
-        data: {
-            school_id: school_id,
-            material_id: material_id,
-            type: 'teachers'
-        },
-        cache: false,
-        success: function(dataResult){
-            if(classes == "sclass_id"){
-                document.getElementById(classes).innerHTML = "<option value='' data-value=''><?php echo $class; ?></option>"+dataResult;
-            }else{
-                document.getElementById(classes).innerHTML = dataResult;
-            }
-        }
-    });
-}
-function val(id, val){
+function val(id, val, type){
   $.ajax({
         url: "val.php",
         type: "POST",
         data: {
           id: id,
           val: val,
-          type: 'teachers'
+          type: type
         },
         cache: false,
         success: function(dataResult){
@@ -725,85 +711,122 @@ function val(id, val){
         }
   });
 }
-function printcertif(id) {
-$.ajax({
-    url: 'printcertif.php',
-    type: 'POST',
-    data: {
-        id: id,
-        type: 'teachers'
-    },
-    cache: false,
-    success: function(response) {
-        var printWindow = window.open('', '_blank');
-        printWindow.document.open();
-        printWindow.document.write('<html dir="<?php if($lang == "ar"){echo "rtl";}else{echo "ltr";} ?>"><head><title><?php echo $print; ?></title><link href="https://fonts.googleapis.com/css2?family=Libre+Barcode+128+Text&family=Libre+Barcode+39+Text&family=Noto+Kufi+Arabic&display=swap" rel="stylesheet"><style>body {font-family: Noto Kufi Arabic;}</style></head><body>' + response + '</body></html>');
-        printWindow.document.close();
-        setTimeout(function(){printWindow.print();}, 500);
-}
-});
-}
 function showmore(id, type) {
   $.ajax({
-        url: "getteacher.php",
+        url: "getuser.php",
         type: "POST",
         data: {
-          id: id
+          id: id,
+          type: type
         },
         cache: false,
         success: function(dataResult){
             var dataResult = JSON.parse(dataResult);
-            if(type == "show"){
-                $('#showTeacher').modal('show');
-                if(dataResult.gender == 0){
-                    $('#printimg').attr('src', '../man.png');
-                }else{
-                    $('#printimg').attr('src', '../woman.png');
-                }
-                $('#printnamefn').html(dataResult.fn+" "+dataResult.name);
-                $('#printdob').html(dataResult.dob);
-                $('#printgender').html(dataResult.printgender);
-                $('#printmaterial').html(dataResult.printmaterial);
-                $('#printschool').html(dataResult.printschool);
-                var printcode =  dataResult.code;
-                JsBarcode("#printcode", printcode);
-            }else{
-                $('#addTeacher').modal('show');
+                $('#addUser').modal('show');
                 document.getElementById('leavepass').style.display = "";
-                $('#atid').val(dataResult.id);
-                $('#atname').val(dataResult.name);
-                $('#atfn').val(dataResult.fn);
-                $('#atgender').val(dataResult.gender);
-                $('#atdob').val(dataResult.dob);
-                $('#atemail').val(dataResult.email);
-                $('#atpn').val(dataResult.pn);
-                $('#atschool').val(dataResult.school_id);
-                getmaterials('atschool', 'atmaterial');
-                setTimeout(function(){$('#atmaterial').val(dataResult.material_id); getclasses('atschool', 'atmaterial', 'atclass');},500);
-                setTimeout(function(){
-var valuesArray = [dataResult.class_id2];
-var valuesString = valuesArray[0];
-var valuesWithoutQuotes = valuesString.replace(/'/g, '');
-var individualValues = valuesWithoutQuotes.split(',');
+                $('#auid').val(dataResult.id);
+                $('#auname').val(dataResult.name);
+                $('#aufn').val(dataResult.fn);
+                $('#augender').val(dataResult.gender);
+                $('#audob').val(dataResult.dob);
+                $('#auemail').val(dataResult.email);
+                $('#aupn').val(dataResult.pn);
+                $('#auschool').val(dataResult.school_id);
+                $('#autype').val(type);
+                if(type == "admins"){
+                    document.getElementById('permissions').style.display = "";
+                    if(dataResult.mportal == 0){
+                    document.getElementById('mportal').checked = true;
+                    $('#mportal').val(dataResult.mportal);
+                    }else if(dataResult.mportal == 1){
+                    document.getElementById('mportal').checked = false;
+                    $('#mportal').val(dataResult.mportal);
+                    }
 
-var selectElement = document.getElementById('atclass');
+                    if(dataResult.mstudents == 0){
+                    document.getElementById('mstudents').checked = true;
+                    $('#mstudents').val(dataResult.mstudents);
+                    }else if(dataResult.mstudents == 1){
+                    document.getElementById('mstudents').checked = false;
+                    $('#mstudents').val(dataResult.mstudents);
+                    }
 
-for (var i = 0; i < selectElement.options.length; i++) {
-  var option = selectElement.options[i];
-  if (individualValues.includes(option.value)) {
-    option.selected = true;
-  }
-}},1000);
-            }
+                    if(dataResult.mteachers == 0){
+                    document.getElementById('mteachers').checked = true;
+                    $('#mteachers').val(dataResult.mteachers);
+                    }else if(dataResult.mteachers == 1){
+                    document.getElementById('mteachers').checked = false;
+                    $('#mteachers').val(dataResult.mteachers);
+                    }
+
+                    if(dataResult.mclasses == 0){
+                    document.getElementById('mclasses').checked = true;
+                    $('#mclasses').val(dataResult.mclasses);
+                    }else if(dataResult.mclasses == 1){
+                    document.getElementById('mclasses').checked = false;
+                    $('#mclasses').val(dataResult.mclasses);
+                    }
+
+                    if(dataResult.mdivs == 0){
+                    document.getElementById('mdivs').checked = true;
+                    $('#mdivs').val(dataResult.mdivs);
+                    }else if(dataResult.mdivs == 1){
+                    document.getElementById('mdivs').checked = false;
+                    $('#mdivs').val(dataResult.mdivs);
+                    }
+
+                    if(dataResult.myears == 0){
+                    document.getElementById('myears').checked = true;
+                    $('#myears').val(dataResult.myears);
+                    }else if(dataResult.myears == 1){
+                    document.getElementById('myears').checked = false;
+                    $('#myears').val(dataResult.myears);
+                    }
+
+                    if(dataResult.mmaterials == 0){
+                    document.getElementById('mmaterials').checked = true;
+                    $('#mmaterials').val(dataResult.mmaterials);
+                    }else if(dataResult.mmaterials == 1){
+                    document.getElementById('mmaterials').checked = false;
+                    $('#mmaterials').val(dataResult.mmaterials);
+                    }
+
+                    if(dataResult.mservices == 0){
+                    document.getElementById('mservices').checked = true;
+                    $('#mservices').val(dataResult.mservices);
+                    }else if(dataResult.mservices == 1){
+                    document.getElementById('mservices').checked = false;
+                    $('#mservices').val(dataResult.mservices);
+                    }
+
+                    if(dataResult.mdeclined_words == 0){
+                    document.getElementById('mdeclined_words').checked = true;
+                    $('#mdeclined_words').val(dataResult.mdeclined_words);
+                    }else if(dataResult.mdeclined_words == 1){
+                    document.getElementById('mdeclined_words').checked = false;
+                    $('#mdeclined_words').val(dataResult.mdeclined_words);
+                    }
+
+                    if(dataResult.mschools == 0){
+                    document.getElementById('mschools').checked = true;
+                    $('#mschools').val(dataResult.mschools);
+                    }else if(dataResult.mschools == 1){
+                    document.getElementById('mschools').checked = false;
+                    $('#mschools').val(dataResult.mschools);
+                    }
+                }else{
+                    document.getElementById('permissions').style.display = "none";
+                }
         }
   });
 }
-function delteacher(id) {
+function deluser(id, type) {
     $.ajax({
-        url: "delteacher.php",
+        url: "deluser.php",
         type: "POST",
         data: {
-          id: id
+          id: id,
+          type: type
         },
         cache: false,
         success: function(dataResult){
