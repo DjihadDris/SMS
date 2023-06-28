@@ -1,0 +1,9 @@
+{
+  "name": "ae.eid.chrome",
+  "description": "chrome extension to read EID",
+  "path": "EIDSampleConsole.exe",
+  "type": "stdio",
+  "allowed_origins": [
+    "chrome-extension://ipcncgpbppgjclagpdlodiiapmggolkf/"
+  ]
+}

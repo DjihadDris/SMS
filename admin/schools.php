@@ -130,6 +130,7 @@ include('schools_lang.php');
                             </div>
                             <?php } ?>
                         </div>
+<div class="alert alert-warning"><?php echo $downloadreader; ?></div>
                         <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
                         <table class="table table-bordered table-striped mt-0" width="100%" id="schools">
                                 <thead>
@@ -169,6 +170,69 @@ $conn->close();
 ?>
                                 </tbody>
                     </table>
+                    <?php }else{ ?>
+                        <?php
+if(isset($_GET['false'])){
+    echo "<div class='alert alert-danger'>Error..</div>";
+}
+?>
+<?php
+include('../db.php');
+$sql = "SELECT * FROM schools WHERE id='$_COOKIE[school_id]'";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
+?>
+<form method="POST" action="doschools">
+<div class="form-group row">
+<div class="col-sm-6">
+<input required class="form-control" name="name" placeholder="<?php echo $name; ?>" value="<?php echo "$row[name]"; ?>">
+</div>
+<div class="col-sm-6">
+<select required class="form-control" name="tawr">
+<option value=""><?php echo $tawr; ?></option>
+<option value="1" <?php if("$row[tawr]" == 1){echo "selected";} ?>><?php echo $tawr1; ?></option>
+<option value="2" <?php if("$row[tawr]" == 2){echo "selected";} ?>><?php echo $tawr2; ?></option>
+<option value="3" <?php if("$row[tawr]" == 3){echo "selected";} ?>><?php echo $tawr3; ?></option>
+</select>
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-6">
+<select required class="form-control" name="wilaya">
+<option value=""><?php echo $wilaya; ?></option>
+<?php
+$sqlw = "SELECT * FROM wilayas";
+$resultw = $conn->query($sqlw);
+if ($resultw->num_rows > 0) {
+while($roww = $resultw->fetch_assoc()) {
+if($lang == "ar"){
+    if("$roww[id]" == "$row[wilaya]"){
+echo "<option value='$roww[id]' selected>$roww[arname]</option>";
+    }else{
+echo "<option value='$roww[id]'>$roww[arname]</option>";
+    }
+}elseif($lang == "fr"){
+    if("$roww[id]" == "$row[wilaya]"){
+echo "<option value='$roww[id]'>$roww[frname]</option>";
+    }else{
+echo "<option value='$roww[id]'>$roww[frname]</option>";
+    }
+}
+}}
+?>
+</select>
+</div>
+<div class="col-sm-6">
+<input required class="form-control" name="address" placeholder="<?php echo $address; ?>" value="<?php echo "$row[address]"; ?>">
+</div>
+</div>
+<button class="btn btn-success" style="width: 100%;"><?php echo $save; ?></button>
+</form>
+<?php
+}}
+$conn->close();
+?>
                     <?php } ?>
                     </div>
                     <!--/Order Listing-->

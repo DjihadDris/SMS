@@ -11,10 +11,10 @@ $cancel_button = "Annuler";
 $leave = "Sortie";
 $save = "Enregistrer";
 $name = "Nom";
-$tawr = "";
+$tawr = "Phase";
 $tawr1 = "Primaire";
-$taw2 = "Moyenne";
-$tawr3 = "Lycée";
+$tawr2 = "Moyen";
+$tawr3 = "Secondaire";
 $wilaya = "Wilaya";
 $address = "Commune";
 $choose = "--Sélectionner--";
@@ -26,6 +26,7 @@ $exportpdf = "Exporter PDF";
 $print = "Imprimer";
 $copy = "Copier";
 $addschool = "Ajouter une école";
+$downloadreader = "Pour télécharger le lecteur de carte d'identité nationale: <a href='../download'>cliquez ici</a><br>Téléchargez ensuite l'extension Google Chrome: <a href='https://chrome.google.com/webstore/detail/adcs-eid-reader/ipcncgpbppgjclagpdlodiiapmggolkf' target='_blank'>cliquez ici</a>";
 }else{
 $lang = "ar";
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
@@ -53,5 +54,6 @@ $exportpdf = "تصدير PDF";
 $print = "طباعة";
 $copy = "نسخ";
 $addschool = "إضافة مدرسة";
+$downloadreader = "لتحميل قارئ بطاقات التعريف الوطنية: <a href='../download'>إضغط هنا</a><br>ثم قم بتحميل إضافة Google Chrome: <a href='https://chrome.google.com/webstore/detail/adcs-eid-reader/ipcncgpbppgjclagpdlodiiapmggolkf' target='_blank'>إضغط هنا</a>";
 }
 ?>

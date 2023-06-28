@@ -18,8 +18,8 @@ $exportpdf = "Exporter PDF";
 $print = "Imprimer";
 $copy = "Copier";
 $status = "Statut";
-$status0 = "";
-$statuq1 = "";
+$status0 = "Réalisé";
+$statuq1 = "Annulé";
 }else{
 $lang = "ar";
 $title = "تسيير الخدمات - نظام إدارة المدارس";
@@ -39,7 +39,7 @@ $exportpdf = "تصدير PDF";
 $print = "طباعة";
 $copy = "نسخ";
 $status = "الحالة";
-$status0 = "";
-$status1 = "";
+$status0 = "تم";
+$status1 = "ملغى";
 }
 ?>

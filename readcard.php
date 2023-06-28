@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADCS Emirates ID Reader</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet" />
+    <script
+        src="https://code.jquery.com/jquery-2.2.4.min.js"
+        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="
+        crossorigin="anonymous"></script>
+    
+    <script>
+      $(function(){
+            $('.btn-readCard').click(function(){
+                $('#txtNationalNumber').val('Scanning card...');
+                $('.eid-wrapper').addClass('loading');        
+                
+                CallExtenion();
+            });
+
+            $('.simulateEidResponse').click(function(){
+                var response = $(this).html();
+                try {
+                    if((response.toLowerCase()) == "no data"){
+                        throw "Could not read card.";
+                    }
+                    var json = $.parseJSON(response);
+                    $(json).each(function (i, val) {
+                        $.each(val, function (key, value) {
+                            if (key == 'EIDNumber'){                        
+                                $('.eid-wrapper').removeClass('loading');
+                                $("#txtNationalNumber").val(value);
+                                //alert('Card scanned successfully.');
+                            }                        
+                        });
+                    });
+                }
+                catch (e) {
+                    alert(e);
+                    $("#txtNationalNumber").val('');
+                    $('.eid-wrapper').removeClass('loading');
+                }
+            });
+        
+      });
+
+
+      function CallExtenion() {
+          //here are initiating extension event to execute console app
+          var event = document.createEvent('Event');
+          event.initEvent('EID_EVENT');
+          document.dispatchEvent(event);
+      }
+    </script>
+    <style>
+      .eid-wrapper .spinner-border{
+        display: none;
+      }
+      .eid-wrapper.loading .spinner-border{
+        display: inline-block;
+      }
+    </style>
+</head>
+<body>
+  <div class="container">
+    <div class="jumbotron text-center">
+        <h1>Emirates ID Reader</h1>
+        <h2>by <a href="http://alampk.com" target="_blank">alampk.com</a></h2>
+    </div>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+        <div class="eid-wrapper">
+            <div class="spinner-border text-warning position-absolute" role="status" style="top:1px;right:10px;">
+                <span class="sr-only loader">Loading...</span>
+            </div>
+            <input type="text" id="txtNationalNumber" class="form-control" />
+        </div>        
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+          <button class="btn btn-success btn-readCard">Read Card</button>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+          <span class="simulateEidResponse"><!--response from console app will come here--></span>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>

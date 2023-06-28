@@ -366,7 +366,7 @@ $conn->close();
                                 </div>
                                 <div class="modal-body" id="printable" style="text-align: center;">
     <center>
-    <div style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid; margin-bottom: 20px;/* bottom: 68px; margin-top: 68px; position: relative;*/">
+    <div id="pdfcard" style="border: 1px solid black; width: 85.6mm; height: 53.98mm; border-style: solid; margin-bottom: 20px;/* bottom: 68px; margin-top: 68px; position: relative;*/">
       <img src="../wizara.png" width="100%" style="position: relative; padding: 5px 25px 15px 25px;">
       <h6 style="margin-top: -5px !important;"><?php echo $schoolcard; ?></h6>
       <div id="margindetails" style="text-align: <?php if($lang == "ar"){echo "right";}else{echo "left";} ?>; margin-<?php if($lang == "ar"){echo "right";}else{echo "left";} ?>: 10px; margin-top: 7.5px; font-size: 10px;">
@@ -495,6 +495,10 @@ $conn->close();
     <!--<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>-->
     <!--JsBarcode-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jsbarcode/3.11.3/JsBarcode.all.min.js"></script>
+    <!--JSPDF-->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.3.2/html2canvas.min.js"></script>
+    <script src="../svg-to-png-main/main.js"></script>
     <!--Custom Js Script-->
     <script src="assets/js/custom.js"></script>
     <!--Custom Js Script-->
@@ -605,12 +609,29 @@ select2.on('change', function() {
 <?php } ?>
 });
 function printcard() {
-var printContents = document.getElementById('printable').innerHTML;
+/*var printContents = document.getElementById('printable').innerHTML;
 var originalContents = document.body.innerHTML;
 document.body.innerHTML = printContents;
 window.print();
 document.body.innerHTML = originalContents;
-location.reload();
+location.reload();*/
+svgToPngLib.svgToPng(document.querySelector('#printcode')).subscribe(function (value) {
+  var name = document.getElementById('printnamefn').innerHTML;
+  html2canvas(document.getElementById('pdfcard'), {dpi: 300}).then(canvas => {
+      var imgData1 = canvas.toDataURL('image/png');
+      var doc = new jsPDF({
+        orientation: 'l',
+        unit: 'mm',
+        format: [85.6, 53.9]
+      });
+
+  var doc = new jsPDF('l', 'mm', [85.6, 53.9]);
+  var imgData2 = value;
+  doc.addImage(imgData1, 'PNG', 0, 0, 85.6, 53.98); // Card
+  doc.addImage(imgData2, 'PNG', 31.5, 41.5, -1400, -1250); // Barcode
+  doc.save(name+'.pdf');
+    });
+  });
 }
 function addteacher() {
 var id = document.getElementById('atid').value;
