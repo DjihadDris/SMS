@@ -141,7 +141,7 @@ include('wilayas_lang.php');
                                 <tbody>
 <?php
 include('../db.php');
-$sql = "SELECT * FROM wilayas";
+$sql = "SELECT * FROM wilayas ORDER BY id";
 $i = 1;
 $result = $conn->query($sql);
 

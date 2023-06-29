@@ -15,7 +15,7 @@ include('sidebar_lang.php');
 </center>
 </a>
   <a class="item" onclick="openmsgslist()">
-    <i class="icon mail large"></i> <?php echo $messagetitle; ?>: <span style="margin-<?php if($lang == "ar"){echo 'right';}else{echo 'left';} ?>: 2.5px;"><?php include('../db.php'); $query = "SELECT * FROM messages WHERE to_user_id='$_COOKIE[id]' AND to_type='students' AND vu=''"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); echo $rowCount; $conn->close(); ?></span>
+    <i class="icon mail large"></i> <?php echo $messagetitle; ?><?php include('../db.php'); $query = "SELECT * FROM messages WHERE to_user_id='$_COOKIE[id]' AND to_type='students' AND vu=''"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); if($rowCount > 0){echo "<span class='ui red label'>".$rowCount."</span>";} $conn->close(); ?>
   </a>
   <a class="item" onclick="bgcolor()">
     <i class="settings icon large"></i>

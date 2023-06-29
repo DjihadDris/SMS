@@ -1,4 +1,4 @@
 <?php
-setcookie("id", "", time() - (60*60*24*30), "/");
+setcookie("id", "", time() - 3600, "/");
 header('Location: login');
 ?>

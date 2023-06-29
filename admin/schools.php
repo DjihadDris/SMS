@@ -171,7 +171,7 @@ $conn->close();
                                 </tbody>
                     </table>
                     <?php }else{ ?>
-                        <?php
+<?php
 if(isset($_GET['false'])){
     echo "<div class='alert alert-danger'>Error..</div>";
 }
@@ -202,7 +202,7 @@ while($row = $result->fetch_assoc()) {
 <select required class="form-control" name="wilaya">
 <option value=""><?php echo $wilaya; ?></option>
 <?php
-$sqlw = "SELECT * FROM wilayas";
+$sqlw = "SELECT * FROM wilayas ORDER BY id";
 $resultw = $conn->query($sqlw);
 if ($resultw->num_rows > 0) {
 while($roww = $resultw->fetch_assoc()) {
@@ -227,7 +227,7 @@ echo "<option value='$roww[id]'>$roww[frname]</option>";
 <input required class="form-control" name="address" placeholder="<?php echo $address; ?>" value="<?php echo "$row[address]"; ?>">
 </div>
 </div>
-<button class="btn btn-success" style="width: 100%;"><?php echo $save; ?></button>
+<button class="btn btn-success" style="width: 100%;" type="submit"><i class="fas fa-save"></i> <?php echo $save; ?></button>
 </form>
 <?php
 }}
@@ -263,7 +263,7 @@ $conn->close();
                                         <option value=""><?php echo $wilaya; ?></option>
 <?php
 include('../db.php');
-$sql = "SELECT * FROM wilayas";
+$sql = "SELECT * FROM wilayas ORDER BY id";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 while($row = $result->fetch_assoc()) {

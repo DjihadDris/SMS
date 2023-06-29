@@ -38,7 +38,7 @@ include('register_lang.php');
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $school; ?></span>
-  <select class="form-control" id="rschool_id" onchange="getyears()">
+  <select class="form-control" id="rschool_id">
     <option value="">--<?php echo $choose; ?>--</option>
 <?php
 include('../db.php');
@@ -57,24 +57,9 @@ $conn->close();
   </select>
 </div>
 
-<div class="input-group mb-3" id="dryear_id" style="display: none;">
-  <span class="input-group-text"><?php echo $year; ?></span>
-  <select class="form-control" id="ryear_id" onchange="getdivs()"></select>
-</div>
-
-<div class="input-group mb-3" id="drdiv_id" style="display: none;">
-  <span class="input-group-text"><?php echo $div; ?></span>
-  <select class="form-control" id="rdiv_id" onchange="getclasses()"></select>
-</div>
-
-<div class="input-group mb-3" id="drclass_id" style="display: none;">
-  <span class="input-group-text"><?php echo $class; ?></span>
-  <select class="form-control" id="rclass_id"></select>
-</div>
-
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $passwordtext; ?></span>
   <input type="password" class="form-control" placeholder="<?php echo $passwordtext; ?>" id="rpassword" minlength="8" maxlength="16">
 </div>
 
-<center><button type="button" class="button" onclick="createaccount()"><?php echo $btn; ?></button></center>
+<center><button type="button" class="btn btn-theme" onclick="createaccount()" style="width: 100%;"><?php echo $btn; ?></button></center>

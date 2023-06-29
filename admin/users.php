@@ -347,7 +347,7 @@ $conn->close();
                                         <label for="mschools"><?php echo $schools; ?></label>
                                     </div>
                                     </span>
-                                    <label><?php echo $pw; ?> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
+                                    <label><?php echo $pw; ?> <span style="color: red;">*</span> <span id="leavepass" style="display: none;">(<b><?php echo $leavepass; ?></b>)</span></label>
                                     <input type="text" class="form-control" id="aupassword" placeholder="<?php echo $chars8; ?>">
                                 </div>
                                 <div class="modal-footer">
@@ -372,7 +372,7 @@ $conn->close();
                                 <div class="modal-body" style="text-align: center;">
                                 <form action="uploadusers.php" method="post" enctype="multipart/form-data">
                                   <div class="input-group mb-3">
-                                    <input type="file" class="form-control" name="excel_file">
+                                    <input type="file" class="form-control" name="excel_file" accept=".xlsx, .xls">
                                     <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
                                   </div>
                                 </form>

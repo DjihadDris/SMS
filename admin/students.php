@@ -421,7 +421,7 @@ $conn->close();
   </center>
                                 </div>
                                 <div class="modal-footer">
-                                <button class="btn btn-outline-success" onclick="printcard()"><i class="fas fa-print"></i> <?php echo $print; ?></button>
+                                <button class="btn btn-outline-success" onclick="printcard()" id="printcardbtn"><i class="fas fa-print"></i> <?php echo $print; ?></button>
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal"><?php echo $leave; ?></button>
                                 </div>
                             </div>
@@ -442,7 +442,7 @@ $conn->close();
                                 <div class="modal-body" style="text-align: center;">
                                 <form action="uploadstudents.php" method="post" enctype="multipart/form-data">
                                   <div class="input-group mb-3">
-                                    <input type="file" class="form-control" name="excel_file">
+                                    <input type="file" class="form-control" name="excel_file" accept=".xlsx, .xls">
                                         <button class="btn btn-success" type="submit"><?php echo $importexcel; ?></button>
                                   </div>
                                 </form>
@@ -688,6 +688,8 @@ location.reload();*/
       doc.addImage(imgData, 'PNG', 0, 0, 85.6, 53.98);
       doc.save('SMS.pdf');
     });*/
+document.getElementById('printcardbtn').disabled = true;
+document.getElementById('printcardbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
 svgToPngLib.svgToPng(document.querySelector('#printcode')).subscribe(function (value) {
   var name = document.getElementById('printnamefn').innerHTML;
   html2canvas(document.getElementById('pdfcard'), {dpi: 300}).then(canvas => {
@@ -697,14 +699,13 @@ svgToPngLib.svgToPng(document.querySelector('#printcode')).subscribe(function (v
         unit: 'mm',
         format: [85.6, 53.9]
       });
-
-  var doc = new jsPDF('l', 'mm', [85.6, 53.9]);
   var imgData2 = value;
   doc.addImage(imgData1, 'PNG', 0, 0, 85.6, 53.98); // Card
   doc.addImage(imgData2, 'PNG', 31.5, 41.5, -1400, -1250); // Barcode
   doc.save(name+'.pdf');
     });
   });
+setTimeout(function(){document.getElementById('printcardbtn').disabled = false; document.getElementById('printcardbtn').innerHTML = "<i class='fas fa-print'></i> <?php echo $print; ?>";}, 2500);
 }
 function addstudent() {
 var id = document.getElementById('asid').value;

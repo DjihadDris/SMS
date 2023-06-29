@@ -2,96 +2,7 @@
 if(!isset($_COOKIE['id'])){
     header('Location: login');
 }
-include('portal_lang.php');
-
-include('../db.php');
-// Check if the form is submitted via POST
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get the student code from the scanned barcode
-    $Code = $_POST['code'];
-if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$retrieveQueryo = "SELECT name, fn, school_id, code FROM students WHERE code = '$Code' UNION SELECT name, fn, school_id, code FROM teachers WHERE code = '$Code'";
-}else{
-$retrieveQueryo = "SELECT name, fn, school_id, code FROM students WHERE code = '$Code' AND school_id = '$_COOKIE[school_id]' UNION SELECT name, fn, school_id, code FROM teachers WHERE code = '$Code' AND school_id = '$_COOKIE[school_id]'";
-}
-$resulto = $conn->query($retrieveQueryo);
-if ($resulto->num_rows > 0) {
-    while ($rowo = $resulto->fetch_assoc()) {
-
-    // Get the current timestamp
-    $time = date('Y-m-d H:i');
-
-    // Check the last entry for the student
-    $lastEntryType = '';
-    $lastEntryQuery = "SELECT type FROM entries WHERE code = '$Code' ORDER BY id DESC LIMIT 1";
-    $lastEntryResult = $conn->query($lastEntryQuery);
-
-    if ($lastEntryResult->num_rows > 0) {
-        // Retrieve the entry type of the last entry
-        $lastEntryRow = $lastEntryResult->fetch_assoc();
-        $lastEntryType = $lastEntryRow['type'];
-    }
-
-    // Determine the current entry type
-    $entryType = ($lastEntryType === '0') ? '1' : '0';
-
-    // Prepare the SQL statement to insert the entry into the database
-    if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-        $sql = "INSERT INTO entries (code, time, type, school_id) VALUES ('$Code', '$time', '$entryType', '$rowo[school_id]')";
-    }else{
-    $sql = "INSERT INTO entries (code, time, type, school_id) VALUES ('$Code', '$time', '$entryType', '$_COOKIE[school_id]')";
-    }
-
-    // Execute the SQL statement
-    if ($conn->query($sql) === TRUE) {
-        if($lang == "ar"){
-            if($entryType == 0){
-                $message = "<div class='alert alert-success'>تم تسجيل دخول $rowo[fn] $rowo[name].</div>";
-            }else{
-                $message = "<div class='alert alert-success'>تم تسجيل خروج $rowo[fn] $rowo[name].</div>";
-            }
-        }else{
-            if($entryType == 0){
-                $message = "<div class='alert alert-success'>L'entrée de $rowo[fn] $rowo[name] a été enregistrée.</div>";
-            }else{
-                $message = "<div class='alert alert-success'>La sortie de $rowo[fn] $rowo[name] a été enregistrée.</div>";
-            }
-        }
-    } else {
-        $message = "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $conn->error . "</div>";
-    }
-}}else{
-    if($lang == "ar"){
-        $message = "<div class='alert alert-danger'>هذا الرمز غير موجود.</div>";
-    }else{
-        $message = "<div class='alert alert-danger'>Ce code n'existe pas.</div>";
-    }
-}
-}
-
-$i = 1;
-// Retrieve the saved entries and student/teacher information from the database
-$entries = [];
-if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$retrieveQuery = "(SELECT students.code AS code, students.name AS name, students.fn AS fn, entries.id AS id, entries.time AS time, entries.type AS type, entries.school_id AS school_id FROM students INNER JOIN entries ON students.code = entries.code)
-    UNION
-    (SELECT teachers.code AS code, teachers.name AS name, teachers.fn AS fn, entries.id AS id, entries.time AS time, entries.type AS type, entries.school_id AS school_id FROM teachers INNER JOIN entries ON teachers.code = entries.code)
-    ORDER BY id DESC";
-}else{
-$retrieveQuery = "(SELECT students.code AS code, students.name AS name, students.fn AS fn, entries.id AS id, entries.time AS time, entries.type AS type, entries.school_id AS school_id FROM students INNER JOIN entries ON students.code = entries.code AND entries.school_id = $_COOKIE[school_id])
-                  UNION
-                  (SELECT teachers.code AS code, teachers.name AS name, teachers.fn AS fn, entries.id AS id, entries.time AS time, entries.type AS type, entries.school_id AS school_id FROM teachers INNER JOIN entries ON teachers.code = entries.code AND entries.school_id = $_COOKIE[school_id])
-                  ORDER BY id DESC";
-}
-
-$result = $conn->query($retrieveQuery);
-
-if ($result->num_rows > 0) {
-    // Fetch all the entries
-    while ($row = $result->fetch_assoc()) {
-        $entries[] = $row;
-    }
-}
+include('profile_lang.php');
 ?>
 <!DOCTYPE html>
 <html dir="<?php if($lang == "ar"){echo 'rtl';}else{echo 'ltr';} ?>">
@@ -180,11 +91,11 @@ if ($result->num_rows > 0) {
   </head>
   <body>
     <!--Page loader-->
-    <!--<div class="loader-wrapper">
+    <div class="loader-wrapper">
         <div class="loader-circle">
             <div class="loader-wave"></div>
         </div>
-    </div>-->
+    </div>
     <!--Page loader-->
     
     <!--Page Wrapper-->
@@ -208,53 +119,109 @@ if ($result->num_rows > 0) {
                 <div class="mt-4 mb-4 p-3 bg-white border shadow-sm lh-sm">
                     <!--Order Listing-->
                     <div class="product-list">
-
-                        <div class="row border-bottom mb-4">
-                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-sign-in-alt"></i> <?php echo $portal; ?></h6></div>
-                        </div>
-    <form method="POST" id="entriesForm">
-    <div class="input-group mb-3">
-        <input maxlength="10" minlength="10" placeholder="<?php echo $codetxt; ?>" required type="text" id="code" name="code" class="form-control" autofocus onkeyup="checkcode()">
-        <button class="btn btn-success" type="submit" id="entriesFormbtn"><?php echo $save; ?></button>
-    </div>
-    </form>
-<?php if(isset($message)){echo $message;} ?>
-    <!-- Display the saved entries and student/teacher information in a table -->
-        <table class="table table-bordered table-striped mt-0" width="100%" id="entries">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th><?php echo $codetxt; ?></th>
-                    <th><?php echo $fntxt; ?></th>
-                    <th><?php echo $nametxt; ?></th>
-                    <th><?php echo $timetxt; ?></th>
-                    <th><?php echo $typetxt; ?></th>
-                    <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-                    <th><?php echo $schooltxt ?></th>
-                    <?php } ?>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($entries as $entry) : ?>
-                    <tr>
-                        <td class="align-middle"><?php echo $i;$i++; ?></td>
-                        <td class="align-middle"><?php echo $entry['code']; ?></td>
-                        <td class="align-middle"><?php echo $entry['fn']; ?></td>
-                        <td class="align-middle"><?php echo $entry['name']; ?></td>
-                        <td class="align-middle"><?php echo $entry['time']; ?></td>
-                        <td class="align-middle"><?php if($entry['type'] == 0){echo $type0;}elseif($entry['type'] == 1){echo $type1;} ?></td>
-                        <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
-                        <td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$entry[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} $conn->close(); ?></td>
-                        <?php } ?>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
                         
+                        <div class="row border-bottom mb-4">
+                            <div class="col-sm-8 pt-2"><h6 class="mb-4 bc-header"><i class="fas fa-user"></i> <?php echo $profile; ?></h6></div>
+                        </div>
+<?php
+if(isset($_GET['false'])){
+if($_GET['false'] == "erroractualpassword"){
+echo "<script>alertify.alert('Actual password is false..');</script>";
+}else if($_GET['false'] == "errornewpassword"){
+echo "<script>alertify.alert('Confirmation of new password is false..');</script>";
+}else{
+echo "<script>alertify.alert('Error..');</script>";
+}
+}
+?>
+<div class="button-container custom-tabs-2">
+<nav>
+<div class="nav nav-tabs nav-fill" id="nav-customContent" role="tablist">
+<a class="nav-item nav-link active show" id="nav-profile" data-toggle="tab" href="#custom-profile" role="tab" aria-controls="nav-profile" aria-selected="true"><?php echo $profile; ?></a>
+<a class="nav-item nav-link" id="nav-password" data-toggle="tab" href="#custom-password" role="tab" aria-controls="nav-password" aria-selected="false"><?php echo $pw; ?></a>
+</div>
+</nav>
+
+<div class="tab-content py-3 px-3 px-sm-0" id="nav-customContent">
+
+<div class="tab-pane fade active show" id="custom-profile" role="tabpanel" aria-labelledby="nav-profile">
+
+<?php
+include('../db.php');
+$sql = "SELECT * FROM $_COOKIE[user_type] WHERE id='$_COOKIE[id]'";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
+?>
+<form method="POST" action="doprofile">
+<div class="form-group row">
+<div class="col-sm-6">
+<input required type="text" class="form-control" name="name" placeholder="<?php echo $name; ?>" value="<?php echo "$row[name]"; ?>">
+</div>
+<div class="col-sm-6">
+<input required type="text" class="form-control" name="fn" placeholder="<?php echo $fn; ?>" value="<?php echo "$row[fn]"; ?>">
+</div>
+</div>
+
+<div class="form-group row">
+<div class="col-sm-6">
+<input required type="date" class="form-control" name="dob" placeholder="<?php echo $dob; ?>" value="<?php echo "$row[dob]"; ?>">
+</div>
+<div class="col-sm-6">
+<select required class="form-control" name="gender">
+    <option value=""><?php echo $choose; ?></option>
+    <option value="0" <?php if("$row[gender]" == 0){echo "selected";} ?>><?php echo $gender0; ?></option>
+    <option value="1" <?php if("$row[gender]" == 1){echo "selected";} ?>><?php echo $gender1; ?></option>
+</select>
+</div>
+</div>
+
+<div class="form-group row">
+<div class="col-sm-6">
+<input required type="email" class="form-control" name="email" placeholder="<?php echo $email; ?>" value="<?php echo "$row[email]"; ?>">
+</div>
+<div class="col-sm-6">
+<input required type="tel" class="form-control" name="pn" placeholder="<?php echo $pn; ?>" value="<?php echo "$row[pn]"; ?>">
+</div>
+</div>
+
+<button class="btn btn-success" style="width: 100%;" type="submit"><i class="fas fa-save"></i> <?php echo $save; ?></button>
+</form>
+<?php
+}}
+$conn->close();
+?>
+
+</div>
+
+<div class="tab-pane fade" id="custom-password" role="tabpanel" aria-labelledby="nav-password">
+
+<form method="POST" action="dopassword">
+<div class="form-group row">
+<div class="col-sm-12">
+<input required type="password" class="form-control" name="actualpassword" placeholder="<?php echo $actualpassword; ?>" minlength="8">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-12">
+<input required type="password" class="form-control" name="newpassword" placeholder="<?php echo $newpassword; ?>" minlength="8" maxlength="16">
+</div>
+</div>
+<div class="form-group row">
+<div class="col-sm-12">
+<input required type="password" class="form-control" name="newnewpassword" placeholder="<?php echo $newnewpassword; ?>" minlength="8" maxlength="16">
+</div>
+</div>
+
+<button class="btn btn-success" style="width: 100%;" type="submit"><i class="fas fa-save"></i> <?php echo $save; ?></button>
+</form>
+
+</div>
+
+</div>
+</div>
                     </div>
                     <!--/Order Listing-->
-
                 </div>
 
                 <!--Footer-->
@@ -320,15 +287,10 @@ if ($result->num_rows > 0) {
     <!--Custom Js Script-->
     <script src="assets/js/custom.js"></script>
     <!--Custom Js Script-->
+<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
 <script>
 $(document).ready(function() {
-let table = $('#entries').DataTable({
-    /*columnDefs: [
-        {
-            targets: 12,
-            visible: false
-        }
-    ],*/
+let table = $('#schools').DataTable({
     ordering: true,
     searching: true,
     paging: true,
@@ -346,33 +308,33 @@ let table = $('#entries').DataTable({
         extend: 'copy',
         text: '<i class="fas fa-copy"></i> <?php echo $copy; ?>',
         className: 'btn btn-danger',
-        /*exportOptions: { columns: ':visible:not(:last-child)' }*/
+        exportOptions: { columns: ':visible:not(:last-child)' }
       },
       {
         extend: 'csv',
         text: '<i class="fas fa-file-csv"></i> <?php echo $exportcsv; ?>',
         className: 'btn btn-success',
-        /*exportOptions: { columns: ':visible:not(:last-child)' }*/
+        exportOptions: { columns: ':visible:not(:last-child)' }
       },
       {
         extend: 'excel',
         text: '<i class="fas fa-file-excel"></i> <?php echo $exportexcel; ?>',
         className: 'btn btn-theme',
-        /*exportOptions: { columns: ':visible:not(:last-child)' }*/
+        exportOptions: { columns: ':visible:not(:last-child)' }
       },
       <?php if($lang <> "ar"){ ?>
       {
         extend: 'pdf',
         text: '<i class="fas fa-file-pdf"></i> <?php echo $exportpdf; ?>',
         className: 'btn btn-warning',
-        /*exportOptions: { columns: ':visible:not(:last-child)' }*/
+        exportOptions: { columns: ':visible:not(:last-child)' }
       },
       <?php } ?>
       {
         extend: 'print',
         text: '<i class="fas fa-print"></i> <?php echo $print; ?>',
         className: 'btn btn-info',
-        /*exportOptions: { columns: ':visible:not(:last-child)' }*/
+        exportOptions: { columns: ':visible:not(:last-child)' }
         },
     ],
     initComplete: function(settings, json) {
@@ -385,14 +347,75 @@ let table = $('#entries').DataTable({
 });
 });
 
-function checkcode(){
-var code = document.getElementById('code').value;
-if(code != "" && code.length == 10){
-    document.getElementById("entriesForm").submit();
-    document.getElementById('entriesFormbtn').disabled = true;
-    document.getElementById('entriesFormbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+function addschool() {
+var id = document.getElementById('asid').value;
+var name = document.getElementById('asname').value;
+var tawr = document.getElementById('astawr').value;
+var wilaya = document.getElementById('aswilaya').value;
+var address = document.getElementById('asaddress').value;
+if(name == '' || tawr == '' || wilaya == '' || address == '') {
+    alertify.error('<?php echo $allfields; ?>');
+}else{
+    $.ajax({
+        url: "addschool.php",
+        type: "POST",
+        data: {
+          id: id,
+          name: name,
+          tawr: tawr,
+          wilaya: wilaya,
+          address: address
+        },
+        cache: false,
+        beforeSend: function(){
+            document.getElementById('addschoolbtn').disabled = true;
+            document.getElementById('addschoolbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+        },
+        success: function(dataResult){
+        var dataResult = JSON.parse(dataResult);
+        if(dataResult.statusCode==200) {
+        alertify.success(dataResult.message);
+        setTimeout(function(){location.reload();},2500);
+        } else {
+        alertify.error(dataResult.message);
+        }
+        }
+  });
 }
+}
+function editschool(id) {
+  $.ajax({
+        url: "getschool.php",
+        type: "POST",
+        data: {
+          id: id
+        },
+        cache: false,
+        success: function(dataResult){
+            var dataResult = JSON.parse(dataResult);
+                $('#addSchool').modal('show');
+                $('#asid').val(dataResult.id);
+                $('#asname').val(dataResult.name);
+                $('#astawr').val(dataResult.tawr);
+                $('#aswilaya').val(dataResult.wilaya);
+                $('#asaddress').val(dataResult.address);
+        }
+  });
+}
+function delschool(id) {
+    $.ajax({
+        url: "delschool.php",
+        type: "POST",
+        data: {
+          id: id
+        },
+        cache: false,
+        success: function(dataResult){
+            location.reload();
+        }
+  });
 }
 </script>
+<?php } ?>
   </body>
 </html>
