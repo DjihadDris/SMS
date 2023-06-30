@@ -137,14 +137,17 @@ var dob = document.getElementById('rdob').value;
 var gender = document.getElementById('rgender').value;
 var email = document.getElementById('remail').value;
 var pn = document.getElementById('rpn').value;
-var school_id = document.getElementById('rschool_id').value;
-var year_id = document.getElementById('ryear_id').value;
-var div_id = document.getElementById('rdiv_id').value;
-var class_id = document.getElementById('rclass_id').value;
+var school_name = document.getElementById('rschool_name').value;
+var tawr = document.getElementById('rtawr').value;
+var wilaya = document.getElementById('rwilaya').value;
+var address = document.getElementById('raddress').value;
 var password = document.getElementById('rpassword').value;
 
-if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_id == '' || year_id == '' || class_id == '' || password == '') {
+if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_name == '' || tawr == '' || wilaya == '' || address == '' || password == '') {
     alertify.error('<?php echo $allfields; ?>');
+} else if(password != "" && password.length < 8) {
+    alertify.error('<?php echo $passwordshort; ?>');
+    return false;
 } else {
     $.ajax({
         url: "createaccount.php",
@@ -156,13 +159,17 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
             gender: gender,
             email: email,
             pn: pn,
-            school_id: school_id,
-            year_id: year_id,
-            div_id: div_id,
-            class_id: class_id,
+            school_name: school_name,
+            tawr: tawr,
+            wilaya: wilaya,
+            address: address,
             password: password
         },
         cache: false,
+        beforeSend: function(){
+            document.getElementById('createaccountbtn').disabled = true;
+            document.getElementById('createaccountbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+        },
         success: function(dataResult){
         var dataResult = JSON.parse(dataResult);
         if(dataResult.statusCode==200) {

@@ -294,6 +294,9 @@ var password = document.getElementById('rpassword').value;
 
 if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_id == '' || year_id == '' || class_id == '' || password == '') {
     alertify.error('<?php echo $allfields; ?>');
+} else if(password != "" && password.length < 8) {
+    alertify.error('<?php echo $passwordshort; ?>');
+    return false;
 } else {
     $.ajax({
         url: "createaccount.php",
@@ -312,6 +315,10 @@ if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '
             password: password
         },
         cache: false,
+        beforeSend: function(){
+            document.getElementById('createaccountbtn').disabled = true;
+            document.getElementById('createaccountbtn').innerHTML = "<i class='fa fa-spinner fa-spin'></i>";
+        },
         success: function(dataResult){
         var dataResult = JSON.parse(dataResult);
         if(dataResult.statusCode==200) {

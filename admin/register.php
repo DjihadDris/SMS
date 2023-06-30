@@ -28,28 +28,43 @@ include('register_lang.php');
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $email; ?></span>
-  <input type="text" class="form-control" placeholder="<?php echo $email; ?>" id="remail">
+  <input type="email" class="form-control" placeholder="<?php echo $email; ?>" id="remail">
 </div>
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $pn; ?></span>
-  <input type="text" class="form-control" placeholder="<?php echo $pn; ?>" id="rpn">
+  <input type="tel" class="form-control" placeholder="<?php echo $pn; ?>" id="rpn">
 </div>
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $school; ?></span>
-  <select class="form-control" id="rschool_id">
+  <input type="text" class="form-control" placeholder="<?php echo $school; ?>" id="rschool_name">
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><?php echo $tawr; ?></span>
+  <select class="form-control" id="rtawr">
+    <option value="">--<?php echo $choose; ?>--</option>
+    <option value="1"><?php echo $tawr1; ?></option>
+    <option value="2"><?php echo $tawr2; ?></option>
+    <option value="3"><?php echo $tawr3; ?></option>
+  </select>
+</div>
+
+<div class="input-group mb-3">
+  <span class="input-group-text"><?php echo $wilaya; ?></span>
+  <select class="form-control" id="rwilaya">
     <option value="">--<?php echo $choose; ?>--</option>
 <?php
 include('../db.php');
 
-$sql = "SELECT * FROM schools";
+$sql = "SELECT * FROM wilayas ORDER BY id";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
 ?>
-    <option value="<?php echo "$row[id]"; ?>"><?php echo "$row[name]"; ?></option>
+    <option value="<?php echo "$row[id]"; ?>"><?php if($lang == "ar"){echo "$row[arname]";}else{echo "$row[frname]";} ?></option>
 <?php
   }}
 $conn->close();
@@ -58,8 +73,13 @@ $conn->close();
 </div>
 
 <div class="input-group mb-3">
+  <span class="input-group-text"><?php echo $address; ?></span>
+  <input type="text" class="form-control" placeholder="<?php echo $address; ?>" id="raddress">
+</div>
+
+<div class="input-group mb-3">
   <span class="input-group-text"><?php echo $passwordtext; ?></span>
   <input type="password" class="form-control" placeholder="<?php echo $passwordtext; ?>" id="rpassword" minlength="8" maxlength="16">
 </div>
 
-<center><button type="button" class="btn btn-theme" onclick="createaccount()" style="width: 100%;"><?php echo $btn; ?></button></center>
+<center><button type="button" class="btn btn-theme" onclick="createaccount()" id="createaccountbtn" style="width: 100%;"><?php echo $btn; ?></button></center>

@@ -28,12 +28,12 @@ include('register_lang.php');
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $email; ?></span>
-  <input type="text" class="form-control" placeholder="<?php echo $email; ?>" id="remail">
+  <input type="email" class="form-control" placeholder="<?php echo $email; ?>" id="remail">
 </div>
 
 <div class="input-group mb-3">
   <span class="input-group-text"><?php echo $pn; ?></span>
-  <input type="text" class="form-control" placeholder="<?php echo $pn; ?>" id="rpn">
+  <input type="tel" class="form-control" placeholder="<?php echo $pn; ?>" id="rpn">
 </div>
 
 <div class="input-group mb-3">
@@ -72,4 +72,4 @@ $conn->close();
   <input type="password" class="form-control" placeholder="<?php echo $passwordtext; ?>" id="rpassword" minlength="8" maxlength="16">
 </div>
 
-<center><button type="button" class="button" onclick="createaccount()" style="width: 100%;"><?php echo $btn; ?></button></center>
+<center><button type="button" class="button" onclick="createaccount()" id="createaccountbtn" style="width: 100%;"><?php echo $btn; ?></button></center>

@@ -20,6 +20,7 @@ $help_5 = "Si vous ne parvenez pas à vous connecter, veuillez contacter l'admin
 $id5alemail = "Veuillez saisir votre e-mail";
 $id5alpassword = "Veuillez votre mot de passe";
 $allfields = "Tous les champs sont requis";
+$passwordshort = "Mot de passe trop court";
 }else{
 $lang = "ar";
 $title = "تسجيل الدخول - نظام إدارة المدارس";
@@ -41,5 +42,6 @@ $help_5 = "إذا لم تستطيع تسجيل الدخول الرجاء الإ�
 $id5alemail = "الرجاء إدخال البريد الإلكتروني";
 $id5alpassword = "الرجاء إدخال كلمة المرور";
 $allfields = "جميع الحقول مطلوبة";
+$passwordshort = "كلمة المرور قصيرة جدا";
 }
 ?>

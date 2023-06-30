@@ -16,6 +16,7 @@ $id5alemail = "Veuillez saisir votre e-mail";
 $id5alpassword = "Veuillez votre mot de passe";
 $allfields = "Tous les champs sont requis";
 $system = "Système de gestion scolaire";
+$passwordshort = "Mot de passe trop court";
 }else{
 $lang = "ar";
 $title = "تسجيل الدخول - نظام إدارة المدارس";
@@ -33,5 +34,6 @@ $id5alemail = "الرجاء إدخال البريد الإلكتروني";
 $id5alpassword = "الرجاء إدخال كلمة المرور";
 $allfields = "جميع الحقول مطلوبة";
 $system = "نظام إدارة المدارس";
+$passwordshort = "كلمة المرور قصيرة جدا";
 }
 ?>

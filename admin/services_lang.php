@@ -19,7 +19,7 @@ $print = "Imprimer";
 $copy = "Copier";
 $status = "Statut";
 $status0 = "Réalisé";
-$statuq1 = "Annulé";
+$statuq1 = "En attente";
 }else{
 $lang = "ar";
 $title = "تسيير الخدمات - نظام إدارة المدارس";
@@ -40,6 +40,6 @@ $print = "طباعة";
 $copy = "نسخ";
 $status = "الحالة";
 $status0 = "تم";
-$status1 = "ملغى";
+$status1 = "في الإنتظار";
 }
 ?>

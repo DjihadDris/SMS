@@ -306,9 +306,9 @@ $conn->close();
                                         <option value="0"><?php echo $gender0; ?></option>
                                         <option value="1"><?php echo $gender1; ?></option>
                                     </select>
-                                    <label><?php echo $email; ?> <span style="color: red;">*</span></label>
+                                    <label><?php echo $email; ?></label>
                                     <input type="email" class="form-control" id="atemail">
-                                    <label><?php echo $pn; ?> <span style="color: red;">*</span></label>
+                                    <label><?php echo $pn; ?></label>
                                     <input type="tel" class="form-control" id="atpn">
                                     <span style="<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){}else{echo "display: none;";} ?>">
                                     <label><?php echo $school; ?> <span style="color: red;">*</span></label>
@@ -648,7 +648,7 @@ var selectedOptions = Array.from(selectElement.selectedOptions).map(option => op
 var material_id = document.getElementById('atmaterial').value;
 var password = document.getElementById('atpassword').value;
 
-if(name == '' || fn == '' || dob == '' || gender == '' || email == '' || pn == '' || school_id == '' || selectedOptions == '' || material_id == '') {
+if(name == '' || fn == '' || dob == '' || gender == '' || school_id == '' || selectedOptions == '' || material_id == '') {
     alertify.error('<?php echo $allfields; ?>');
 } else if(password != "" && password.length < 8) {
     alertify.error('<?php echo $passwordshort; ?>');
