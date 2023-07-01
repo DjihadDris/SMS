@@ -174,7 +174,11 @@ if(isset($_GET['false'])){
                                         <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
                                         <th><?php echo $school; ?></th>
                                         <th><?php echo $type; ?></th>
+                                        <th><?php echo $iptxt; ?></th>
+                                        <th><?php echo $lattxt; ?></th>
+                                        <th><?php echo $longtxt; ?></th>
                                         <?php } ?>
+                                        <th><?php echo $lastlogin; ?></th>
                                         <th><?php echo $val; ?></th>
                                         <th></th>
                                     </tr>
@@ -183,7 +187,7 @@ if(isset($_GET['false'])){
 <?php
 include('../db.php');
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$sql = "SELECT 'superadmins' AS type, id, name, fn, dob, gender, email, pn, school_id, val FROM superadmins WHERE id<>'$_COOKIE[id]' UNION SELECT 'admins' AS type, id, name, fn, dob, gender, email, pn, school_id, val FROM admins";
+$sql = "SELECT 'superadmins' AS type, id, name, fn, dob, gender, email, pn, school_id, val, lastdate, lasttime, lastlat, lastlong, lastip FROM superadmins WHERE id<>'$_COOKIE[id]' UNION SELECT 'admins' AS type, id, name, fn, dob, gender, email, pn, school_id, val, lastdate, lasttime, lastlat, lastlong, lastip FROM admins";
 }else{
 $sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'";
 }
@@ -204,7 +208,11 @@ if ($result->num_rows > 0) {
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
 <td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} ?></td>
 <td class="align-middle"><?php if("$row[type]" == "superadmins"){echo $type0;}elseif("$row[type]" == "admins"){echo $type1;} ?></td>
+<td class="align-middle"><?php echo "$row[lastip]" ?></td>
+<td class="align-middle"><?php echo "$row[lastlat]" ?></td>
+<td class="align-middle"><?php echo "$row[lastlong]" ?></td>
 <?php } ?>
+<td class="align-middle"><?php echo "$row[lastdate] ".$intxt." $row[lasttime]"; ?></td>
 <td class="align-middle"><?php if("$row[val]" == 0){echo "<span class='badge badge-success'>$val0</span>";}elseif("$row[val]" == 1){echo "<span class='badge badge-danger'>$val1</span>";} ?></td>
 <td class="align-middle text-center">
     <button class="btn btn-info" onclick="showmore(<?php echo "$row[id]"; ?> , '<?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "$row[type]";}else{echo "admins";} ?>')"><i class="fas fa-edit"></i></button>

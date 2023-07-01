@@ -26,6 +26,11 @@ $pw = "Mot de profile";
 $actualpassword = "Mot de passe actuel";
 $newpassword = "Nouveau mot de passe";
 $newnewpassword = "Confirmation du nouveau mot de passe";
+$lastlogin = "Dernière connexion";
+$intxt = "à";
+$lattxt = "Latitude";
+$longtxt = "Longitude";
+$iptxt = "IP";
 }else{
 $lang = "ar";
 $title = "الملف الشخصي - نظام إدارة المدارس";
@@ -53,5 +58,10 @@ $pw = "كلمة المرور";
 $actualpassword = "كلمة المرور الحالية";
 $newpassword = "كلمة المرور الجديدة";
 $newnewpassword = "تأكيد كلمة المرور الجديدة";
+$lastlogin = "آخر تسجيل دخول";
+$intxt = "على الساعة";
+$lattxt = "خط العرض";
+$longtxt = "خط الطول";
+$iptxt = "IP";
 }
 ?>

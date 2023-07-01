@@ -126,11 +126,11 @@ include('profile_lang.php');
 <?php
 if(isset($_GET['false'])){
 if($_GET['false'] == "erroractualpassword"){
-echo "<script>alertify.alert('Actual password is false..');</script>";
+echo "<div class='alert alert-danger'>Actual password is false..</div>";
 }else if($_GET['false'] == "errornewpassword"){
-echo "<script>alertify.alert('Confirmation of new password is false..');</script>";
+echo "<div class='alert alert-danger'>Confirmation of new password is false..</div>";
 }else{
-echo "<script>alertify.alert('Error..');</script>";
+echo "<div class='alert alert-danger'>Error..</div>";
 }
 }
 ?>
@@ -153,6 +153,7 @@ $result = $conn->query($sql);
 if ($result->num_rows > 0) {
 while($row = $result->fetch_assoc()) {
 ?>
+<div class="alert alert-warning"><?php echo $lastlogin.": "."$row[lastdate] ".$intxt." $row[lasttime]"; if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){echo "<br> $lattxt: $row[lastlat] / $longtxt: $row[lastlong]<br>$iptxt: $row[lastip]";} ?></div>
 <form method="POST" action="doprofile">
 <div class="form-group row">
 <div class="col-sm-6">
@@ -181,7 +182,7 @@ while($row = $result->fetch_assoc()) {
 <input required type="email" class="form-control" name="email" placeholder="<?php echo $email; ?>" value="<?php echo "$row[email]"; ?>">
 </div>
 <div class="col-sm-6">
-<input required type="tel" class="form-control" name="pn" placeholder="<?php echo $pn; ?>" value="<?php echo "$row[pn]"; ?>">
+<input required type="tel" class="form-control" name="pn" placeholder="<?php echo $pn; ?>" value="<?php echo "$row[pn]"; ?>" pattern="[0-9]{10}">
 </div>
 </div>
 

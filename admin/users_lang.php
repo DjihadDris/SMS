@@ -39,6 +39,11 @@ $excelli4 = "Dans la colonne 'Statut du compte': 0 = Activé, 1 = Désactivé.";
 $type = "Type";
 $type0 = "Superadmin";
 $type1 = "Admin";
+$lastlogin = "Dernière connexion";
+$lattxt = "Latitude";
+$longtxt = "Longitude";
+$intxt = "à";
+$iptxt = "IP";
 }else{
 $lang = "ar";
 $title = "تسيير المستخدمين - نظام إدارة المدارس";
@@ -79,5 +84,10 @@ $excelli4 = "في العمود 'حالة الحساب': 0 = مفعل، 1 = غي�
 $type = "النوع";
 $type0 = "مشرف رئيسي";
 $type1 = "مشرف";
+$lastlogin = "آخر تسجيل دخول";
+$lattxt = "خط العرض";
+$longtxt = "خط الطول";
+$intxt = "على الساعة";
+$iptxt = "IP";
 }
 ?>

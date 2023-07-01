@@ -96,15 +96,17 @@ button {
                 <h3 class="mb-4" style="<?php if($lang == "ar"){echo "text-align: right;";} ?>"><?php echo $login; ?></h3>
                     <form class="mt-2" id="loginForm">
                         <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="fa fa-user"></i></span>
-                            <input type="text" class="form-control mt-0" id="email" placeholder="<?php echo $email; ?>">
+                          <span class="input-group-text"><i class="fa fa-user"></i></span>
+                          <input type="text" class="form-control mt-0" id="email" placeholder="<?php echo $email; ?>">
                         </div>
 
                         <div class="input-group mb-3">
-                                <span class="input-group-text"><i class="fa fa-lock"></i></span>
-                            <input type="password" class="form-control mt-0" id="password" placeholder="<?php echo $password; ?>" minlength="8">
+                          <span class="input-group-text"><i class="fa fa-lock"></i></span>
+                          <input type="password" class="form-control mt-0" id="password" placeholder="<?php echo $password; ?>" minlength="8">
                         </div>
-
+                        <input id="lastlat" hidden>
+                        <input id="lastlong" hidden>
+                        <input id="lastip" hidden>
                         <div class="form-group">
                             <button class="btn btn-theme btn-block p-2 mb-1" type="submit" id="btnSubmit"><?php echo $login; ?></button>
                             <a href="#" onclick="reset()" style="<?php if($lang == "fr"){echo "float: right;";} ?>">
@@ -130,6 +132,45 @@ button {
     <script src="assets/js/bootstrap.min.js"></script>
 
     <script>
+$(document).ready(function() {
+if ("geolocation" in navigator) {
+  // Call the getCurrentPosition() method to get the user's location
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      const latitude = position.coords.latitude;
+      const longitude = position.coords.longitude;
+      $("#lastlat").val(latitude);
+      $("#lastlong").val(longitude);
+
+    },
+    error => {
+      $("#lastlat").val("Error getting location:", error.message);
+      $("#lastlong").val("Error getting location:", error.message);
+    }
+  );
+} else {
+  $("#lastlat").val("Geolocation is not supported by this browser.");
+  $("#lastlong").val("Geolocation is not supported by this browser.");
+}
+
+// This code makes an HTTP request to an external service to obtain the IP address of the user.
+// Create a function to handle the response from the external service
+const handleResponse = (response) => {
+  if (response.status === 200) {
+    response.json().then(data => {
+      $("#lastip").val(data.ip);
+    });
+  } else {
+    $("#lastip").val('Failed to fetch IP address.');
+  }
+};
+
+// Make an HTTP request to the external service
+fetch('https://api.ipify.org/?format=json')
+  .then(handleResponse)
+  .catch(error => $("#lastip").val(error));
+});
+
 function createaccount() {
 var name = document.getElementById('rname').value;
 var fn = document.getElementById('rfn').value;
@@ -187,6 +228,9 @@ document.getElementById("loginForm").addEventListener("submit", function (event)
 event.preventDefault();
 var email = document.getElementById('email').value;
 var password = document.getElementById('password').value;
+var lastlat = document.getElementById('lastlat').value;
+var lastlong = document.getElementById('lastlong').value;
+var lastip = document.getElementById('lastip').value;
 if(email != "") {
 if(password != "") {
   $.ajax({
@@ -194,7 +238,10 @@ if(password != "") {
         type: "POST",
         data: {
           email: email,
-          password: password
+          password: password,
+          lastlat: lastlat,
+          lastlong: lastlong,
+          lastip: lastip
         },
         cache: false,
         beforeSend: function(){
