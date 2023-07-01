@@ -214,7 +214,7 @@ echo "<option value='$roww[id]'>$roww[arname]</option>";
     }
 }elseif($lang == "fr"){
     if("$roww[id]" == "$row[wilaya]"){
-echo "<option value='$roww[id]'>$roww[frname]</option>";
+echo "<option value='$roww[id]' selected>$roww[frname]</option>";
     }else{
 echo "<option value='$roww[id]'>$roww[frname]</option>";
     }

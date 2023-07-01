@@ -193,6 +193,23 @@ $conn->close();
 </div>
 
 <script>
+    document.addEventListener("keydown", function(event) {
+      // Check if "/" key is pressed
+      if (event.key === "/") {
+        // Get the currently focused element
+        const focusedElement = document.activeElement;
+
+        // Check if no other input has focus
+        if (focusedElement.tagName !== "INPUT") {
+          // Prevent the default "/" key behavior
+          event.preventDefault();
+
+          // Focus the input element
+          document.getElementById("codesearch").focus();
+        }
+      }
+    });
+
 function openmsgslist(){
     $.ajax({
         url: "getmessages.php",

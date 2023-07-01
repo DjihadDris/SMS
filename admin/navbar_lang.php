@@ -3,7 +3,7 @@ if(isset($_COOKIE['lang']) && $_COOKIE['lang'] == "fr"){
 $lang = "fr";
 $unreadmsgs = "Messages non lus";
 $viewall = "Afficher tous les messages";
-$search = "Recherche";
+$search = "Appuyez sur la touche '/' pour rechercher";
 $profile = "Mon profil";
 $changelang = "Changement de langue";
 $logout = "Déconnection";
@@ -14,7 +14,7 @@ $sysname = "S<span class='small'>chool</span> M<span class='small'>anagement</sp
 $lang = "ar";
 $unreadmsgs = "رسائل غير مقروءة";
 $viewall = "عرض كل الرسائل";
-$search = "البحث";
+$search = "إضغط على المفتاح '/' للبحث";
 $profile = "الملف الشخصي";
 $changelang = "تغيير اللغة";
 $logout = "تسجيل الخروج";
