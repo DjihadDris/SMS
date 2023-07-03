@@ -46,7 +46,7 @@ include('navbar_lang.php');
 <span class="menu-icon inbox">
 <a href="#" role="button" id="dropdownMenuLink3" onclick="openmsgslist()" aria-haspopup="true" aria-expanded="false">
 <i class="fas fa-envelope"></i>
-<?php include('../db.php'); $query = "SELECT * FROM messages WHERE to_user_id='$_COOKIE[id]' AND to_type='$_COOKIE[user_type]' AND vu=''"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); if($rowCount != 0){echo "<span class='badge badge-danger'>".$rowCount."</span>";} $conn->close(); ?>
+<?php include('../db.php'); $query = "SELECT * FROM messages WHERE to_user_id='$_COOKIE[id]' AND to_type='$_COOKIE[user_type]' AND vu=''"; $result = mysqli_query($conn, $query); $rowCount = mysqli_num_rows($result); if($rowCount != 0){echo "<span class='badge badge-danger'>".$rowCount."</span><script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>";} $conn->close(); ?>
 </a>
 </span>
 <!--Inbox icon-->
@@ -98,6 +98,7 @@ if ($result) {
         $table_name = $row["table_name"];
         $count_val = $row["count_val"];
 if($table_name == "services" && $count_val > 0){
+if($_COOKIE['user_type'] == "superadmins"){
 ?>
 <span class="menu-icon inbox">
 <a href="services" role="button">
@@ -105,8 +106,23 @@ if($table_name == "services" && $count_val > 0){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
+}elseif($_COOKIE['user_type'] == "admins"){
+include('../db.php'); $sqlm = "SELECT * FROM admins_permissions WHERE user_id='$_COOKIE[id]'"; $resultm = $conn->query($sqlm); if ($resultm->num_rows > 0) {while($rowm = $resultm->fetch_assoc()) { if("$rowm[mservices]" == 0){
+?>
+<span class="menu-icon inbox">
+<a href="services" role="button">
+<i class="fas fa-bell"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
+<?php
+}}}
+}
 }elseif($table_name == "teachers" && $count_val > 0){
+if($_COOKIE['user_type'] == "superadmins"){
 ?>
 <span class="menu-icon inbox">
 <a href="teachers" role="button">
@@ -114,8 +130,23 @@ if($table_name == "services" && $count_val > 0){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
+}elseif($_COOKIE['user_type'] == "admins"){
+include('../db.php'); $sqlmt = "SELECT * FROM admins_permissions WHERE user_id='$_COOKIE[id]'"; $resultmt = $conn->query($sqlmt); if ($resultmt->num_rows > 0) {while($rowmt = $resultmt->fetch_assoc()) { if("$rowmt[mteachers]" == 0){
+?>
+<span class="menu-icon inbox">
+<a href="teachers" role="button">
+<i class="fas fa-chalkboard-teacher"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
+<?php
+}}}
+}
 }elseif($table_name == "students" && $count_val > 0){
+if($_COOKIE['user_type'] == "superadmins"){
 ?>
 <span class="menu-icon inbox">
 <a href="students" role="button">
@@ -123,7 +154,21 @@ if($table_name == "services" && $count_val > 0){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
+}elseif($_COOKIE['user_type'] == "admins"){
+include('../db.php'); $sqlms = "SELECT * FROM admins_permissions WHERE user_id='$_COOKIE[id]'"; $resultms = $conn->query($sqlms); if ($resultms->num_rows > 0) {while($rowms = $resultms->fetch_assoc()) { if("$rowms[mstudents]" == 0){
+?>
+<span class="menu-icon inbox">
+<a href="students" role="button">
+<i class="fas fa-user-graduate"></i>
+<span class='badge badge-danger'><?php echo $count_val; ?></span>
+</a>
+</span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
+<?php
+}}}
+}
 }
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
   if($table_name == "admins" && $count_val > 0){
@@ -134,6 +179,7 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
   }elseif($table_name == "superadmins" && $count_val > 0){
 ?>
@@ -143,6 +189,7 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
   }
 }elseif($_COOKIE['user_type'] == "superadmins" && $table_name == "admins" && $count_val > 0){
@@ -153,6 +200,7 @@ if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
 <span class='badge badge-danger'><?php echo $count_val; ?></span>
 </a>
 </span>
+<script>setInterval(function(){var audio = new Audio('../Sounds/notification.mp3'); audio.play();}, 2500);</script>
 <?php
 }
     }

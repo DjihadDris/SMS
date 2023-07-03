@@ -16,7 +16,7 @@ $importexcel = "Importer EXCEL";
 $exportpdf = "Exporter PDF";
 $print = "Imprimer";
 $copy = "Copier";
-$addwords = "Ajouter un mot";
+$addword = "Ajouter un mot";
 }else{
 $lang = "ar";
 $title = "الكلمات المحظورة - نظام إدارة المدارس";

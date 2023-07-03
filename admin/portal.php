@@ -46,25 +46,25 @@ if ($resulto->num_rows > 0) {
     if ($conn->query($sql) === TRUE) {
         if($lang == "ar"){
             if($entryType == 0){
-                $message = "<div class='alert alert-success'>تم تسجيل دخول $rowo[fn] $rowo[name].</div>";
+                $message = "<script>var audio = new Audio('../Sounds/true.mp3'); audio.play();</script><div class='alert alert-success'>تم تسجيل دخول $rowo[fn] $rowo[name].</div>";
             }else{
-                $message = "<div class='alert alert-success'>تم تسجيل خروج $rowo[fn] $rowo[name].</div>";
+                $message = "<script>var audio = new Audio('../Sounds/true.mp3'); audio.play();</script><div class='alert alert-success'>تم تسجيل خروج $rowo[fn] $rowo[name].</div>";
             }
         }else{
             if($entryType == 0){
-                $message = "<div class='alert alert-success'>L'entrée de $rowo[fn] $rowo[name] a été enregistrée.</div>";
+                $message = "<script>var audio = new Audio('../Sounds/true.mp3'); audio.play();</script><div class='alert alert-success'>L'entrée de $rowo[fn] $rowo[name] a été enregistrée.</div>";
             }else{
-                $message = "<div class='alert alert-success'>La sortie de $rowo[fn] $rowo[name] a été enregistrée.</div>";
+                $message = "<script>var audio = new Audio('../Sounds/true.mp3'); audio.play();</script><div class='alert alert-success'>La sortie de $rowo[fn] $rowo[name] a été enregistrée.</div>";
             }
         }
     } else {
-        $message = "<div class='alert alert-danger'>Error: " . $sql . "<br>" . $conn->error . "</div>";
+        $message = "<script>var audio = new Audio('../Sounds/false.mp3'); audio.play();</script><div class='alert alert-danger'>Error: " . $sql . "<br>" . $conn->error . "</div>";
     }
 }}else{
     if($lang == "ar"){
-        $message = "<div class='alert alert-danger'>هذا الرمز غير موجود.</div>";
+        $message = "<script>var audio = new Audio('../Sounds/false.mp3'); audio.play();</script><div class='alert alert-danger'>هذا الرمز غير موجود.</div>";
     }else{
-        $message = "<div class='alert alert-danger'>Ce code n'existe pas.</div>";
+        $message = "<script>var audio = new Audio('../Sounds/false.mp3'); audio.play();</script><div class='alert alert-danger'>Ce code n'existe pas.</div>";
     }
 }
 }
@@ -215,7 +215,7 @@ if ($result->num_rows > 0) {
     <form method="POST" id="entriesForm">
     <div class="input-group mb-3">
         <input maxlength="10" minlength="10" placeholder="<?php echo $codetxt; ?>" required type="text" id="code" name="code" class="form-control" autofocus onkeyup="checkcode()">
-        <button class="btn btn-success" type="submit" id="entriesFormbtn"><?php echo $save; ?></button>
+        <button class="btn btn-success" type="submit" id="entriesFormbtn"><i class="fas fa-save"></i> <?php echo $save; ?></button>
     </div>
     </form>
 <?php if(isset($message)){echo $message;} ?>

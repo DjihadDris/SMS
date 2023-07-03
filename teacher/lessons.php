@@ -188,7 +188,14 @@ $conn->close();
 <div class="ui bottom attached tab segment active" data-tab="first">
 
 <div class="ui form segment blue raised">
-  <div class="three fields">
+<div class="three fields">
+<div class="field">
+<label><?php echo $lessonclass; ?></label>
+<select class="ui search dropdown" id="classFilter">
+<option value=""></option>
+</select>
+</div>
+
 <div class="field">
 <label><?php echo $lessontrim; ?></label>
 <select class="ui search dropdown" id="trimFilter">
@@ -198,12 +205,7 @@ $conn->close();
 <option value="<?php echo $trim3; ?>"><?php echo $trim3; ?></option>
 </select>
 </div>
-<div class="field">
-<label><?php echo $lessonclass; ?></label>
-<select class="ui search dropdown" id="classFilter">
-<option value=""></option>
-</select>
-</div>
+
 <div class="field">
 <label><?php echo $addlesson; ?></label>
 <button class="ui blue button labeled left icon" style="width: 100%;" onclick="addnewlesson()"><i class="add icon"></i> <?php echo $addlesson; ?></button>

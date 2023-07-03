@@ -95,7 +95,14 @@ textarea {
 <div class="ui bottom attached tab segment active" data-tab="first">
 
 <div class="ui form segment blue raised">
-  <div class="two fields">
+<div class="two fields">
+<div class="field">
+<label><?php echo $lessonmaterial; ?></label>
+<select class="ui search dropdown" id="materialFilter">
+<option value=""></option>
+</select>
+</div>
+
 <div class="field">
 <label><?php echo $lessontrim; ?></label>
 <select class="ui search dropdown" id="trimFilter">
@@ -103,12 +110,6 @@ textarea {
 <option value="<?php echo $trim1; ?>"><?php echo $trim1; ?></option>
 <option value="<?php echo $trim2; ?>"><?php echo $trim2; ?></option>
 <option value="<?php echo $trim3; ?>"><?php echo $trim3; ?></option>
-</select>
-</div>
-<div class="field">
-<label><?php echo $lessonmaterial; ?></label>
-<select class="ui search dropdown" id="materialFilter">
-<option value=""></option>
 </select>
 </div>
 </div>
