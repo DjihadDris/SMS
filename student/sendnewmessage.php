@@ -9,7 +9,7 @@ include('sendnewmessage_lang.php');
 <?php
 include('../db.php');
 $id=$_COOKIE['id'];
-$sql = "SELECT * FROM students WHERE id<>'$id' AND school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM students WHERE id<>'$id' AND school_id='$_COOKIE[school_id]' ORDER BY name";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
@@ -17,7 +17,7 @@ echo "<option value='students_$row[id]'>$row[name] $row[fn] / $student</option>"
   }}
 $conn->close();
 include('../db.php');
-$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
@@ -25,7 +25,7 @@ echo "<option value='teachers_$row[id]'>$row[name] $row[fn] / $teacher</option>"
   }}
 $conn->close();
 include('../db.php');
-$sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {

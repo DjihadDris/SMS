@@ -132,6 +132,27 @@ include('schools_lang.php');
                         </div>
 <div class="alert alert-warning"><?php echo $downloadreader; ?></div>
                         <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
+                            <div class="form-group row">
+<div class="col-sm-12">
+<select class="form-control" id="swilaya_id">
+    <option value=""><?php echo $wilaya; ?></option>
+<?php
+include('../db.php');
+$sql = "SELECT * FROM wilayas ORDER BY id";
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+while($row = $result->fetch_assoc()) {
+if($lang == "ar"){
+    echo "<option value='$row[id]' data-value='$row[arname]'>$row[arname]</option>";
+}elseif($lang == "fr"){
+    echo "<option value='$row[id]' data-value='$row[frname]'>$row[frname]</option>";
+}
+}}
+$conn->close();
+?>
+</select>
+</div>
+</div>
                         <table class="table table-bordered table-striped mt-0" width="100%" id="schools">
                                 <thead>
                                     <tr>
@@ -411,6 +432,12 @@ let table = $('#schools').DataTable({
       $('.btn.btn-info').removeClass('dt-button');
       $('.btn.btn-warning').removeClass('dt-button');
     }
+});
+var select = $('#swilaya_id');
+select.on('change', function() {
+  var val = $.fn.dataTable.util.escapeRegex($(this).val());
+  var optionText = $(this).find('option:selected').data('value');
+  table.column(3).search(val ? '^' + optionText + '$' : '', true, false).draw();
 });
 });
 

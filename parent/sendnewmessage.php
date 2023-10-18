@@ -8,24 +8,7 @@ include('sendnewmessage_lang.php');
 <option value="">--<?php echo $select; ?>--</option>
 <?php
 include('../db.php');
-$sql = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
-echo "<option value='students_$row[id]'>$row[name] $row[fn] / $student</option>";
-  }}
-$conn->close();
-include('../db.php');
-$sql = "SELECT * FROM parents WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
-$result = $conn->query($sql);
-if ($result->num_rows > 0) {
-  while($row = $result->fetch_assoc()) {
-echo "<option value='parents_$row[id]'>$row[name] $row[fn] / $parent</option>";
-  }}
-$conn->close();
-include('../db.php');
-$id=$_COOKIE['id'];
-$sql = "SELECT * FROM teachers WHERE id<>'$id' AND school_id='$_COOKIE[school_id]' ORDER BY name";
+$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {

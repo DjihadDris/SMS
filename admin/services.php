@@ -148,6 +148,7 @@ $conn->close();
                                     <tr>
                                         <th>#</th>
                                         <th><?php echo $name; ?></th>
+                                        <th><?php echo $user; ?></th>
                                         <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
                                         <th><?php echo $school; ?></th>
                                         <?php } ?>
@@ -172,6 +173,7 @@ if ($result->num_rows > 0) {
 <tr>
 <td class="align-middle"><?php echo $i;$i++; ?></td>
 <td class="align-middle"><?php echo "$row[name]"; ?></td>
+<td class="align-middle"><?php include('../db.php'); $sqlsu = "SELECT * FROM $row[type] WHERE id='$row[user_id]'"; $resultsu = $conn->query($sqlsu); if ($resultsu->num_rows > 0) {while($rowsu = $resultsu->fetch_assoc()) {echo "$rowsu[name] $rowsu[fn]";}}else{echo "No user found..";} ?></td>
 <?php if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){ ?>
 <td class="align-middle"><?php include('../db.php'); $sqls = "SELECT * FROM schools WHERE id='$row[school_id]'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No school found..";} ?></td>
 <?php } ?>

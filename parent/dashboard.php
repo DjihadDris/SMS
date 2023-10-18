@@ -2,7 +2,7 @@
 if(!isset($_COOKIE['id'])){
   header('Location: login');
 }
-include('lessons_lang.php');
+include('dashboard_lang.php');
 ?>
 <!DOCTYPE html>
 <html dir="<?php if($lang == "ar"){echo 'rtl';}else{echo 'ltr';} ?>">
@@ -42,7 +42,7 @@ alertify.defaults.glossary.cancel = "<?php echo $cancel_button; ?>";
 
 <style>
 body {
-  font-family: 'Readex Pro', sans-serif;
+  font-family: 'Readex Pro', sans-serif !important;
   padding: 10px;
 }
 a {
@@ -62,9 +62,6 @@ textarea {
 .header, .content, .button {
   font-family: 'Readex Pro', sans-serif !important;
 }
-.content h4 {
-  font-family: 'Readex Pro', sans-serif !important;
-}
 </style>
 
 </head>
@@ -73,12 +70,12 @@ textarea {
 
 <?php include('sidebar.php'); ?>
 
-<div class="ui tiny modal">
+<div class="ui small modal">
   <i class="close icon"></i>
   <div class="header">
-  <?php echo $lessondetail; ?>
+  <?php echo $newsdetail; ?>
   </div>
-  <div class="content" id="lessondes">
+  <div class="content" id="newsdes">
 
   </div>
   <div class="actions">
@@ -90,40 +87,16 @@ textarea {
 </div>
 
 <div class="ui top attached tabular menu" style="margin-top: 100px;">
-  <a class="item active" data-tab="first"><i class="file alternate outline icon"></i> <?php echo $lessonstitle; ?></a>
+  <a class="item active" data-tab="first"><i class="newspaper outline icon"></i> <?php echo $newstitle; ?></a>
 </div>
 <div class="ui bottom attached tab segment active" data-tab="first">
 
-<div class="ui form segment blue raised">
-<div class="two fields">
-<div class="field">
-<label><?php echo $lessonmaterial; ?></label>
-<select class="ui search dropdown" id="materialFilter">
-<option value=""></option>
-</select>
-</div>
-
-<div class="field">
-<label><?php echo $lessontrim; ?></label>
-<select class="ui search dropdown" id="trimFilter">
-<option value=""></option>
-<option value="<?php echo $trim1; ?>"><?php echo $trim1; ?></option>
-<option value="<?php echo $trim2; ?>"><?php echo $trim2; ?></option>
-<option value="<?php echo $trim3; ?>"><?php echo $trim3; ?></option>
-</select>
-</div>
-</div>
-</div>
-
-<table class="ui celled table display" id="lessons" width="100%">
+<table class="ui celled table display" id="news" width="100%">
   <thead>
     <tr>
-    <th><?php echo $lessonname; ?></th>
-    <th><?php echo $lessondate; ?></th>
-    <th><?php echo $lessontime; ?></th>
-    <th><?php echo $lessonuser; ?></th>
-    <th><?php echo $lessonmaterial; ?></th>
-    <th><?php echo $lessontrim; ?></th>
+    <th><?php echo $titleofnews; ?></th>
+    <th><?php echo $dateofnews; ?></th>
+    <th><?php echo $userofnews; ?></th>
     <th></th>
     </tr>
   </thead>
@@ -131,11 +104,7 @@ textarea {
 <?php
 
 include('../db.php');
-if(isset($_COOKIE['div_id'])){
-$sql = "SELECT * FROM lessons WHERE school_id='$_COOKIE[school_id]' AND year_id='$_COOKIE[year_id]' AND div_id='$_COOKIE[div_id]' AND class_id='$_COOKIE[class_id]'";
-}else{
-$sql = "SELECT * FROM lessons WHERE school_id='$_COOKIE[school_id]' AND year_id='$_COOKIE[year_id]' AND class_id='$_COOKIE[class_id]'";
-}
+$sql = "SELECT * FROM news WHERE school_id='$_COOKIE[school_id]'";
 $result = $conn->query($sql);
 
 if ($result->num_rows > 0) {
@@ -144,14 +113,12 @@ if ($result->num_rows > 0) {
 <tr>
 <td><?php echo "$row[name]"; ?></td>
 <td><?php echo "$row[date]"; ?></td>
-<td><?php echo "$row[time]"; ?></td>
-<td><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM teachers WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";} $conn->close(); ?></td>
-<td><?php include('../db.php'); $material_id="$row[material_id]"; $sqls = "SELECT * FROM materials WHERE id='$material_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name]";}}else{echo "No material found..";} /*$conn->close();*/ ?></td>
-<td><?php if("$row[trim]" == 1){echo $trim1;}else if("$row[trim]" == 2){echo $trim2;}else if("$row[trim]" == 3){echo $trim3;} ?></td>
-<td><button class="ui button labeled icon right green" type="button" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="eye icon"></i> <?php echo $detailoflesson; ?></button></td>
+<td><?php $user_id="$row[user_id]"; $sqls = "SELECT * FROM $row[type] WHERE id='$user_id'"; $results = $conn->query($sqls); if ($results->num_rows > 0) {while($rows = $results->fetch_assoc()) {echo "$rows[name] $rows[fn]";}}else{echo "No user found..";}?></td>
+<td><button class="ui button labeled icon right green" type="button" onclick="showmore(<?php echo "$row[id]"; ?>)"><i class="eye icon"></i> <?php echo $detailofnews; ?></button></td>
 </tr>
 <?php
   }}
+$conn->close();
 ?>
   </tbody>
 </table>
@@ -163,11 +130,8 @@ if ($result->num_rows > 0) {
 $('.menu .item')
   .tab()
 ;
-$('.ui.dropdown')
-  .dropdown({clearable: true})
-;
 $(document).ready(function() {
-let table = new DataTable('#lessons', {
+let table = new DataTable('#news', {
     ordering: true,
     searching: true,
     paging: true,
@@ -180,45 +144,19 @@ let table = new DataTable('#lessons', {
           "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/<?php if($lang == "ar"){echo 'Arabic';}else{echo 'French';} ?>.json"
         }
 });
-
-var select = $('#materialFilter');
-  select.on('change', function() {
-    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-    table.column(4).search(val ? '^' + val + '$' : '', true, false).draw();
-  });
-  table.column(4).data().unique().sort().each(function(d) {
-    select.append('<option value="' + d + '">' + d + '</option>');
-  });
-
-var select2 = $('#trimFilter');
-  select2.on('change', function() {
-    var val = $.fn.dataTable.util.escapeRegex($(this).val());
-    table.column(5).search(val ? '^' + val + '$' : '', true, false).draw();
-  });
-  /*var customOrder = ["<?php echo $trim1; ?>", "<?php echo $trim2; ?>", "<?php echo $trim3; ?>"];
-  for (var i = 0; i < customOrder.length; i++) {
-    select2.append('<option value="' + customOrder[i] + '">' + customOrder[i] + '</option>');
-  }
-  var remainingOptions = table.column(5).data().unique().sort().filter(function(value) {
-    return !customOrder.includes(value);
-  });
-  remainingOptions.each(function(d) {
-    select2.append('<option value="' + d + '">' + d + '</option>');
-  });*/
-
 });
 
 function showmore(id){
   $.ajax({
-        url: "getlesson.php",
+        url: "getnews.php",
         type: "POST",
         data: {
           id: id
         },
         cache: false,
         success: function(dataResult){
-          $('.tiny.modal').modal('show');
-          $('#lessondes').html(dataResult);
+          $('.small.modal').modal('show');
+          $('#newsdes').html(dataResult);
         }
   });
 }

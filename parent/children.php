@@ -2,7 +2,7 @@
 if(!isset($_COOKIE['id'])){
   header('Location: login');
 }
-include('lessons_lang.php');
+include('children_lang.php');
 ?>
 <!DOCTYPE html>
 <html dir="<?php if($lang == "ar"){echo 'rtl';}else{echo 'ltr';} ?>">
@@ -75,9 +75,6 @@ textarea {
 
 <div class="ui tiny modal">
   <i class="close icon"></i>
-  <div class="header">
-  <?php echo $lessondetail; ?>
-  </div>
   <div class="content" id="lessondes">
 
   </div>
@@ -90,32 +87,13 @@ textarea {
 </div>
 
 <div class="ui top attached tabular menu" style="margin-top: 100px;">
-  <a class="item active" data-tab="first"><i class="file alternate outline icon"></i> <?php echo $lessonstitle; ?></a>
+  <a class="item active" data-tab="first"><i class="child icon"></i> <?php echo $childrentitle; ?></a>
 </div>
 <div class="ui bottom attached tab segment active" data-tab="first">
 
-<div class="ui form segment blue raised">
-<div class="two fields">
-<div class="field">
-<label><?php echo $lessonmaterial; ?></label>
-<select class="ui search dropdown" id="materialFilter">
-<option value=""></option>
-</select>
-</div>
+<button class="ui inverted labeled icon left button green" style="float: <?php if($lang == "ar"){echo "left";}else{echo "right";} ?>;"><i class="add icon"></i> Ajouter</button>
 
-<div class="field">
-<label><?php echo $lessontrim; ?></label>
-<select class="ui search dropdown" id="trimFilter">
-<option value=""></option>
-<option value="<?php echo $trim1; ?>"><?php echo $trim1; ?></option>
-<option value="<?php echo $trim2; ?>"><?php echo $trim2; ?></option>
-<option value="<?php echo $trim3; ?>"><?php echo $trim3; ?></option>
-</select>
-</div>
-</div>
-</div>
-
-<table class="ui celled table display" id="lessons" width="100%">
+<table class="ui celled table display" id="news" width="100%">
   <thead>
     <tr>
     <th><?php echo $lessonname; ?></th>
@@ -167,7 +145,7 @@ $('.ui.dropdown')
   .dropdown({clearable: true})
 ;
 $(document).ready(function() {
-let table = new DataTable('#lessons', {
+let table = new DataTable('#news', {
     ordering: true,
     searching: true,
     paging: true,

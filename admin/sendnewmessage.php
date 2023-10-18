@@ -8,9 +8,9 @@ include('sendnewmessage_lang.php');
 <?php
 include('../db.php');
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$sql = "SELECT * FROM students";
+$sql = "SELECT * FROM students ORDER BY name";
 }else{
-$sql = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM students WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 }
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
@@ -20,9 +20,21 @@ echo "<option value='students_$row[id]'>$row[name] $row[fn] / $student</option>"
 $conn->close();
 include('../db.php');
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$sql = "SELECT * FROM teachers";
+$sql = "SELECT * FROM parents ORDER BY name";
 }else{
-$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM parents WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
+}
+$result = $conn->query($sql);
+if ($result->num_rows > 0) {
+  while($row = $result->fetch_assoc()) {
+echo "<option value='parents_$row[id]'>$row[name] $row[fn] / $parent</option>";
+  }}
+$conn->close();
+include('../db.php');
+if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
+$sql = "SELECT * FROM teachers ORDER BY name";
+}else{
+$sql = "SELECT * FROM teachers WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 }
 $result = $conn->query($sql);
 if ($result->num_rows > 0) {
@@ -34,12 +46,12 @@ include('../db.php');
 $id=$_COOKIE['id'];
 $type=$_COOKIE['user_type'];
 if($_COOKIE['user_type'] == "superadmins" AND $_COOKIE['id'] == 1){
-$sql = "SELECT 'superadmins' AS type, id, name, fn FROM superadmins WHERE id<>'$_COOKIE[id]' UNION SELECT 'admins' AS type, id, name, fn FROM admins";
+$sql = "SELECT 'superadmins' AS type, id, name, fn FROM superadmins WHERE id<>'$_COOKIE[id]' ORDER BY name UNION SELECT 'admins' AS type, id, name, fn FROM admins ORDER BY name";
 }else{
 if($type == 'superadmins'){
-$sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM admins WHERE school_id='$_COOKIE[school_id]' ORDER BY name";
 }else{
-$sql = "SELECT * FROM superadmins WHERE school_id='$_COOKIE[school_id]'";
+$sql = "SELECT * FROM superadmins WHERE school_id='$_COOKIE[school_id]' AND id<>1 ORDER BY name";
 }
 }
 $result = $conn->query($sql);

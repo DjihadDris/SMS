@@ -213,7 +213,7 @@ $conn->close();
 </div>
 </div>
 
-<table class="ui celled table display" id="news" width="100%">
+<table class="ui celled table display" id="lessons" width="100%">
   <thead>
     <tr>
     <th><?php echo $lessonname; ?></th>
@@ -268,7 +268,7 @@ $('.ui.dropdown')
   .dropdown({clearable: true})
 ;
 $(document).ready(function() {
-let table = new DataTable('#news', {
+let table = new DataTable('#lessons', {
     ordering: true,
     searching: true,
     paging: true,

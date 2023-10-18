@@ -1,0 +1,97 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Readex Pro', sans-serif;
+    background-image: url('../background.png');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.form {
+    width: 800px;
+    height: 50%;
+    border: 5px solid #298397;
+    border-radius: 10px;
+    background-color: #3ef8da;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.inside {
+    padding: 25px;
+    padding-right: 50px;
+    padding-left: 50px;
+}
+.form-control, .input-group-text {
+    border: 5px solid black;
+}
+.form-control {
+    margin-right: 5px !important;
+}
+.input-group-text {
+    margin-left: 5px !important;
+}
+.header {
+    text-align: center;
+    border: 5px solid #a47bbc;
+    background-color: #66228e;
+    border-radius: 30px;
+    width: 350px;
+    height: 65px;
+    margin-top: 25px;
+    color: white;
+    font-weight: bold;
+    transition: 0.5s;
+}
+.header:hover {
+    background-color: #a47bbc;
+    border: 3px solid #66228e;
+}
+.header2 {
+    text-align: center;
+    border: 5px solid #a47bbc;
+    background-color: #66228e;
+    border-radius: 30px;
+    width: 150px;
+    height: 35px;
+    margin-top: -25px;
+    color: white;
+    font-weight: bold;
+    transition: 0.5s;
+}
+.header2:hover {
+    background-color: #a47bbc;
+    border: 3px solid #66228e;
+}
+.btns-group {
+    display: flex;
+    padding-left: 10px;
+    text-align: center;
+}
+.button {
+    background-color: #66228e;
+    border: 3px solid #a47bbc;
+    border-radius: 30px;
+    color: #e4e4ec;
+    font-weight: bold;
+    transition: 0.5s;
+    padding: 7.5px;
+}
+.button:hover {
+    background-color: #a47bbc;
+    border: 3px solid #66228e;
+}
+.btns-group .button:nth-child(1) {
+    margin-right: 10px;
+    margin-left: 25px;
+}
+.btns-group .button:nth-child(2) {
+    margin-left: 12.5px;
+}
+.btns-group .button:nth-child(3) {
+    margin-right: 12.5px;
+}
+.btns-group .button:nth-child(4) {
+    margin-right: 25px;
+    margin-left: 7.5px;
+}

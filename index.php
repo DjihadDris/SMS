@@ -46,6 +46,7 @@
 <body>
   <div class="button-container">
     <button class="button" onclick="window.location.href='student'">فضاء التلاميذ / Espace des élèves</button>
+    <button class="button" onclick="window.location.href='parent'">فضاء الأولياء / Espace des parents</button>
     <button class="button" onclick="window.location.href='teacher'">فضاء الأساتذة / Espace des enseignants</button>
     <button class="button" onclick="window.location.href='admin'">فضاء الإدارة / Espace de gestion</button>
   </div>
